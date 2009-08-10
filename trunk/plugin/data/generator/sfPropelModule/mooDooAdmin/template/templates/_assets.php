@@ -1,5 +1,5 @@
-[?php use_javascript('<?php echo sfConfig::get('app_sfPropelMooDooPlugin_js_dir').'/moo.js' ?>', 'first') ?]
-[?php use_javascript('<?php echo sfConfig::get('app_sfPropelMooDooPlugin_js_dir').'/moo-more.js' ?>', 'first') ?]
+[?php use_javascript('<?php echo sfConfig::get('app_sfPropelMooDooPlugin_js_dir').'/moo-1.2.3.js' ?>', 'first') ?]
+[?php use_javascript('<?php echo sfConfig::get('app_sfPropelMooDooPlugin_js_dir').'/moo-more-1.2.3.js' ?>', 'first') ?]
 
 <?php if (isset($this->params['css'])): ?>
 [?php use_stylesheet('<?php echo $this->params['css'] ?>', 'first') ?]

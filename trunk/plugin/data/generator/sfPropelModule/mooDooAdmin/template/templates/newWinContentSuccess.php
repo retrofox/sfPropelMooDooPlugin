@@ -1,11 +1,6 @@
-[?php include_partial('<?php echo $this->getModuleName() ?>/feedback_editWin') ?]
 [?php use_helper('I18N', 'Date') ?]
-
-[?php include_stylesheets_for_form($form) ?]
-[?php include_javascripts_for_form($form) ?]
-
-  <div id="flashes_<?php echo $this->getModuleName() ?>" class="win_flashes">
-    [?php include_partial('<?php echo $this->getModuleName() ?>/flashesEdit') ?]
+  <div class="win_flashes">
+    [?php include_partial('<?php echo $this->getModuleName() ?>/flashesEdit', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'helper' => $helper, 'isNew' => $isNew)) ?]
   </div>
 
 [?php echo form_tag_for($form, '@<?php echo $this->params['route_prefix'] ?>') ?]

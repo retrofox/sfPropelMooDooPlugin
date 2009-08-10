@@ -3,9 +3,9 @@
 [?php endif; ?]
 
 [?php if ($sf_user->hasFlash('error')): ?]
-  <div class="error">
-    <div class="error_msg">[?php echo __($sf_user->getFlash('error'), array(), 'sf_admin') ?]
-  		<div id="btn_flash_error" class="btn_admin_actions"><div class="icn icn-close"></div>[?php echo __('close') ?></div>
-  	</div>
+<div class="error">
+  <div class="error_msg">[?php echo __($sf_user->getFlash('error'), array(), 'sf_admin') ?]
+    <div class="btn_admin_actions"><div class="icn icn-close"></div>[?php echo __('close') ?>]</div>
   </div>
+</div>
 [?php endif; ?]

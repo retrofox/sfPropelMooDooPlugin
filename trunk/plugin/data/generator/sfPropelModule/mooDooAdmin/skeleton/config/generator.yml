@@ -9,5 +9,5 @@ generator:
       list:           ~
       filter:         ~
       form:           ~
-      edit:           ~
+      _edit:           ~
       new:            ~

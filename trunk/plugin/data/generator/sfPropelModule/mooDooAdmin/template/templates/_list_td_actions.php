@@ -7,12 +7,12 @@
 
 <?php elseif ('_edit' == $name): ?>
     <?php echo $this->addCredentialCondition('[?php echo $helper->mooLinkToEdit($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
+
     <?php //echo $this->addCredentialCondition('[?php echo $helper->mooAjaxLinkToEdit($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
 <?php else: ?>
       <?php
       if (isset($params['inWinPopUp']) and $params['inWinPopUp'] == true) echo $this->addCredentialCondition($this->getAjaxBtnToTdAction($name, $params, true, $params['class_suffix']), $params);
       else echo $this->addCredentialCondition($this->getBtnToTdAction($name, $params, true, $params['class_suffix']), $params);
-
       ?>
 <?php endif; ?>
 <?php endforeach; ?>

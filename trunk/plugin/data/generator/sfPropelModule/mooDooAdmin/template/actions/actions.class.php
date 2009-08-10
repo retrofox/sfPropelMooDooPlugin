@@ -35,13 +35,9 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends sfActions
 
 <?php include dirname(__FILE__).'/../../parts/newAction.php' ?>
 
-<?php include dirname(__FILE__).'/../../parts/newWinAction.php' ?>
-
 <?php include dirname(__FILE__).'/../../parts/createAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/editAction.php' ?>
-
-<?php include dirname(__FILE__).'/../../parts/editWinAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/editWinContentAction.php' ?>
 
@@ -63,6 +59,8 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends sfActions
 <?php endif; ?>
 
 <?php include dirname(__FILE__).'/../../parts/paginationAction.php' ?>
+
+<?php include dirname(__FILE__).'/../../parts/loadJsonDataAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/sortingAction.php' ?>
 }

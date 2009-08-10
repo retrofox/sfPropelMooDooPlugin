@@ -1,4 +1,3 @@
-<div class="winAccordion">
   [?php if ('NONE' != $fieldset): ?]
   <h2 class="titleSection">[?php echo __($fieldset, array(), '<?php echo $this->getI18nCatalogue() ?>') ?]</h2>
   [?php endif; ?]
@@ -19,4 +18,3 @@
       [?php endforeach; ?]
     </fieldset>
   </div>
-</div>

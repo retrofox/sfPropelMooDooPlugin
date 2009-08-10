@@ -13,13 +13,10 @@
  * @subpackage widget
  * @author     Damian Suarez <damian.suarez@xifox.net>
  */
-class mooWidgetFormPropelChoiceWithAdd extends  sfWidgetFormPropelChoice
-{
+class mooWidgetFormPropelChoiceWithAdd extends  sfWidgetFormPropelChoice {
 	
-  protected function configure($options = array(), $attributes = array())
-  {
-    $this->addOption('action2Add', 'module/action');
-
+  protected function configure($options = array(), $attributes = array()) {
+    $this->addOption('action2Add', 'mooDooClientFiles/propelChoiceWithAdd');
     parent::configure($options, $attributes);
   }
 
@@ -33,25 +30,26 @@ class mooWidgetFormPropelChoiceWithAdd extends  sfWidgetFormPropelChoice
    *
    * @see sfWidgetForm
    */
-  public function render($name, $value = null, $attributes = array(), $errors = array())
-  {
+  public function render($name, $value = null, $attributes = array(), $errors = array()) {
+    $select_tag = parent::render($name, $value, $attributes, $errors);
 
-    $input_tag = parent::render($name, $value, $attributes, $errors);
-    
-    $conten_tag = '<table class="select_with_add">';
-    $conten_tag.= '<tr>';
-    $conten_tag.= '<td>'.$input_tag.'</td>';
-    $conten_tag.= '<td class="btn24x24 content_win">';
-    $conten_tag.= '<div class="icn icn-add btn_add2Select4Win">';
-	$conten_tag.= '<div class="win4add2select">';
-	$conten_tag.= '<input link_to_add="'.url_for ($this->getOption('action2Add')).'" name="add2select" value="nuevo valor" />';
-	$conten_tag.= '<div class="btn24x24"><div class="icn icn-delete"></div></div>';
-	$conten_tag.= '<div class="btn24x24"><div class="icn icn-submit"></div></div>';
-	$conten_tag.= '</div>';
-	$conten_tag.= '</div>';
-    $conten_tag.= '</td>';
-	$conten_tag.= '</tr>';
-    $conten_tag.= '</table>';
+    $conten_tag = '<div class="select_with_add" id="'.$this->getAttribute('id').'">';
+
+    $conten_tag.= '<div class="win4add2select">';
+    $conten_tag.= '<input link_to_add="'.url_for ($this->getOption('action2Add')).'" name="add2select" />';
+    $conten_tag.= '<div class="btn24x24"><div class="icn icn-delete"></div></div>';
+    $conten_tag.= '<div class="btn24x24"><div class="icn icn-submit"></div></div>';
+    $conten_tag.= '</div>';
+
+
+    $conten_tag.= $select_tag;
+    $conten_tag.= '<div class="btn24x24"><div class="icn icn-add btn_add2Select4Win"></div>';
+    $conten_tag.= '</div>';
+    $conten_tag.= '</div>';
+
+    $conten_tag.= '<script>';
+    $conten_tag.= 'if (!window.$propelChoiceWithAdd) {$propelChoiceWithAdd = true;};';
+    $conten_tag.= '</script>';
 
     return $conten_tag;
   }
