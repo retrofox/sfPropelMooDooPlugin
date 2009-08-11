@@ -11,13 +11,13 @@
   var $jsonDataFilter = new Array ();
     $jsonDataFilter = [
       {filter: 'filter'},
-      {action: '<?php echo $this->getModuleName() ?>/filter?action=_reset'},
+      {action: '[?php echo moo_json_data_link_to_filters(__('Reset', array(), 'sf_admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter')) ?]'},
       {cancel: 'cancel'}
     ];
 
 /*
  
- [?php echo moo_json_data_link_to_filters(__('Reset', array(), 'sf_admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter')) ?]
+ 
 
  */
 

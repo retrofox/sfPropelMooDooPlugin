@@ -41,13 +41,8 @@ function moo_json_data_link_to_filters() {
     $arguments[3]['tagHref'] = 'hrefReset';
     $arguments[3]['id'] = 'btnFilterOff';
 
-    return call_user_func_array('moo_btn_to2', $arguments);
+    return call_user_func_array('moo_json_data_link_to_filters_2', $arguments);
   }
-}
-
-function moo_json_data_link_to_filters_2() {
-  $params = array_merge(array('sf_route' => $routeName), is_object($params) ? array('sf_subject' => $params) : $params);
-  return moo_btn_to1($name, $params, $options);
 }
 
 
@@ -113,10 +108,6 @@ function moo_btn_to1($name, $internal_uri, $options = array()) {
     $name = $html_options['href'];
   }
 
-print_r ($internal_uri);
-
-  echo '<p><b>'.$internal_uri.' | '.$html_options['href'].'</b></p>';
-
   $tag = 'div';
   if (isset($html_options['htmlTag'])) {
     $tag = $html_options['htmlTag'];
@@ -132,8 +123,6 @@ print_r ($internal_uri);
     unset ($html_options['tagHref']);
     unset($html_options['href']);
   }
-
-
 
   if (isset($html_options['addNodeIcn'])) {
     $tagIcn = $html_options['addNodeIcn'];
@@ -151,6 +140,42 @@ print_r ($internal_uri);
   }
   else
     return '<'.$tag._tag_options($html_options).'>'.$name.'</'.$tag.'>';
-//return content_tag($tag, $name, $html_options);
+}
 
+
+
+
+function moo_json_data_link_to_filters_2($name, $routeName, $params, $options = array()) {
+  $params = array_merge(array('sf_route' => $routeName), is_object($params) ? array('sf_subject' => $params) : $params);
+
+  return moo_json_data_link_to_filters_1($name, $params, $options);
+}
+
+
+function moo_json_data_link_to_filters_1($name, $internal_uri, $options = array()) {
+  $html_options = _parse_attributes($options);
+
+  $absolute = false;
+  if (isset($html_options['absolute_url'])) {
+    $html_options['absolute'] = $html_options['absolute_url'];
+    unset($html_options['absolute_url']);
+  }
+  if (isset($html_options['absolute'])) {
+    $absolute = (boolean) $html_options['absolute'];
+    unset($html_options['absolute']);
+  }
+
+  $href = url_for($internal_uri, $absolute);
+
+  if (isset($html_options['query_string'])) {
+    $href .= '?'.$html_options['query_string'];
+    unset($html_options['query_string']);
+  }
+
+  if (isset($html_options['anchor'])) {
+    $href .= '#'.$html_options['anchor'];
+    unset($html_options['anchor']);
+  }
+
+  return $href;
 }

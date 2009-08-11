@@ -499,8 +499,6 @@ mooWin.sfPropelList = new Class({
     this.parent(json, options);
 
     this.addEvent ('winDomReady', function (tree, elems, html, js) {
-      console.debug (js);
-
 
       this.serverOptions2BarMenu = $jsonDataBarMenuList;
       this.serverOptions2Filter = $jsonDataFilter;
@@ -580,7 +578,6 @@ mooWin.sfPropelList = new Class({
             console.debug (this.serverOptions2Filter[1]);
 
             //var myHTMLRequest = new Request.HTML({url:this.serverOptions2Filter[1].action}).post("user_id=25&save=true");
-
 
             ev.stop();
             var f = document.createElement('form');
