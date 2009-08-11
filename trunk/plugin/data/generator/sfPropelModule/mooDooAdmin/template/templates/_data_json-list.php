@@ -15,12 +15,6 @@
       {cancel: 'cancel'}
     ];
 
-/*
- 
- 
-
- */
-
 // JsonData Actions list
   var $jsonDataObjActionsList = new Array ();
     $jsonDataObjActionsList = [

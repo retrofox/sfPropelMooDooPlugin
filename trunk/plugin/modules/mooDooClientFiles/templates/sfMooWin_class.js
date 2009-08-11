@@ -560,7 +560,6 @@ mooWin.sfPropelList = new Class({
 
     var $nodeForm = this.nodeAdminFilter.getElement ('form');
     var $ajaxRequest = new Request.HTML({
-      url:$nodeForm.get('action'),
       onSuccess: function(tree, elems, html, js){
         this.nodeContent.set('html', html);
       }.bind(this)
@@ -572,24 +571,12 @@ mooWin.sfPropelList = new Class({
         'click': function (ev) {
           ev.stop();
           if ($iB == 0) {
+            $ajaxRequest.options.url = $nodeForm.get('action');
             $ajaxRequest.post($($nodeForm));
           }
           else if ($iB == 1) {
-            console.debug (this.serverOptions2Filter[1]);
-
-            //var myHTMLRequest = new Request.HTML({url:this.serverOptions2Filter[1].action}).post("user_id=25&save=true");
-
-            ev.stop();
-            var f = document.createElement('form');
-            f.style.display = 'none';
-            $btn.parentNode.appendChild(f);
-            f.method = 'POST';
-            f.action = this.serverOptions2Filter[1].action;
-            //f.submit();
-
-            var myHTMLRequest = new Request.HTML({url:this.serverOptions2Filter[1].action}).post(f);
-
-
+            $ajaxRequest.options.url = this.serverOptions2Filter[1].action;
+            $ajaxRequest.post();
           } else {
             this.nodesMenuBottons[0].fireEvent('click', ev);
           }
