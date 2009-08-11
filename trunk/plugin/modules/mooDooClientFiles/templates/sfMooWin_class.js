@@ -516,7 +516,9 @@ mooWin.sfPropelList = new Class({
   getListNodes: function () {
     this.nodesMenuBottons = this.nodeWin.getElements ('.win_bar').getChildren('a').flatten();
     this.nodesMenuWins = this.nodeWin.getElements ('div.win_bar div.wins_bar').getChildren('div').flatten();
-    
+    this.nodeListContainer = this.nodeWin.getElements ('.win_container .list-container');
+
+    // Hacemos todas las ventanas dentro de la barra de menu draggeables
     this.nodesMenuWins.each (function ($win, $iW){
       if ($win.hasClass('sf_admin_filter')) this.nodeAdminFilter = $win;
       new Drag($win, {
@@ -561,7 +563,7 @@ mooWin.sfPropelList = new Class({
     var $nodeForm = this.nodeAdminFilter.getElement ('form');
     var $ajaxRequest = new Request.HTML({
       onSuccess: function(tree, elems, html, js){
-        this.nodeContent.set('html', html);
+        this.nodeListContainer.set('html', html);
       }.bind(this)
     });
 

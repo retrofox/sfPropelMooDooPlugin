@@ -1,27 +1,3 @@
-  <?php /*
-     <ul class="sf_admin_bar_menu">
-      <li class="btn110" id="btnFilterOn"><div class="icn icn-filter"></div>[?php echo __('filter') ?]</li>
-
-      [?php echo moo_btn_to_filters(__('Reset', array(), 'sf_admin'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter')) ?]
-      </ul>
-   */
-  ?>
-
-  <?php
-      /*  Esto es lo que hacia el boton de reset.
-      * Me parece una garcha.
-      *
-      * (1) Crea un formulario vacio                     var f = document.createElement('form');
-      * (2) Lo Esconde                                     f.style.display = 'none';
-      * (3) Lo agrega en un nodo paralelo al acual         this.parentNode.appendChild(f);
-      * (4) Define el metodo de envio de datos             f.method = 'POST';
-      * (5) Define el action con la URI actual             .action = this.href;
-      * (6) Lo envia                                       f.submit();
-      * (7) Deshabilita el link del anchor                 return false;
-      */
-  ?>
-
-
 <div class="sf_admin_filter win green">
 	  [?php if ($form->hasGlobalErrors()): ?]
 	    [?php echo $form->renderGlobalErrors() ?]

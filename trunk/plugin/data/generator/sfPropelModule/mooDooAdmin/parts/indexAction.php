@@ -45,4 +45,6 @@
 
       $this->setTemplate('indexWin');
     }
+
+    if ($request->getParameter('isAjax')) return $this->renderPartial('<?php echo $this->getModuleName() ?>/win_list_content', array ('pager' => $this->pager, 'sort' => $this->sort, 'helper' => $this->helper));
   }

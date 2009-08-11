@@ -9,9 +9,6 @@ window.addEvent ('domready', function () {
   //  Filtros del listado del generator.
   var $filerAdminBar = $('sf_filter_admin_bar');
 
-
-  console.debug ($filerAdminBar);
-
   var btnToggleFilerSlide = $('toggleFilerSlide');
   var btnFilterOn = $('btnFilterOn');
   var btnFilterOff = $('btnFilterOff');
