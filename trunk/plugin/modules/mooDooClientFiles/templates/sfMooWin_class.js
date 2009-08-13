@@ -502,8 +502,12 @@ mooWin.sfPropelList = new Class({
 
       this.serverOptions2BarMenu = $jsonDataBarMenuList;
       this.serverOptions2Filter = $jsonDataFilter;
+      this.objectActions = $jsonDataObjActionsList
+
+      console.debug (this.objectActions);
       
       this.getListNodes(html, js);
+
       this.makeBarMenu();
 
       this.makeWinFilter();
@@ -532,7 +536,7 @@ mooWin.sfPropelList = new Class({
       var $action2option = this.serverOptions2BarMenu[$iB];
 
       $action2option.enabled = true;
-      
+
       $nodeBtn.addEvents ({
         'click': function (ev) {
           ev.stop();
