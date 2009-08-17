@@ -81,7 +81,11 @@ var mooWin = new Class({
   renderWinNodes: function(){
     this.nodeBlock = this.nodeWin.getChildren()[0];
     this.nodeHandle = this.nodeWin.getChildren()[1];
-    this.nodeContent = this.nodeWin.getChildren()[2];
+
+    this.nodeContent = this.nodeWin.getElement('.win_content');
+
+    console.debug (this.nodeWin);
+    console.debug (this.nodeContent);
   },
 
   show: function(){
@@ -144,12 +148,9 @@ var mooWin = new Class({
     this.removeEvents ('winDomReady');
     this.ajaxConex.options.url = this.options.linkLoadContent;
 
-    console.debug(this.options);
-    
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-      //console.debug ('renderiza !!!', $html);
-      //console.debug (this.ajaxConex);
-    })
+      this.nodeContent.set ('html', $html);
+      })
     this.ajaxConex.send();
   },
 
@@ -504,23 +505,37 @@ mooWin.sfPropelList = new Class({
       this.serverOptions2Filter = $jsonDataFilter;
       this.objectActions = $jsonDataObjActionsList
 
-      console.debug (this.objectActions);
-      
-      this.getListNodes(html, js);
+      this.getListMenuNodes();
+      this.getListContentNodes ();
 
       this.makeBarMenu();
-
       this.makeWinFilter();
-
+      this.makeListContent();
+      
     });
-
-  
   },
 
-  getListNodes: function () {
+  refreshContent: function () {
+    this.parent();
+    this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
+      console.debug ('renderizando ...');
+      this.serverOptions2BarMenu = $jsonDataBarMenuList;
+      this.serverOptions2Filter = $jsonDataFilter;
+      this.objectActions = $jsonDataObjActionsList
+
+      this.getListMenuNodes();
+      this.getListContentNodes ();
+
+      this.makeBarMenu();
+      this.makeWinFilter();
+      this.makeListContent();
+    });
+  },
+
+  getListMenuNodes: function () {
     this.nodesMenuBottons = this.nodeWin.getElements ('.win_bar').getChildren('a').flatten();
+
     this.nodesMenuWins = this.nodeWin.getElements ('div.win_bar div.wins_bar').getChildren('div').flatten();
-    this.nodeListContainer = this.nodeWin.getElements ('.win_container .list-container');
 
     // Hacemos todas las ventanas dentro de la barra de menu draggeables
     this.nodesMenuWins.each (function ($win, $iW){
@@ -531,7 +546,17 @@ mooWin.sfPropelList = new Class({
     }, this)
   },
 
+  getListContentNodes: function () {
+    this.nodeListContainer = this.nodeWin.getElements ('.win_content .list-container');
+    this.nodeListContent = this.nodeListContainer.getElement ('.sf_admin_list');
+    this.nodeListRows = this.nodeListContent.getElements('.sf_admin_row').flatten();
+    this.nodeListBtnObjectAction = this.nodeListContent.getElements ('.btn-action').flatten();
+    this.nodeListBlkObjectAction = this.nodeListContent.getElements ('ul.sf_admin_ul_actions').flatten();
+  },
+
   makeBarMenu: function () {
+    console.debug (this.nodeContent, this.nodesMenuBottons);
+    
     this.nodesMenuBottons.each(function ($nodeBtn, $iB){
       var $action2option = this.serverOptions2BarMenu[$iB];
 
@@ -563,8 +588,7 @@ mooWin.sfPropelList = new Class({
   },
 
   makeWinFilter: function () {
-
-    var $nodeForm = this.nodeAdminFilter.getElement ('form');
+    var $nodeFilterForm = this.nodeAdminFilter.getElement ('form');
     var $ajaxRequest = new Request.HTML({
       onSuccess: function(tree, elems, html, js){
         this.nodeListContainer.set('html', html);
@@ -577,8 +601,8 @@ mooWin.sfPropelList = new Class({
         'click': function (ev) {
           ev.stop();
           if ($iB == 0) {
-            $ajaxRequest.options.url = $nodeForm.get('action');
-            $ajaxRequest.post($($nodeForm));
+            $ajaxRequest.options.url = $nodeFilterForm.get('action');
+            $ajaxRequest.post($($nodeFilterForm));
           }
           else if ($iB == 1) {
             $ajaxRequest.options.url = this.serverOptions2Filter[1].action;
@@ -592,7 +616,113 @@ mooWin.sfPropelList = new Class({
 
   },
 
+  makeListContent: function () {
+    // Simple animacion en los renglones
+    this.nodeListRows.each (function ($row, $iR){
+      $row.addEvents ({
+        'mouseenter': function (e) {
+          this.addClass('sf_admin_row-hover');
+        },
+        'mouseleave': function (e) {
+          this.removeClass('sf_admin_row-hover');
+        }
+      })
+    }, this);
+
+    // Boton accion de cada objeto
+    this.nodeListBtnObjectAction.each (function ($btn, $iB) {
+      $btn.addEvents ({
+        'mousedown': function (e) {
+          this.nodeListBlkObjectActions = this.nodeListBlkObjectAction[$iB].getElements ('li.mooBOA');    // <- Nodos (li) de cada accion de UN objeto
+          this.nodeListBlkObjectAction[$iB].setStyle('display', 'block');
+
+          // Agregamos los eventos a cada action si no se ha hecho previemente
+          if (!this.objectActions.objects[$iB].rendered) {
+            this.objectActions.objects[$iB].rendered = true;      // <- Ya esta renderizado el bloque de acciones
+            
+            // Eventos de cada accion de UN Objeto
+            this.nodeListBlkObjectActions.each (function ($nodeAction, $iA) {
+              $nodeAction.addEvents ({
+                'mouseenter': function () {
+                  $nodeAction.addClass('mooBOA-hover');
+                },
+                'mouseleave': function () {
+                  $nodeAction.removeClass('mooBOA-hover');
+                },
+                'mousedown': function () {
+                  $nodeAction.addClass('mooBOA-down');
+                },
+                'mouseup': function () {
+                  $nodeAction.removeClass('mooBOA-down');
+                },
+                'click': function () {
+                  var $objAction = this.objectActions.objects[$iB];
+                  var $action = $objAction.actions[$iA];
+                  //var $action =
+                  console.debug ('object -> ', $objAction);
+                  console.debug ('action -> ', $action);
+
+                  if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
+                  
+                }.bind(this)
+              })
+            }, this);
+          }
+
+
+        }.bind(this)
+      });
+    }, this);
+
+    // bloques de accines de cada objeto. LO hacemos desaparecer cuando el mouse sale de su area
+    this.nodeListBlkObjectAction.each (function ($block, $iB) {
+      $block.addEvents ({
+        mouseleave: function () {
+          this.setStyle ('display', 'none');
+        }
+      })
+    }, this);
+  },
+
   optFilter: function ($action2option, ev, $win) {
 
+  },
+  deleteObject: function ($action, $ev) {
+    //console.debug ($(this.serverOptions.win.nodeId_formMethod));
+
+    $objAct = $action;
+    $objAct.formDelete = $(this.serverOptions.win.nodeId_formMethod);
+
+    $ev.stop();
+    if (confirm($action.msg)) {
+      var $myHTMLRequest = new Request.HTML({
+        evalScripts: false,
+        method: 'GET',
+        url: $objAct.link,
+        onFailure: function($xhr){
+          $('content').set('html', $xhr.responseText);
+        },
+        onComplete: function (tree, elems, html, js) {
+          eval (js);                                              // <- $deleteResponse
+          console.debug ($deleteResponse.action_delete);
+          eval ($deleteResponse.action_delete+'()');
+          /*
+          switch ($deleteResponse.action_delete) {
+            case 'window_reload':
+              location.reload();
+              break
+            default:
+
+            case 'delete_row':
+              //$btnLi.getParent('tr').dispose();
+              break;
+          }*/
+        }.bind(this)
+      }).post($objAct.formDelete);
+    }
+  },
+
+  closeAndRefreshParent: function () {
+    this.hideAndDestroy();
   }
 })

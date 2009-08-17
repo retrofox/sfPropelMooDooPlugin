@@ -1,6 +1,8 @@
   [?php use_helper('I18N', 'Date', 'mooDooUrl') ?]
 
-  <?php // Usamos este formulario eventualmente para las acciones de las list_td_actions. No usamos el metodo de symfony intrusivo. ?>
+  <?php   // Usamos este formulario para la accion de borrar de un objeto del listado.
+          // No usamos el metodo de symfony intrusivo.
+  ?>
   <form id="sf_admin_list_form_method-<?php echo $this->getModuleName() ?>" class="hiddenForm" method="post">
     <input value="delete" name="sf_method" type="hidden">
   </form>

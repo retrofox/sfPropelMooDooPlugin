@@ -1,14 +1,5 @@
 [?php use_helper('I18N', 'Date', 'mooDooUrl') ?]
-
-<div id="list_win-<?php echo $this->getModuleName() ?>" class="win <?php echo $this->getModuleName() ?>-index">
-  <div class="block_win"></div>
-  [?php include_partial('<?php echo $this->getModuleName()?>/winHandle', array ('title' => <?php echo $this->getI18NString('list.title') ?>)) ?]
-
-  <div id="embWins-iWin-<?php echo $this->getModuleName() ?>"></div>
-
-  [?php include_partial('<?php echo $this->getModuleName() ?>/flashes') ?]
-
-  <div class="sf_admin_content win_content">
+[?php include_partial('<?php echo $this->getModuleName() ?>/flashes') ?]
 
     <div class="win_bar bar_menu">
       <?php if ($this->configuration->hasFilterForm()): ?>
@@ -28,8 +19,5 @@
     <div id="sf_admin_footer">
       [?php include_partial('<?php echo $this->getModuleName() ?>/list_footer', array('pager' => $pager)) ?]
     </div>
-
-  </div>
-</div>
 
 [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-list', array ('jsonData4Win' => $jsonData4Win, 'pager' => $pager, 'helper' => $helper)) ?]

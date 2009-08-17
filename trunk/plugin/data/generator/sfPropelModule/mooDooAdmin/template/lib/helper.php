@@ -140,7 +140,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
     {
       return '';
     }
-    return "{type: 'delete_object', msg: '".__($params['confirm'])."', link: '".url_for($this->getUrlForAction('delete', $module), $object)."', execute: 'deleteObject'},"."\n";
+    return "{type: 'delete_object', msg: '".__($params['confirm'])."', link: '".url_for($this->getUrlForAction('delete', $module), $object)."', execute: 'this.deleteObject'},"."\n";
   }
 
   public function mooJsonDataToEditObject($object, $params)
