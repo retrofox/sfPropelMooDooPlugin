@@ -1,5 +1,6 @@
 {
     line: [?php echo $line ?],
+    rendered: false,
     actions: [
 <?php foreach ($this->configuration->getValue('list.object_actions') as $name => $params): ?>
 <?php if ('_delete' == $name): ?>

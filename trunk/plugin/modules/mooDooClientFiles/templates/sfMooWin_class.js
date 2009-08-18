@@ -81,11 +81,7 @@ var mooWin = new Class({
   renderWinNodes: function(){
     this.nodeBlock = this.nodeWin.getChildren()[0];
     this.nodeHandle = this.nodeWin.getChildren()[1];
-
     this.nodeContent = this.nodeWin.getElement('.win_content');
-
-    console.debug (this.nodeWin);
-    console.debug (this.nodeContent);
   },
 
   show: function(){
@@ -518,7 +514,7 @@ mooWin.sfPropelList = new Class({
   refreshContent: function () {
     this.parent();
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-      console.debug ('renderizando ...');
+
       this.serverOptions2BarMenu = $jsonDataBarMenuList;
       this.serverOptions2Filter = $jsonDataFilter;
       this.objectActions = $jsonDataObjActionsList
@@ -555,8 +551,6 @@ mooWin.sfPropelList = new Class({
   },
 
   makeBarMenu: function () {
-    console.debug (this.nodeContent, this.nodesMenuBottons);
-    
     this.nodesMenuBottons.each(function ($nodeBtn, $iB){
       var $action2option = this.serverOptions2BarMenu[$iB];
 
@@ -592,6 +586,8 @@ mooWin.sfPropelList = new Class({
     var $ajaxRequest = new Request.HTML({
       onSuccess: function(tree, elems, html, js){
         this.nodeListContainer.set('html', html);
+        this.getListContentNodes ();
+        this.makeListContent();
       }.bind(this)
     });
 
@@ -635,9 +631,12 @@ mooWin.sfPropelList = new Class({
         'mousedown': function (e) {
           this.nodeListBlkObjectActions = this.nodeListBlkObjectAction[$iB].getElements ('li.mooBOA');    // <- Nodos (li) de cada accion de UN objeto
           this.nodeListBlkObjectAction[$iB].setStyle('display', 'block');
-
+          
+          console.debug (this.objectActions.objects[$iB], this.objectActions.objects[$iB].rendered);
+          
           // Agregamos los eventos a cada action si no se ha hecho previemente
           if (!this.objectActions.objects[$iB].rendered) {
+
             this.objectActions.objects[$iB].rendered = true;      // <- Ya esta renderizado el bloque de acciones
             
             // Eventos de cada accion de UN Objeto
@@ -659,11 +658,7 @@ mooWin.sfPropelList = new Class({
                   var $objAction = this.objectActions.objects[$iB];
                   var $action = $objAction.actions[$iA];
                   //var $action =
-                  console.debug ('object -> ', $objAction);
-                  console.debug ('action -> ', $action);
-
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
-                  
                 }.bind(this)
               })
             }, this);
@@ -674,7 +669,7 @@ mooWin.sfPropelList = new Class({
       });
     }, this);
 
-    // bloques de accines de cada objeto. LO hacemos desaparecer cuando el mouse sale de su area
+    // bloques de accines de cada objeto. Lo hacemos desaparecer cuando el mouse sale de su area
     this.nodeListBlkObjectAction.each (function ($block, $iB) {
       $block.addEvents ({
         mouseleave: function () {
@@ -689,7 +684,6 @@ mooWin.sfPropelList = new Class({
   },
   deleteObject: function ($action, $ev) {
     //console.debug ($(this.serverOptions.win.nodeId_formMethod));
-
     $objAct = $action;
     $objAct.formDelete = $(this.serverOptions.win.nodeId_formMethod);
 
@@ -704,19 +698,7 @@ mooWin.sfPropelList = new Class({
         },
         onComplete: function (tree, elems, html, js) {
           eval (js);                                              // <- $deleteResponse
-          console.debug ($deleteResponse.action_delete);
           eval ($deleteResponse.action_delete+'()');
-          /*
-          switch ($deleteResponse.action_delete) {
-            case 'window_reload':
-              location.reload();
-              break
-            default:
-
-            case 'delete_row':
-              //$btnLi.getParent('tr').dispose();
-              break;
-          }*/
         }.bind(this)
       }).post($objAct.formDelete);
     }
