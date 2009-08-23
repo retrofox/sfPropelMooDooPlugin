@@ -558,7 +558,8 @@ mooWin.sfPropelList = new Class({
     this.nodeListBtnObjectAction = this.nodeListContent.getElements ('.btn-action').flatten();
     this.nodeListBlkObjectAction = this.nodeListContent.getElements ('ul.sf_admin_ul_actions').flatten();
 
-    this.nodesListHeaderLinks = this.nodeListContent.getElements ('table thead tr th a').flatten();
+    this.nodesListTHeadLinks = this.nodeListContent.getElements ('table thead tr th a').flatten();
+    this.nodesListTFootLinks = this.nodeListContent.getElements ('table tfoot tr th a').flatten();
   },
 
   createAjaxObjects: function () {
@@ -630,7 +631,7 @@ mooWin.sfPropelList = new Class({
 
   makeListContent: function () {
     // Enlaces del thead de la tabla.
-    this.nodesListHeaderLinks.each (function ($theadLink, $iT){
+    this.nodesListTHeadLinks.each (function ($theadLink, $iT){
       $theadLink.addEvents ({
         click: function ($ev) {
           $ev.stop();
@@ -641,7 +642,18 @@ mooWin.sfPropelList = new Class({
       })
     }, this);
 
-    
+    // Enlaces del tfoot de la tabla. Paginador.
+    this.nodesListTFootLinks.each (function ($tfootLink, $iT){
+      $tfootLink.addEvents ({
+        click: function ($ev) {
+          $ev.stop();
+          this.listAjaxRequest.options.method = 'get';
+          this.listAjaxRequest.options.url = $tfootLink.get('href');
+          this.listAjaxRequest.send('isAjax=true');
+        }.bind(this)
+      })
+    }, this);
+
     // Simple animacion en los renglones
     this.nodeListRows.each (function ($row, $iR){
       $row.addEvents ({
@@ -684,7 +696,6 @@ mooWin.sfPropelList = new Class({
                 'click': function () {
                   var $objAction = this.objectActions.objects[$iB];
                   var $action = $objAction.actions[$iA];
-
                   //var $action =
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
