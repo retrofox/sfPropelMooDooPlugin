@@ -146,7 +146,7 @@ var mooWin = new Class({
 
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
       this.nodeContent.set ('html', $html);
-      })
+    })
     this.ajaxConex.send();
   },
 
@@ -169,7 +169,7 @@ var mooWin = new Class({
       }.bind(this)
     });
 
-    // Botones del Header de la ventana
+    // Botones del Header de la ventana.
     $winBtns = this.nodeHandle.getElements('ul li');
 
     $winBtns.each(function($btnWin, $iB){
@@ -497,9 +497,8 @@ mooWin.sfPropelList = new Class({
 
     this.addEvent ('winDomReady', function (tree, elems, html, js) {
 
-      this.serverOptions2BarMenu = $jsonDataBarMenuList;
-      this.serverOptions2Filter = $jsonDataFilter;
-      this.objectActions = $jsonDataObjActionsList
+      // Asignacion de datos JSON al objeto (this... )
+      this.dataJsonAssign();
 
       this.getListMenuNodes();
       this.getListContentNodes ();
@@ -507,6 +506,8 @@ mooWin.sfPropelList = new Class({
       this.makeBarMenu();
       this.makeWinFilter();
       this.makeListContent();
+
+      this.createAjaxObjects();
       
     });
   },
@@ -515,9 +516,8 @@ mooWin.sfPropelList = new Class({
     this.parent();
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
 
-      this.serverOptions2BarMenu = $jsonDataBarMenuList;
-      this.serverOptions2Filter = $jsonDataFilter;
-      this.objectActions = $jsonDataObjActionsList
+      // Asignacion de datos JSON al objeto (this... )
+      this.dataJsonAssign();
 
       this.getListMenuNodes();
       this.getListContentNodes ();
@@ -528,6 +528,15 @@ mooWin.sfPropelList = new Class({
     });
   },
 
+  // Asignación de los datos JSON que vienen desde el server
+  dataJsonAssign: function () {
+    this.serverOptions2BarMenu = $jsonDataBarMenuList;
+    this.serverOptions2Filter = $jsonDataFilter;
+    this.objectActions = $jsonDataObjActionsList
+  },
+
+
+  // Metodos de acceso a los nodos
   getListMenuNodes: function () {
     this.nodesMenuBottons = this.nodeWin.getElements ('.win_bar').getChildren('a').flatten();
 
@@ -548,6 +557,20 @@ mooWin.sfPropelList = new Class({
     this.nodeListRows = this.nodeListContent.getElements('.sf_admin_row').flatten();
     this.nodeListBtnObjectAction = this.nodeListContent.getElements ('.btn-action').flatten();
     this.nodeListBlkObjectAction = this.nodeListContent.getElements ('ul.sf_admin_ul_actions').flatten();
+
+    this.nodesListHeaderLinks = this.nodeListContent.getElements ('table thead tr th a').flatten();
+  },
+
+  createAjaxObjects: function () {
+    // Definimos objeto ajax para los request del listado
+    this.listAjaxRequest = new Request.HTML({
+      onSuccess: function(tree, elems, html){
+        this.nodeListContainer.set('html', html);
+        this.dataJsonAssign();
+        this.getListContentNodes ();
+        this.makeListContent();
+      }.bind(this)
+    });
   },
 
   makeBarMenu: function () {
@@ -582,14 +605,8 @@ mooWin.sfPropelList = new Class({
   },
 
   makeWinFilter: function () {
+    // Ajax conex para los filtros
     var $nodeFilterForm = this.nodeAdminFilter.getElement ('form');
-    var $ajaxRequest = new Request.HTML({
-      onSuccess: function(tree, elems, html, js){
-        this.nodeListContainer.set('html', html);
-        this.getListContentNodes ();
-        this.makeListContent();
-      }.bind(this)
-    });
 
     var $btns = this.nodeAdminFilter.getChildren('div.filter_btns').getChildren('a').flatten();
     $btns.each(function($btn, $iB){
@@ -597,22 +614,34 @@ mooWin.sfPropelList = new Class({
         'click': function (ev) {
           ev.stop();
           if ($iB == 0) {
-            $ajaxRequest.options.url = $nodeFilterForm.get('action');
-            $ajaxRequest.post($($nodeFilterForm));
+            this.listAjaxRequest.options.url = $nodeFilterForm.get('action');
+            this.listAjaxRequest.post($($nodeFilterForm));
           }
           else if ($iB == 1) {
-            $ajaxRequest.options.url = this.serverOptions2Filter[1].action;
-            $ajaxRequest.post();
+            this.listAjaxRequest.options.url = this.serverOptions2Filter[1].action;
+            this.listAjaxRequest.post();
           } else {
             this.nodesMenuBottons[0].fireEvent('click', ev);
           }
         }.bind(this)
       })
     }, this);
-
   },
 
   makeListContent: function () {
+    // Enlaces del thead de la tabla.
+    this.nodesListHeaderLinks.each (function ($theadLink, $iT){
+      $theadLink.addEvents ({
+        click: function ($ev) {
+          $ev.stop();
+          this.listAjaxRequest.options.method = 'get';
+          this.listAjaxRequest.options.url = $theadLink.get('href');
+          this.listAjaxRequest.send('isAjax=true');
+        }.bind(this)
+      })
+    }, this);
+
+    
     // Simple animacion en los renglones
     this.nodeListRows.each (function ($row, $iR){
       $row.addEvents ({
@@ -631,16 +660,14 @@ mooWin.sfPropelList = new Class({
         'mousedown': function (e) {
           this.nodeListBlkObjectActions = this.nodeListBlkObjectAction[$iB].getElements ('li.mooBOA');    // <- Nodos (li) de cada accion de UN objeto
           this.nodeListBlkObjectAction[$iB].setStyle('display', 'block');
-          
-          console.debug (this.objectActions.objects[$iB], this.objectActions.objects[$iB].rendered);
-          
+
           // Agregamos los eventos a cada action si no se ha hecho previemente
           if (!this.objectActions.objects[$iB].rendered) {
-
             this.objectActions.objects[$iB].rendered = true;      // <- Ya esta renderizado el bloque de acciones
-            
+
             // Eventos de cada accion de UN Objeto
             this.nodeListBlkObjectActions.each (function ($nodeAction, $iA) {
+
               $nodeAction.addEvents ({
                 'mouseenter': function () {
                   $nodeAction.addClass('mooBOA-hover');
@@ -657,14 +684,13 @@ mooWin.sfPropelList = new Class({
                 'click': function () {
                   var $objAction = this.objectActions.objects[$iB];
                   var $action = $objAction.actions[$iA];
+
                   //var $action =
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })
             }, this);
           }
-
-
         }.bind(this)
       });
     }, this);
@@ -673,8 +699,8 @@ mooWin.sfPropelList = new Class({
     this.nodeListBlkObjectAction.each (function ($block, $iB) {
       $block.addEvents ({
         mouseleave: function () {
-          this.setStyle ('display', 'none');
-        }
+          $block.setStyle ('display', 'none');
+        }.bind(this)
       })
     }, this);
   },

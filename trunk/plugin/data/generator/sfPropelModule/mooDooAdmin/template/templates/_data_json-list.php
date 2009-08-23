@@ -40,5 +40,4 @@ $jsonDataActionsList = [
 <?php endforeach; ?>
 <?php endif; ?>
  ]
-
 </script>

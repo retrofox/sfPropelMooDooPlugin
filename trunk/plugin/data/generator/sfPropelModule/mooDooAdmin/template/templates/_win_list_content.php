@@ -18,3 +18,5 @@
     <?php if ($this->configuration->getValue('list.batch_actions')): ?>
   </form>
   <?php endif; ?>
+
+  [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-list', array ('jsonData4Win' => $jsonData4Win, 'pager' => $pager, 'helper' => $helper)) ?]
