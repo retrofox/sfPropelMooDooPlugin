@@ -548,6 +548,7 @@ mooWin.sfPropelList = new Class({
       new Drag($win, {
         container: $(this.options.container)
       });
+
     }, this)
   },
 
