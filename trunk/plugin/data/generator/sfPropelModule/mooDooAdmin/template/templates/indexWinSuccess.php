@@ -4,7 +4,7 @@
   <div class="block_win"></div>
   [?php include_partial('<?php echo $this->getModuleName()?>/winHandle', array ('title' => <?php echo $this->getI18NString('list.title') ?>)) ?]
 
-  <div id="embWins-iWin-<?php echo $this->getModuleName() ?>"></div>
+  <div id="embedded_win-<?php echo $this->getModuleName() ?>"></div>
 
   [?php include_partial('<?php echo $this->getModuleName() ?>/flashes') ?]
 

@@ -85,13 +85,13 @@
 
 .sf_admin_list tbody tr {
   padding: 1px 0;
-  line-height: 22px;
+  line-height: 20px;
   border-bottom: 1px solid #DDD;
   border-top: 1px solid #DDD;
 }
 
 .sf_admin_list tbody tr td {
-  height: 22px;
+  height: 20px;
   padding: 0 5px;
 }
 

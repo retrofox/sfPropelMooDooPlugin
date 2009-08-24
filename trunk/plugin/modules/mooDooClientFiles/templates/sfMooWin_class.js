@@ -146,6 +146,7 @@ var mooWin = new Class({
 
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
       this.nodeContent.set ('html', $html);
+      console.debug (this.nodeContent);
     })
     this.ajaxConex.send();
   },
@@ -580,13 +581,11 @@ mooWin.sfPropelList = new Class({
   makeBarMenu: function () {
     this.nodesMenuBottons.each(function ($nodeBtn, $iB){
       var $action2option = this.serverOptions2BarMenu[$iB];
-
-      $action2option.enabled = true;
+      $action2option.enabled = true;                            // <- condicion inicial
 
       $nodeBtn.addEvents ({
         'click': function (ev) {
           ev.stop();
-          //$action2option.enabled = false;
           $win = this.nodesMenuWins[$iB];
 
           if ($action2option.enabled) {
@@ -710,7 +709,10 @@ mooWin.sfPropelList = new Class({
                 'click': function () {
                   var $objAction = this.objectActions.objects[$iB];
                   var $action = $objAction.actions[$iA];
-                  //var $action =
+
+                  $action.obj_parent = this;
+                  $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
+                  
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })

@@ -33,8 +33,8 @@
         win => array (
           'nodeId_formMethod'=> 'sf_admin_list_form_method-<?php echo $this->getModuleName() ?>',
           'nodeId_container' => 'sf_admin_container-index-<?php echo $this->getModuleName() ?>',
-          'nodeId_winsEmbedded'=> 'winsEmbedded_index-<?php echo $this->getModuleName() ?>',
-          'obj_parent' => 'window'
+          'nodeId_winsEmbedded'=> 'embedded_win-<?php echo $this->getModuleName() ?>',
+          'obj_parent' => 'this'
         ),
         'dims' => array (
           'width' => 800,
