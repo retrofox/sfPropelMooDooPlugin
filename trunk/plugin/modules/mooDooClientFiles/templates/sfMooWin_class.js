@@ -380,7 +380,7 @@ mooWin.sfPropelEdit = new Class({
         if (e.code == 27) $btn2Cancel.fireEvent('click', e);
         if (e.code == 13) $btn2Add.fireEvent('click', e);
       });
-      
+
       // Conexion de AJAX
       var addWAjax = new Request.HTML({
         onSuccess: function(responseTree, responseElements, responseHTML, responseJavaScript){
@@ -545,10 +545,12 @@ mooWin.sfPropelList = new Class({
     // Hacemos todas las ventanas dentro de la barra de menu draggeables
     this.nodesMenuWins.each (function ($win, $iW){
       if ($win.hasClass('sf_admin_filter')) this.nodeAdminFilter = $win;
+
+      /*
       new Drag($win, {
         container: $(this.options.container)
       });
-
+      */
     }, this)
   },
 
@@ -610,8 +612,19 @@ mooWin.sfPropelList = new Class({
     // Ajax conex para los filtros
     var $nodeFilterForm = this.nodeAdminFilter.getElement ('form');
 
+    this.winFilter = new Drag (this.nodeAdminFilter, {
+      handle: this.nodeAdminFilter.getElement('.bar_menu')
+    }, this);
+
     var $btns = this.nodeAdminFilter.getChildren('div.filter_btns').getChildren('a').flatten();
+
+    $nodeFilterForm.addEvent ('submit', function ($ev){
+      $ev.stop();
+      $btns[0].fireEvent('click', $ev);
+    })
+
     $btns.each(function($btn, $iB){
+
       $btn.addEvents({
         'click': function (ev) {
           ev.stop();

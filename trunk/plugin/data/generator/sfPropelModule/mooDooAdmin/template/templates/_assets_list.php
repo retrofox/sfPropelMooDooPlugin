@@ -1,7 +1,7 @@
 [?php use_javascript('<?php echo '/mooDoo/moo-123.js' ?>', 'first') ?]
 [?php use_javascript('<?php echo '/mooDoo/moo-more-123.js' ?>', 'first') ?]
 [?php use_javascript('<?php echo '/mooDoo/sfMoo-global.js' ?>', 'last') ?]
-[?php //use_javascript('<?php echo '/mooDoo/list.js' ?>', 'last') ?]
+[?php use_javascript('<?php echo '/mooDoo/list.js' ?>', 'last') ?]
 [?php use_javascript('<?php echo '/mooDoo/sfMooWin_class.js' ?>', 'last') ?]
 [?php //use_javascript('<?php echo '/mooDoo/doors.js' ?>', 'last') ?]
 

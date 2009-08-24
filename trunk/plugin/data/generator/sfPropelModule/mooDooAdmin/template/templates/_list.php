@@ -16,7 +16,7 @@
 <?php endif; ?>
           [?php include_partial('<?php echo $this->getModuleName() ?>/list_th_<?php echo $this->configuration->getValue('list.layout') ?>', array('sort' => $sort)) ?]
 <?php if ($this->configuration->getValue('list.object_actions')): ?>
-          <th id="sf_admin_list_th_actions">A</th>
+          <th class="sf_admin_list_th_actions">A</th>
 <?php endif; ?>
         </tr>
       </thead>

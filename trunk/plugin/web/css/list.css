@@ -1,5 +1,4 @@
 /* Admin Generator */
-/* .sf_admin_list */
 .sf_admin_list {
   padding: 1px 2px;
 }
@@ -11,42 +10,47 @@
   margin: 0 auto;
 }
 
-/* Cabecera y Pie del listado */
-.sf_admin_list thead, .sf_admin_list tfoot {
-  color: #556;
-  background: #EEEEFF;
-}
+  /* Cabecera y Pie del listado */
+  .sf_admin_list thead, .sf_admin_list tfoot {
+    color: #556;
+    background: #EEEEFF;
+  }
 
-.sf_admin_list thead a {
-  font: normal normal bold 12px / 25px sans-serif;
-  color: #24A;
-  text-decoration: none;
-}
+  .sf_admin_list thead a {
+    font: normal normal bold 12px / 25px sans-serif;
+    color: #24A;
+    text-decoration: none;
+  }
 
-.sf_admin_list thead a:hover {
-  text-decoration: underline;
-  color: #24F;
-}
+  .sf_admin_list thead a:hover {
+    text-decoration: underline;
+    color: #24F;
+  }
 
-.sf_admin_list thead th, .sf_admin_list tfoot th {
-  border-left: 1px solid #FFE;
-  border-right: 1px solid #AAA;
-  border-top: 1px solid #FFF;
-  border-bottom: 1px solid #AAA;
-}
-
-#sf_admin_list_batch_actions {
-  width: 30px;
-}
+  .sf_admin_list thead th, .sf_admin_list tfoot th {
+    border-left: 1px solid #FFE;
+    border-right: 1px solid #AAA;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #AAA;
+  }
 
 
-/* checkboxs del thead */
-.sf_admin_list thead th input {
-  float: left;
-}
+  /* Acciones */
+  #sf_admin_list_batch_actions {
+    width: 28px;
+  }
+
+  .sf_admin_list .sf_admin_list_th_actions, .sf_admin_list sf_admin_list_td_actions {
+    width: 20px;
+  }
+
+
+  /* checkboxs del thead */
+  .sf_admin_list thead th input {
+    float: left;
+  }
 
 /* tFoot  - sf_admin_pagination */
-
 .sf_admin_list tfoot th {
   line-height: 20px;
 }
@@ -77,12 +81,10 @@
   border-right: 1px solid #AAA;
   border-top: 1px solid #FFF;
   border-bottom: 1px solid #AAA;
-  font: normal normal normal 12px / 22px sans-serif;
 }
 
 .sf_admin_list tbody tr {
   padding: 1px 0;
-  height: 22px;
   line-height: 22px;
   border-bottom: 1px solid #DDD;
   border-top: 1px solid #DDD;
@@ -122,51 +124,20 @@
 
 
 /* Filters */
-/*	sf_admin_filter	*/
-#sf_admin_bar {
-  border-bottom: 1px solid #CCC;
-  padding: 0 2px;
-  height: 28px;
-  background: #EFE;
-}
-
-ul.sf_admin_bar_menu, #toggleFilerSlide {
-  font-size: 0.9em;
-  float: right;
-  padding: 2px 0 0 2px;
-  height: 24px;
-  list-style: none;
-  margin: 0;
-}
-
-#toggleFilerSlide  {
-  margin-top: 2px;
-  padding: 0;
-}
-
-.sf_admin_bar_menu li {
-  float: left;
-  margin: 0 2px;
-}
-
-.sf_admin_bar_menu li div {
-}
-
 .sf_admin_filter {
   padding: 3px;
   position: absolute;
   left: 30px; top: 30px;
   z-index: 200;
-  cursor: move;
 }
 
-
 div.sf_admin_filter div.bar_menu {
+  cursor: move;
   margin-top: 5px;
   text-align: center;
   font-size: 0.8em;
   -moz-border-radius: 3px;
-  background-color: #ADA;
+  background-color: #6A6;
   height: 20px;
 }
 
@@ -228,6 +199,8 @@ div.sf_admin_filter div.bar_menu a {
 }
 
 
+
+
 /* Acciones del Listado */
 ul.sf_admin_actions li.sf_admin_batch_actions_choice {
   width: 300px;
@@ -239,39 +212,23 @@ ul.sf_admin_actions li.sf_admin_batch_actions_choice {
   float: left;
 }
 
-#sf_admin_batch_actions_choice_go {
-
-}
-
-
-.sf_admin_batch_actions_choice div {
-
-}
-
 /** Acciones td del listado **/
-.elem_hide {
-  display: none;
-}
-
 .sf_admin_list td.sf_admin_td_actions {
   padding: 0;
   position: relative;
   display: block;
 }
 
-.sf_admin_list td.sf_admin_td_actions div.btn-action {
-}
-
 .sf_admin_list td.sf_admin_td_actions ul.sf_admin_ul_actions {
   display: none;
   position: absolute;
-  left: -3px; top: -3px;
+  left: -100px; top: -3px;
   z-index: 110;
   list-style: none;
 }
 .sf_admin_list td.sf_admin_td_actions ul.sf_admin_ul_actions li {
   -moz-border-radius: 3px;
-  width: 80px; height: 21px;
+  width: 200px; height: 21px;
   margin: 1px;
   line-height: 23px;
 }
@@ -286,13 +243,14 @@ ul.sf_admin_actions li.sf_admin_batch_actions_choice {
   border-color: #699;
   cursor: pointer;
   color: #FFF;
-  background-position: left -25px;
+  background-position: 0px -25px;
 }
 
 .sf_admin_list td.sf_admin_td_actions ul.sf_admin_ul_actions li.mooBOA-down {
-  background-position: left -50px;
+  background-position: 0px -50px;
 }
 
 .sf_admin_list ul.sf_admin_ul_actions div.icn {
   margin: 0 5px 0 0; padding: 2px;
+  float: left
 }
