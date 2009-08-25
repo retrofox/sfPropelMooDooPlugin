@@ -171,7 +171,7 @@ var mooWin = new Class({
   makeWin: function(){
     this.nodeWin.setStyle ('position', 'absolute');
     
-    this.dragWin = new Drag(this.nodeWin, {
+    this.dragWin = new Drag.Move(this.nodeWin, {
       handle: this.nodeHandle,
       container: $(this.options.container),
 
