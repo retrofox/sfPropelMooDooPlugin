@@ -146,10 +146,26 @@ var mooWin = new Class({
 
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
       this.nodeContent.set ('html', $html);
-      console.debug (this.nodeContent);
-    })
+    });
+
     this.ajaxConex.send();
   },
+
+  makeAjaxConex: function () {
+    this.ajaxConex = new Request.HTML({
+      url: this.options.linkLoad,
+      method: 'GET',
+      onFailure: function($xhr){
+        console.debug ($xhr);
+        $('content').set ('html', $xhr.responseText);
+      },
+      onSuccess: function(tree, elems, html, js){
+        this.fireEvent ('winDomReady', [tree, elems, html, js])
+      }.bind(this)
+    });
+  },
+
+
 
   // Creamos Ventana
   makeWin: function(){
@@ -221,21 +237,6 @@ var mooWin = new Class({
         }.bind (this)
       });
     }, this);
-  },
-
-
-  makeAjaxConex: function () {
-    this.ajaxConex = new Request.HTML({
-      url: this.options.linkLoad,
-      method: 'GET',
-      onFailure: function($xhr){
-        console.debug ($xhr);
-        $('content').set ('html', $xhr.responseText);
-      },
-      onSuccess: function(tree, elems, html, js){
-        this.fireEvent ('winDomReady', [tree, elems, html, js])
-      }.bind(this)
-    });
   },
 
   redims: function () {
@@ -536,7 +537,6 @@ mooWin.sfPropelList = new Class({
     this.objectActions = $jsonDataObjActionsList
   },
 
-
   // Metodos de acceso a los nodos
   getListMenuNodes: function () {
     this.nodesMenuBottons = this.nodeWin.getElements ('.win_bar').getChildren('a').flatten();
@@ -556,7 +556,7 @@ mooWin.sfPropelList = new Class({
   },
 
   getListContentNodes: function () {
-    this.nodeListContainer = this.nodeWin.getElements ('.win_content .list-container');
+    this.nodeListContainer = this.nodeContent.getElement ('.list-container');
     this.nodeListContent = this.nodeListContainer.getElement ('.sf_admin_list');
     this.nodeListRows = this.nodeListContent.getElements('.sf_admin_row').flatten();
     this.nodeListBtnObjectAction = this.nodeListContent.getElements ('.btn-action').flatten();
@@ -569,7 +569,7 @@ mooWin.sfPropelList = new Class({
   createAjaxObjects: function () {
     // Definimos objeto ajax para los request del listado
     this.listAjaxRequest = new Request.HTML({
-      onSuccess: function(tree, elems, html){
+      onSuccess: function(tree, elems, html, $js){
         this.nodeListContainer.set('html', html);
         this.dataJsonAssign();
         this.getListContentNodes ();
@@ -712,7 +712,7 @@ mooWin.sfPropelList = new Class({
 
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
-                  
+
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })

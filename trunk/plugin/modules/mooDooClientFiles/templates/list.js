@@ -1,6 +1,5 @@
 var $wins = new Array ();
 var $win_now;
-var $arrayWins = new Array ();
 
 var renderAjaxWin = function ($objAct, $ev) {
   $win_now = $objAct.objParent;
@@ -12,16 +11,12 @@ var renderAjaxWin = function ($objAct, $ev) {
       linkLoad: $objAct.link,
       linkLoadContent: $objAct.link_content
     });
-    
-    $arrayWins.push ($editWin);
     $wins.push($objAct.link);
   }
 }
 
 var renderAjaxEditWin = function ($objAct, $ev) {
   $win_now = $objAct.obj_parent;
-
-  console.debug ($objAct, $win_now, $objAct.node_insert);
 
   $ev.stop();
   if (!$wins.contains ($objAct.link)) {
@@ -32,8 +27,6 @@ var renderAjaxEditWin = function ($objAct, $ev) {
       linkLoad: $objAct.link,
       linkLoadContent: $objAct.link_content
     });
-    
-    $arrayWins.push ($editWin);
     $wins.push($objAct.link);
   }
 }
@@ -49,8 +42,7 @@ var renderAjaxNewWin = function ($objAct, $ev) {
       linkLoad: $objAct.link,
       linkLoadContent: $objAct.link_content
     });
-    
-    $arrayWins.push ($newWin);
+
     $wins.push ($objAct.link);
   }
 }
@@ -67,8 +59,7 @@ var renderAjaxListWin = function ($objAct, $ev) {
       linkLoad: $objAct.link,
       linkLoadContent: $objAct.link_content
     });
-    
-    $arrayWins.push ($listWin);
+
     $wins.push ($objAct.link);
   }
 }
