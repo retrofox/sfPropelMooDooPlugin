@@ -30,8 +30,8 @@
  ]};
 
 // JsonData Actions
-var $jsonDataActionsList = new Array ();
-$jsonDataActionsList = [
+var $actions = new Array ();
+$actions = [
 <?php if ($actions = $this->configuration->getValue('list.actions')): ?>
 <?php foreach ($actions as $name => $params): ?>
 <?php if ('_new' == $name): ?>

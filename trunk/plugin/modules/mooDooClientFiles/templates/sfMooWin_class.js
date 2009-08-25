@@ -37,12 +37,7 @@ var mooWin = new Class({
 
     this.id = this.options.id;
 
-    this.wins = new Array ();
-
     this.addEvent ('winDomReady', function () {
-      // Se debe generar una variable que viene del servidor
-      this.serverOptions = $jsonData4Win;
-
       this.options.box = this.serverOptions.dims;
       this.redims ();
       this.makeWin();
@@ -68,7 +63,11 @@ var mooWin = new Class({
         this.insertWinNode ();
         this.renderWinNodes();
 
-        this.renderAction2Buttons(this.nodeContent.getElements ('.btn_admin_actions'));
+        this.renderAction2Buttons();
+
+        // Asignacion de datos en JSON
+        this.dataJsonAssign();
+
         this.nodeBlock.setOpacity (0.3);
       });
     }
@@ -79,9 +78,20 @@ var mooWin = new Class({
   },
 
   renderWinNodes: function(){
+    console.debug ('renderWinNodes ...');
+
     this.nodeBlock = this.nodeWin.getChildren()[0];
     this.nodeHandle = this.nodeWin.getChildren()[1];
     this.nodeContent = this.nodeWin.getElement('.win_content');
+
+    this.nodesObjectActions = this.nodeContent.getElements ('.btn_admin_actions');
+  },
+
+  // Asignación de los datos JSON que vienen desde el server
+  dataJsonAssign: function () {
+    console.debug ('dataJsonAssign ...');
+    this.serverOptions = $jsonData4Win;
+    this.serverObjectActions = $actions;
   },
 
   show: function(){
@@ -141,14 +151,26 @@ var mooWin = new Class({
   },
   
   refreshContent: function () {
+    console.debug ('refreshContent');
+
     this.removeEvents ('winDomReady');
     this.ajaxConex.options.url = this.options.linkLoadContent;
 
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
       this.nodeContent.set ('html', $html);
+      this.renderContent();
     });
 
     this.ajaxConex.send();
+  },
+
+  renderContent: function () {
+    console.debug ('renderContent');
+    this.renderWinNodes();
+    this.renderAction2Buttons();
+
+    // Asignacion de datos en JSON
+    this.dataJsonAssign();
   },
 
   makeAjaxConex: function () {
@@ -164,8 +186,6 @@ var mooWin = new Class({
       }.bind(this)
     });
   },
-
-
 
   // Creamos Ventana
   makeWin: function(){
@@ -223,13 +243,13 @@ var mooWin = new Class({
     renderButtonsAction ($btns);
   },
 
-  renderAction2Buttons: function ($btns) {
-    this.renderButtons($btns);
-    $btns.each(function($btn, $iB){
+  renderAction2Buttons: function () {
+    console.debug ('renderizamos los botones ...');
+    this.renderButtons(this.nodesObjectActions);
+    this.nodesObjectActions.each(function($btn, $iB){
       $btn.addEvents({
         'click': function(e){
-
-          $editAction = this.serverOptions.actions[$iB];                                                        // <- viene por Json
+          $editAction = this.serverObjectActions[$iB];                                                        // <- viene por Json
 
           if ($defined(this.serverOptions.win)) $editAction.objParent = (this.serverOptions.win.obj_parent == 'this') ? this : this.serverOptions.win.obj_parent;
           if ($editAction.type == 'delete_object') $editAction.formDelete = this.nodeFormDelete                  // <- es para eliminar ?
@@ -266,7 +286,7 @@ mooWin.sfPropelEdit = new Class({
     this.addEvent ('winDomReady', function (tree, elems, html, js) {
       this.renderFormNodes(html, js)
       this.makeAccordions();
-      this.renderAction2Buttons(this.nodeActions.getElements ('.btn_admin_actions'));
+      //this.renderAction2Buttons(this.nodeActions.getElements ('.btn_admin_actions'));
       this.makeWidgets ();
     });
 
@@ -274,7 +294,7 @@ mooWin.sfPropelEdit = new Class({
       this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
 
       this.nodeContent.set('html', html);
-      this.renderWinContent();
+      this.renderContent();
 
       this.blockOn();
 
@@ -286,8 +306,11 @@ mooWin.sfPropelEdit = new Class({
 
             if (this.flashEditResponse.actionToButtons[$iB].type == 'close') {
               $(this.flashEditResponse.flash_win.node).dispose();
+              console.debug ('solo close ');
             }
             else if (this.flashEditResponse.actionToButtons[$iB].type == 'close_and_reedit') {
+
+              console.debug ('close and refresh');
 
               // Quitamos eventos asociados a winDomReady
               this.removeEvents ('winDomReady');
@@ -302,6 +325,7 @@ mooWin.sfPropelEdit = new Class({
 
               this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
                 this.serverOptions = $jsonData4Win;
+                this.serverObjectActions = $actions;
 
                 // Destruimos el nodo creado para la accion new
                 this.nodeWin.destroy()
@@ -317,7 +341,7 @@ mooWin.sfPropelEdit = new Class({
                 this.makeWin();
                 this.redims();
                 this.makeAccordions();
-                this.renderAction2Buttons(this.nodeActions.getElements ('.btn_admin_actions'));
+                this.renderAction2Buttons();
                 this.makeWidgets ();
                 this.nodeBlock.setOpacity (0.3);
 
@@ -425,10 +449,12 @@ mooWin.sfPropelEdit = new Class({
           toggler.removeClass ('titleSection-hover');
         }
       });
-    };
+    }
   },
 
-  renderWinContent: function () {
+  renderContent: function () {
+    this.parent();
+
     this.renderFormNodes();
     this.makeAccordions();
     this.renderAction2Buttons(this.nodeContent.getElements ('div.win_footer li.btn_admin_actions'));
@@ -452,19 +478,6 @@ mooWin.sfPropelEdit = new Class({
         this.fireEvent ('responseIsReady', [tree, elems, html, js])
       }.bind(this)
     });
-  },
-
-  refreshContent: function () {
-    this.removeEvents ('winDomReady');
-    this.ajaxConex.options.url =this.options.linkLoadContent;
-
-    this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-      this.nodeContent.set ('html', $html);
-      this.renderFormNodes($html, $js)
-      this.makeAccordions();
-      this.renderAction2Buttons(this.nodeActions.getElements ('.btn_admin_actions'));      
-    });
-    this.ajaxConex.send();
   }
 })
 
@@ -497,10 +510,9 @@ mooWin.sfPropelList = new Class({
   initialize: function(json, options){
     this.parent(json, options);
 
-    this.addEvent ('winDomReady', function (tree, elems, html, js) {
-
+    this.addEvent ('winDomReady', function (tree, elems, html, $js) {
       // Asignacion de datos JSON al objeto (this... )
-      this.dataJsonAssign();
+      //this.dataJsonAssign();
 
       this.getListMenuNodes();
       this.getListContentNodes ();
@@ -514,27 +526,22 @@ mooWin.sfPropelList = new Class({
     });
   },
 
-  refreshContent: function () {
+  renderContent: function () {
     this.parent();
-    this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
+    this.getListMenuNodes();
+    this.getListContentNodes ();
 
-      // Asignacion de datos JSON al objeto (this... )
-      this.dataJsonAssign();
-
-      this.getListMenuNodes();
-      this.getListContentNodes ();
-
-      this.makeBarMenu();
-      this.makeWinFilter();
-      this.makeListContent();
-    });
+    this.makeBarMenu();
+    this.makeWinFilter();
+    this.makeListContent();
   },
 
   // Asignación de los datos JSON que vienen desde el server
   dataJsonAssign: function () {
+    this.parent();
     this.serverOptions2BarMenu = $jsonDataBarMenuList;
     this.serverOptions2Filter = $jsonDataFilter;
-    this.objectActions = $jsonDataObjActionsList
+    this.serverObjectListActions = $jsonDataObjActionsList
   },
 
   // Metodos de acceso a los nodos
@@ -547,7 +554,7 @@ mooWin.sfPropelList = new Class({
     this.nodesMenuWins.each (function ($win, $iW){
       if ($win.hasClass('sf_admin_filter')) this.nodeAdminFilter = $win;
 
-      /*
+    /*
       new Drag($win, {
         container: $(this.options.container)
       });
@@ -562,10 +569,11 @@ mooWin.sfPropelList = new Class({
     this.nodeListBtnObjectAction = this.nodeListContent.getElements ('.btn-action').flatten();
     this.nodeListBlkObjectAction = this.nodeListContent.getElements ('ul.sf_admin_ul_actions').flatten();
 
+    // head y foot de la tabla
     this.nodesListTHeadLinks = this.nodeListContent.getElements ('table thead tr th a').flatten();
     this.nodesListTFootLinks = this.nodeListContent.getElements ('table tfoot tr th a').flatten();
   },
-
+  
   createAjaxObjects: function () {
     // Definimos objeto ajax para los request del listado
     this.listAjaxRequest = new Request.HTML({
@@ -687,8 +695,8 @@ mooWin.sfPropelList = new Class({
           this.nodeListBlkObjectAction[$iB].setStyle('display', 'block');
 
           // Agregamos los eventos a cada action si no se ha hecho previemente
-          if (!this.objectActions.objects[$iB].rendered) {
-            this.objectActions.objects[$iB].rendered = true;      // <- Ya esta renderizado el bloque de acciones
+          if (!this.serverObjectListActions.objects[$iB].rendered) {
+            this.serverObjectListActions.objects[$iB].rendered = true;      // <- Ya esta renderizado el bloque de acciones
 
             // Eventos de cada accion de UN Objeto
             this.nodeListBlkObjectActions.each (function ($nodeAction, $iA) {
@@ -707,7 +715,7 @@ mooWin.sfPropelList = new Class({
                   $nodeAction.removeClass('mooBOA-down');
                 },
                 'click': function () {
-                  var $objAction = this.objectActions.objects[$iB];
+                  var $objAction = this.serverObjectListActions.objects[$iB];
                   var $action = $objAction.actions[$iA];
 
                   $action.obj_parent = this;

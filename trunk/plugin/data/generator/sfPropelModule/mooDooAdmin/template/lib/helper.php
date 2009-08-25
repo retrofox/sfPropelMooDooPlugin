@@ -17,23 +17,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
   
   public function mooLinkToNew($params, $cssClass='btn_admin_actions')
   {
-      	if (isset($params['inWinPopUp'])) {
-  			$isAjaxBtn = 'ajax_btn_to ';
-  			$actionToButtom = 'ajax_link';
-
-  			$arr2Json = array ('update'=> 'vtn-<?php echo $this->getModuleName() ?>-index');
-			$ajaxOptions = json_encode($arr2Json);
-			$ajaxOptions = str_ireplace("\"", "'", $ajaxOptions);
-			$ajaxOptions = 'options="'.$ajaxOptions.'" ';
-
-  		}
-  		else {
-  			$isAjaxBtn = '';
-  			$actionToButtom = 'enlace';
-  			$ajaxOptions = '';
-  		};
-  		
-    return '<li '.$ajaxOptions.' class="'.$isAjaxBtn.$cssClass.' sf_admin_action_new" '.$actionToButtom.'="'.url_for($this->getUrlForAction('new')).'"><div class="icn icn-new"></div>'.__($params['label'], array(), 'sf_admin').'</li>';
+    return '<li class="'.$isAjaxBtn.$cssClass.' sf_admin_action_new"><div class="icn icn-new"></div>'.__($params['label'], array(), 'sf_admin').'</li>';
   }
 
   public function linkToEdit($object, $params)

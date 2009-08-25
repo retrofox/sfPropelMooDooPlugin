@@ -12,9 +12,12 @@
       width: 450,
       left: 100,
       top: 40
-    },
-    actions: [
-      [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-edit_or_new-actions', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?]
-    ]
+    }
   };
+
+// Actions
+var $actions = new Array ();
+$actions = [
+  [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-edit_or_new-actions', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?]
+]
 </script>
