@@ -1,5 +1,4 @@
 <script type="text/javascript">
-[?php include_partial('<?php echo $this->getModuleName() ?>/data_json-list_win', array('jsonData4Win' => $jsonData4Win)) ?]
 
  var $jsonDataBarMenuList = new Array ();
     $jsonDataBarMenuList = [

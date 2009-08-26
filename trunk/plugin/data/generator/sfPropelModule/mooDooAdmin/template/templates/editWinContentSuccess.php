@@ -23,3 +23,5 @@
   <input value="delete" name="sf_method" type="hidden">
 </form>
 
+[?php include_partial('<?php echo $this->getModuleName() ?>/data_json-edit_content', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?]
+
