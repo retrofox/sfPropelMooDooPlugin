@@ -40,13 +40,19 @@ var mooWin = new Class({
     this.addEvent ('winDomReady', function () {
       this.options.box = this.serverOptions.dims;
       this.redims ();
+
+      // Renderizamos contenido de ventana
+      this.renderHeaderBottons();
+      this.renderContent();
+
       this.makeWin();
+
       this.show();
       this.fireEvent('renderComplete', this.nodeWin);
-
     });
   },
 
+  // Configuracion Inicial
   initConf: function(){
     // nodeParentInsert. Nodo donde insertamos la ventana.
     this.nodeParentInsert = ($(this.options.node_insert));
@@ -59,14 +65,14 @@ var mooWin = new Class({
       this.ajaxConex.send();
 
       this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
+
+        // Asignacion de datos en JSON del servidor
+        this.dataJsonAssign();
+
+        // Insertamos el nodo de la ventana dentro del nodo padre
         this.nodeWin = $elems[0];
         this.insertWinNode ();
-        this.renderWinNodes();
-
-        this.renderAction2Buttons();
-
-        // Asignacion de datos en JSON
-        this.dataJsonAssign();
+        this.getWinNodes();
 
         this.nodeBlock.setOpacity (0.3);
       });
@@ -77,14 +83,22 @@ var mooWin = new Class({
     this.nodeWin.inject(this.nodeParentInsert, 'top');
   },
 
-  renderWinNodes: function(){
+  // Tomamos los nodos principales de una ventana
+  getWinNodes: function(){
     console.debug ('renderWinNodes ...');
 
     this.nodeBlock = this.nodeWin.getChildren()[0];
     this.nodeHandle = this.nodeWin.getChildren()[1];
     this.nodeContent = this.nodeWin.getElement('.win_content');
 
+    this.nodesHeaderBottons = this.nodeHandle.getElements('ul li');
+
     this.nodesObjectActions = this.nodeContent.getElements ('.btn_admin_actions');
+  },
+
+  renderContent: function () {
+    console.debug ('renderContent');
+    this.renderAction2Buttons();
   },
 
   // Asignación de los datos JSON que vienen desde el server
@@ -94,6 +108,7 @@ var mooWin = new Class({
     this.serverObjectActions = $actions;
   },
 
+  // Metro del objeto win
   show: function(){
     this.nodeWin.setStyle ('display', 'block');
   },
@@ -157,20 +172,13 @@ var mooWin = new Class({
     this.ajaxConex.options.url = this.options.linkLoadContent;
 
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
+      this.dataJsonAssign();
       this.nodeContent.set ('html', $html);
+      this.getWinNodes();
       this.renderContent();
     });
 
     this.ajaxConex.send();
-  },
-
-  renderContent: function () {
-    console.debug ('renderContent');
-    this.renderWinNodes();
-    this.renderAction2Buttons();
-
-    // Asignacion de datos en JSON
-    this.dataJsonAssign();
   },
 
   makeAjaxConex: function () {
@@ -205,11 +213,12 @@ var mooWin = new Class({
         this.showContent();
       }.bind(this)
     });
+  },
+
+  renderHeaderBottons: function () {
 
     // Botones del Header de la ventana.
-    $winBtns = this.nodeHandle.getElements('ul li');
-
-    $winBtns.each(function($btnWin, $iB){
+    this.nodesHeaderBottons.each(function($btnWin, $iB){
 
       var bgPos = $btnWin.getStyle('background-position').split(' ');
       $btnWin.addEvents({
@@ -269,9 +278,6 @@ var mooWin = new Class({
 });
 
 
-
-
-
 mooWin.sfPropelEdit = new Class({
   Extends: mooWin,
 
@@ -282,13 +288,6 @@ mooWin.sfPropelEdit = new Class({
 
   initialize: function(options){
     this.parent(options);
-
-    this.addEvent ('winDomReady', function (tree, elems, html, js) {
-      this.renderFormNodes(html, js)
-      this.makeAccordions();
-      //this.renderAction2Buttons(this.nodeActions.getElements ('.btn_admin_actions'));
-      this.makeWidgets ();
-    });
 
     this.addEvent ('responseIsReady', function (tree, elems, html, js) {
       this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
@@ -335,8 +334,8 @@ mooWin.sfPropelEdit = new Class({
                 
                 //this.options.node = $jsonData4Win.node.win;
 
-                this.renderWinNodes();
-                this.renderFormNodes($html, $js);
+                this.getWinNodes();
+                this.getFormNodes($html, $js);
 
                 this.makeWin();
                 this.redims();
@@ -425,13 +424,12 @@ mooWin.sfPropelEdit = new Class({
     }.bind(this));
   },
 
-
   initConf: function () {
     this.parent();
     this.makeAjax4Send();
   },
 
-  renderFormNodes: function () {
+  getFormNodes: function () {
     this.nodeActions = this.nodeContent.getElement ('div.win_footer');
     this.nodeFormEdit = this.nodeContent.getElement ('form');
     this.nodeFormDelete = this.nodeWin.getElement ('form.hiddenForm');
@@ -455,10 +453,9 @@ mooWin.sfPropelEdit = new Class({
   renderContent: function () {
     this.parent();
 
-    this.renderFormNodes();
+    this.getFormNodes();
     this.makeAccordions();
-    this.renderAction2Buttons(this.nodeContent.getElements ('div.win_footer li.btn_admin_actions'));
-    this.renderButtons (this.nodeContent.getElements ('div.win_flashes div.btn_admin_actions'));
+    this.makeWidgets ();
   },
 
   save: function ($objAct, $ev) {
@@ -511,18 +508,11 @@ mooWin.sfPropelList = new Class({
     this.parent(json, options);
 
     this.addEvent ('winDomReady', function (tree, elems, html, $js) {
-      // Asignacion de datos JSON al objeto (this... )
-      //this.dataJsonAssign();
 
-      this.getListMenuNodes();
-      this.getListContentNodes ();
-
-      this.makeBarMenu();
-      this.makeWinFilter();
-      this.makeListContent();
+      this.renderContent();
 
       this.createAjaxObjects();
-      
+
     });
   },
 
@@ -553,12 +543,6 @@ mooWin.sfPropelList = new Class({
     // Hacemos todas las ventanas dentro de la barra de menu draggeables
     this.nodesMenuWins.each (function ($win, $iW){
       if ($win.hasClass('sf_admin_filter')) this.nodeAdminFilter = $win;
-
-    /*
-      new Drag($win, {
-        container: $(this.options.container)
-      });
-      */
     }, this)
   },
 
@@ -589,6 +573,7 @@ mooWin.sfPropelList = new Class({
   makeBarMenu: function () {
     this.nodesMenuBottons.each(function ($nodeBtn, $iB){
       var $action2option = this.serverOptions2BarMenu[$iB];
+
       $action2option.enabled = true;                            // <- condicion inicial
 
       $nodeBtn.addEvents ({
