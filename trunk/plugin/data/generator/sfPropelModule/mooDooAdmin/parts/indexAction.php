@@ -22,6 +22,13 @@
       )
     );
 
+    // Only List ?
+    if ($request->hasParameter('only_list')) {
+      if ($request->getParameter('only_list')) {
+        return $this->renderPartial('<?php echo $this->getModuleName() ?>/win_list_content', array ('pager' => $this->pager, 'sort' => $this->sort, 'helper' => $this->helper, 'only_list' => true));
+      }
+    }
+
     // Ajax Request ?
     if ($this->getRequest()->isXmlHttpRequest()) {
 
@@ -50,6 +57,4 @@
         $this->setTemplate('indexWin');
       };
     }
-
-    if ($request->getParameter('isAjax')) return $this->renderPartial('<?php echo $this->getModuleName() ?>/win_list_content', array ('pager' => $this->pager, 'sort' => $this->sort, 'helper' => $this->helper));
   }

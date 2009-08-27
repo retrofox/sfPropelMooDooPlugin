@@ -5,7 +5,7 @@
       $this->setFilters(array());
 
       if ($this->getRequest()->isXmlHttpRequest()) {
-        $this->redirect('@<?php echo $this->getUrlForAction('list') ?>?isAjax=true');
+        $this->redirect('@<?php echo $this->getUrlForAction('list') ?>?only_list=true');
       }
       else {
         $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
@@ -20,7 +20,7 @@
       $this->setFilters($this->filters->getValues());
       
       if ($this->getRequest()->isXmlHttpRequest()) {
-        $this->redirect('@<?php echo $this->getUrlForAction('list') ?>?isAjax=true');
+        $this->redirect('@<?php echo $this->getUrlForAction('list') ?>?only_list=true');
       }
       else {
         $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');

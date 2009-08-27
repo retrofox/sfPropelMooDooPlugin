@@ -59,7 +59,7 @@ var mooWin = new Class({
     // Cargamos el contenido de la ventana con AJAX ?
     if (this.options.loadWithAjax) {
 
-      this.makeAjaxConex();
+      this.createAjaxConex();
       this.ajaxConex.send();
 
       this.addEvent ('winDomReady', function () {
@@ -166,7 +166,6 @@ var mooWin = new Class({
 
   dataJsonContentAssign: function () {
     console.count ('<dataJsonContentAssign>');
-    console.debug ($actions);
     this.serverObjectActions = $actions;
   },
 
@@ -229,13 +228,14 @@ var mooWin = new Class({
     this.ajaxConex.send();
   },
   
-  refreshContent: function () {
+  refreshContent: function ($url) {
     console.count ('<refreshContent>');
     console.info ('<refreshContent>');
 
     this.removeEvents ('winDomReady');      //  <- Removemos todos las funcones asociadas al evento winDomReady
 
-    this.ajaxConex.options.url = this.options.linkLoadContent;
+    $url = $url || false;
+    this.ajaxConex.options.url = $url ? $url : this.options.linkLoadContent;
 
     this.addEvent ('winDomReady', function () {
       this.dataJsonContentAssign();
@@ -248,7 +248,7 @@ var mooWin = new Class({
   },
   /**************************************/
 
-  makeAjaxConex: function () {
+  createAjaxConex: function () {
     this.ajaxConex = new Request.HTML({
       url: this.options.linkLoad,
       method: 'GET',
@@ -501,6 +501,15 @@ mooWin.sfPropelEdit = new Class({
 })
 
 
+
+
+
+
+
+
+
+
+
 mooWin.sfPropelNew = new Class({
   Extends: mooWin.sfPropelEdit,
 
@@ -518,6 +527,15 @@ mooWin.sfPropelNew = new Class({
 })
 
 
+
+
+
+
+
+
+
+
+
 mooWin.sfPropelList = new Class({
   Extends: mooWin,
 
@@ -528,12 +546,6 @@ mooWin.sfPropelList = new Class({
 
   initialize: function(json, options){
     this.parent(json, options);
-/*
-    this.addEvent ('winDomReady', function (tree, elems, html, $js) {
-
-      this.createAjaxObjects();
-    });
-*/
   },
 
   // Asignación de los datos JSON que vienen desde el server
@@ -551,8 +563,12 @@ mooWin.sfPropelList = new Class({
 
     this.parent();
 
-    this.getListMenuNodes();
+    this.getWinListMenuNodes();
+    this.getWinListNodesContent();
 
+  },
+
+  getWinListNodesContent: function () {
     this.nodeListContainer = this.nodeContent.getElement ('.list-container');
     this.nodeListContent = this.nodeListContainer.getElement ('.sf_admin_list');
     this.nodeListRows = this.nodeListContent.getElements('.sf_admin_row').flatten();
@@ -565,9 +581,9 @@ mooWin.sfPropelList = new Class({
   },
 
   // Metodos de acceso a los nodos
-  getListMenuNodes: function () {
-    this.nodesMenuBottons = this.nodeWin.getElements ('.win_bar').getChildren('a').flatten();
-    this.nodesMenuWins = this.nodeWin.getElements ('div.win_bar div.wins_bar').getChildren('div').flatten();
+  getWinListMenuNodes: function () {
+    this.nodesMenuBottons = this.nodeContent.getElements ('.win_bar').getChildren('a').flatten();
+    this.nodesMenuWins = this.nodeContent.getElements ('div.win_bar div.wins_bar').getChildren('div').flatten();
 
     // Hacemos todas las ventanas dentro de la barra de menu draggeables
     this.nodesMenuWins.each (function ($win, $iW){
@@ -575,19 +591,20 @@ mooWin.sfPropelList = new Class({
     }, this)
   },
 
-/*
-  createAjaxObjects: function () {
+  createAjaxConex: function () {
+    this.parent();
+
     // Definimos objeto ajax para los request del listado
     this.listAjaxRequest = new Request.HTML({
-      onSuccess: function(tree, elems, html, $js){
-        this.nodeListContainer.set('html', html);
-        this.dataJsonAssign();
-        this.getListContentNodes ();
+      onSuccess: function(){
+        this.serverObjectListActions = $jsonDataObjActionsList;       // <- Actulizamos solo los datos JSON del listado
+        this.nodeListContainer.set('html', this.listAjaxRequest.response.html);
+        this.getWinListNodesContent ();
         this.makeListContent();
       }.bind(this)
     });
   },
-*/
+
   renderContent: function () {
     this.parent();
 
@@ -595,7 +612,6 @@ mooWin.sfPropelList = new Class({
     this.makeWinFilter();
     this.makeListContent();
   },
-
 
   makeBarMenu: function () {
     this.nodesMenuBottons.each(function ($nodeBtn, $iB){
@@ -648,12 +664,12 @@ mooWin.sfPropelList = new Class({
         'click': function (ev) {
           ev.stop();
           if ($iB == 0) {
-            this.ajaxConex.options.url = $nodeFilterForm.get('action');
-            this.ajaxConex.post($($nodeFilterForm));
+            this.listAjaxRequest.options.url = $nodeFilterForm.get('action');
+            this.listAjaxRequest.post($($nodeFilterForm));
           }
           else if ($iB == 1) {
-            this.ajaxConex.options.url = this.serverOptions2Filter[1].action;
-            this.ajaxConex.post();
+            this.listAjaxRequest.options.url = this.serverOptions2Filter[1].action;
+            this.listAjaxRequest.post();
           } else {
             this.nodesMenuBottons[0].fireEvent('click', ev);
           }
@@ -670,7 +686,7 @@ mooWin.sfPropelList = new Class({
           $ev.stop();
           this.listAjaxRequest.options.method = 'get';
           this.listAjaxRequest.options.url = $theadLink.get('href');
-          this.listAjaxRequest.send('isAjax=true');
+          this.listAjaxRequest.send('only_list=true');
         }.bind(this)
       })
     }, this);
@@ -682,7 +698,7 @@ mooWin.sfPropelList = new Class({
           $ev.stop();
           this.listAjaxRequest.options.method = 'get';
           this.listAjaxRequest.options.url = $tfootLink.get('href');
-          this.listAjaxRequest.send('isAjax=true');
+          this.listAjaxRequest.send('only_list=true');
         }.bind(this)
       })
     }, this);
