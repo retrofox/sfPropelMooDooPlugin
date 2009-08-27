@@ -446,11 +446,6 @@ mooWin.sfPropelEdit = new Class({
     }.bind(this));
   },
 
-  initConf: function () {
-    this.parent();
-    this.makeAjax4Send();
-  },
-
   getFormNodes: function () {
     this.nodeActions = this.nodeContent.getElement ('div.win_footer');
     this.nodeFormEdit = this.nodeContent.getElement ('form');
@@ -485,7 +480,9 @@ mooWin.sfPropelEdit = new Class({
     this.ajax4Send.post(this.nodeFormEdit);
   },
 
-  makeAjax4Send: function () {
+  createAjaxConex: function () {
+    this.parent ()
+
     this.ajax4Send = new Request.HTML({
       url: this.nodeFormEdit,
       method: 'GET',
@@ -559,8 +556,6 @@ mooWin.sfPropelList = new Class({
 
   getWinNodesContent: function () {
     console.count ('<getListContentNodes>');
-    console.info ('<getListContentNodes>');
-
     this.parent();
 
     this.getWinListMenuNodes();
@@ -748,6 +743,8 @@ mooWin.sfPropelList = new Class({
 
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
+
+                  console.debug ($action.execute+'($action, e, false)');
 
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
