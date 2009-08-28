@@ -273,7 +273,7 @@ div.win_content .textWin-01 {
   padding: 5px;
 }
 
-div.win_notice .notice_msg, div.win_error .error_msg {
+div.win_flashes .notice_msg, div.win_flashes .error_msg {
   font-weight: bold;
   text-align: center;
   margin: 30px 50px;
@@ -294,14 +294,6 @@ div.error_msg {
   border-color: #C88;
   color: #400;
 }
-
-.sf_admin_container .error .btn110 {
-  margin: 30px auto 0;
-  color: #400;
-  text-align: left;
-}
-
-
 
 
 /* Estilos del css de una ventana Edit. */

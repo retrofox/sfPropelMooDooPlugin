@@ -313,14 +313,14 @@ div.win {
 		}
 		
 		/* notice y error de una ventana */
-		div.win_notice, div.win_error {
+		div.win_flash div.win_error {
 		}
 		
 		div.win_content .textWin-01 {
 			padding: 5px;
 		}
 	
-		div.win_notice .notice_msg, div.win_error .error_msg {
+		div.win_flashes .notice_msg, div.win_flashes div.win_error {
 			font-weight: bold;
 			text-align: center;
 			margin: 30px 50px;
