@@ -16,6 +16,9 @@ var renderAjaxWin = function ($objAct, $ev) {
 }
 
 var renderAjaxEditWin = function ($objAct, $ev) {
+
+  console.debug ($objAct);
+
   $win_now = $objAct.obj_parent;
 
   $ev.stop();

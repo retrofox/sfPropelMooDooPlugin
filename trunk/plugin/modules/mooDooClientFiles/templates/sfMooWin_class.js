@@ -138,12 +138,13 @@ var mooWin = new Class({
     }.bind(this));
   },
 
+  // Renderiamos TODOS los botones de un objeto win
   renderButtons: function ($btns) {
     renderButtonsAction ($btns);
   },
 
+  // Renderizamos los botones que suelen estar dentro del botton de un objeto win
   renderAction2Buttons: function () {
-    console.count ('<renderAction2Buttons>');
     this.nodesObjectActions.each(function($btn, $iB){
       $btn.addEvents({
         'click': function(e){
@@ -286,7 +287,7 @@ var mooWin = new Class({
     this.nodeWin.setStyles (this.options.box);
   },
 
-  nodes2Dims: function () {
+  dims2Node: function () {
     this.options.box = this.nodeWin.getStyles ('width', 'height', 'top', 'left');
   }
 });
@@ -421,8 +422,8 @@ mooWin.sfPropelEdit = new Class({
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function($tree, $elems, $html, $js){
-        this.fireEvent ('editIsReady', [$tree, $elems, $html, $js])
-        this.serverEditResponse();        
+        this.fireEvent ('editResponseIsReady', [$tree, $elems, $html, $js])
+        this.serverEditResponse();
       }.bind(this)
     });
   },
@@ -433,78 +434,7 @@ mooWin.sfPropelEdit = new Class({
   },
 
   serverEditResponse: function () {
-    var $isNewWin = (this.serverOptions.controller.action == "new") ? true : false;
 
-    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
-
-    this.nodeContent.set('html', this.editAjaxConex.response.html);
-    //this.getWinNodes();
-    this.renderContent();
-
-    this.blockOn();
-
-    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
-    //console.debug (this.flashEditResponse, this.serverOptions, $jsonData4Win);
-
-    // Renderizamos el boton de aviso de la edicion
-    if (this.flashEditResponse.action_state == 'error') {
-      (function () {
-        $win_flashes.dispose();
-        this.blockOff();
-      }).delay (1000, this);
-    }
-    else {
-
-      if ($isNewWin) console.debug ('ojo, es nuevo');
-      else console.debug('solo reedit');
-
-      // Quitamos eventos asociados a winDomReady
-      //this.removeEvents ('winDomReady');
-
-      // Tomamos las dimensiones a partir del nodo actual.
-      this.nodes2Dims();
-
-      // Definimos nueva URL del nuevo objeto, ahora ya agregado.
-      this.ajaxConex.options.url = this.flashEditResponse.actionToButtons[$iB].link;
-      this.options.linkLoad = this.flashEditResponse.actionToButtons[$iB].link;
-      this.options.linkLoadContent = this.flashEditResponse.actionToButtons[$iB].link_content;
-
-      this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-        this.serverOptions = $jsonData4Win;
-        this.serverObjectActions = $actions;
-
-        // Destruimos el nodo creado para la accion new
-        this.nodeWin.destroy()
-
-        this.nodeWin = $elems[0];
-        this.insertWinNode();
-
-        //this.options.node = $jsonData4Win.node.win;
-
-        this.getWinNodes();
-        this.getWinNodesContent();
-        //this.getFormNodes($html, $js);
-
-        this.makeWin();
-        this.redims();
-        this.makeAccordions();
-        this.renderAction2Buttons();
-        this.makeWidgets ();
-        this.nodeBlock.setOpacity (0.3);
-
-        this.show();
-      });
-      this.ajaxConex.send();
-
-    };
-    /*
-    else if (this.flashEditResponse.actionToButtons[$iB].type == 'close_and_refresh') {
-      if (this.objParent == window) window.location.reload();
-      else this.objParent.refreshContent();
-
-      this.hideAndDestroy();
-    }
-    */
   }
 })
 
@@ -529,8 +459,43 @@ mooWin.sfPropelNew = new Class({
   initialize: function(json, options){
     this.parent(json, options);
   },
-  refreshContent: function () {
-    return false;
+
+  serverEditResponse: function () {
+    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
+    console.debug ('this.flashEditResponse -> ', this.flashEditResponse);
+
+    // Vemos si la edicion ha sido correcta
+    if (this.flashEditResponse.action_state == 'error') {
+
+      // Renderizamos nuevamente el contenido de la ventana con sus respectivos errores
+      this.nodeContent.set('html', this.editAjaxConex.response.html);
+      this.getWinNodesContent();
+      this.renderContent();
+      this.blockOn();
+
+      (function () {
+        this.nodeContent.getElement ('div.win_flashes').dispose();
+        this.blockOff();
+      }).delay (1000, this);
+    }
+    else {
+      // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
+      this.new2Edit();
+    }
+  },
+
+  new2Edit: function () {
+    // Este metodo elimina el objeto tipo win y genera uno nuevo tipo edit.
+    // Viene, por javascript, todos los elementos.
+    var $dims = this.dims2Node();
+    this.hideAndDestroy();
+    
+
+    console.debug ($jsonData4Win);
+    //$jsonData4Win.dims = $dims;
+
+    renderAjaxEditWin ()
+
   }
 })
 

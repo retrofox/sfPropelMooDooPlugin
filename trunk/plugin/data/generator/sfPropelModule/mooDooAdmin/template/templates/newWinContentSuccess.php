@@ -17,3 +17,9 @@
 
     [?php include_partial('<?php echo $this->getModuleName() ?>/form_actionsWin', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?]
 </form>
+
+[?php
+if ($sf_user->getFlash('isNew')) {
+  include_partial('<?php echo $this->getModuleName() ?>/data_json-new', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper));
+}
+?]
