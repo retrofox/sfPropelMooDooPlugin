@@ -438,6 +438,9 @@ mooWin.sfPropelEdit = new Class({
     this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
 
     this.nodeContent.set('html', this.editAjaxConex.response.html);
+
+    console.debug (this.editAjaxConex.response.javascript);
+
     //this.getWinNodes();
     this.renderContent();
 

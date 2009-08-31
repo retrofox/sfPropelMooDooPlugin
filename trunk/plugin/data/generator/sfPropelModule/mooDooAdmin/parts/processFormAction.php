@@ -39,7 +39,5 @@
     else
     {
       $this->getUser()->setFlash('error-<?php echo $this->getModuleName() ?>-edit', 'The item has not been saved due to some errors.');
-      $this->getUser()->setFlash('action2Error','node.destroy');
-      $this->getUser()->setFlash('params2Error','flashes_<?php echo $this->getModuleName() ?>');
     }
   }
