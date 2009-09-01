@@ -435,6 +435,78 @@ mooWin.sfPropelEdit = new Class({
 
   serverEditResponse: function () {
 
+    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
+
+    this.nodeContent.set('html', this.editAjaxConex.response.html);
+
+    console.debug (this.editAjaxConex.response.javascript);
+
+    //this.getWinNodes();
+    this.renderContent();
+
+    this.blockOn();
+
+    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
+    //console.debug (this.flashEditResponse, this.serverOptions, $jsonData4Win);
+
+    // Renderizamos el boton de aviso de la edicion
+    if (this.flashEditResponse.action_state == 'error') {
+      (function () {
+        $win_flashes.dispose();
+        this.blockOff();
+      }).delay (1000, this);
+    }
+    else {
+
+      if ($isNewWin) console.debug ('ojo, es nuevo');
+      else console.debug('solo reedit');
+
+      // Quitamos eventos asociados a winDomReady
+      //this.removeEvents ('winDomReady');
+
+      // Tomamos las dimensiones a partir del nodo actual.
+      this.nodes2Dims();
+
+      // Definimos nueva URL del nuevo objeto, ahora ya agregado.
+      this.ajaxConex.options.url = this.flashEditResponse.actionToButtons[$iB].link;
+      this.options.linkLoad = this.flashEditResponse.actionToButtons[$iB].link;
+      this.options.linkLoadContent = this.flashEditResponse.actionToButtons[$iB].link_content;
+
+      this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
+        this.serverOptions = $jsonData4Win;
+        this.serverObjectActions = $actions;
+
+        // Destruimos el nodo creado para la accion new
+        this.nodeWin.destroy()
+
+        this.nodeWin = $elems[0];
+        this.insertWinNode();
+
+        //this.options.node = $jsonData4Win.node.win;
+
+        this.getWinNodes();
+        this.getWinNodesContent();
+        //this.getFormNodes($html, $js);
+
+        this.makeWin();
+        this.redims();
+        this.makeAccordions();
+        this.renderAction2Buttons();
+        this.makeWidgets ();
+        this.nodeBlock.setOpacity (0.3);
+
+        this.show();
+      });
+      this.ajaxConex.send();
+
+    };
+    /*
+    else if (this.flashEditResponse.actionToButtons[$iB].type == 'close_and_refresh') {
+      if (this.objParent == window) window.location.reload();
+      else this.objParent.refreshContent();
+
+      this.hideAndDestroy();
+    }
   }
 })
 
