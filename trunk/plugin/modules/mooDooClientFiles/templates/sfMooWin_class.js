@@ -14,31 +14,39 @@
 var mooWin = new Class({
   Implements: [Events, Options],
   options: {
-    id: '',                                     // Identificador de la ventana
+    id: false,                                     // Identificador de la ventana
     loadWithAjax: true,
-    linkLoad: '',
-    linkLoadContent: '',
+    link: '',
+    link_content: '',
     nodeInf: '_parent',
     cssPrefix: 'mooWin',
     container: 'content',
     node_insert: '',
-    obj_parent: window,
     fullComplete: true,
-    box: {
-      width: 450,
-      left: 30,
-      top: 30
-    }
+    dims: {}
   },
 
   initialize: function(options){
+
+    // Posiciones por defecto
+    if (options.dims == undefined) {
+      options.dims={
+        left: 140,
+        top: 30
+      }
+    };
+
+    // Asignamos el objeto parent y luego lo hacemos null para que la clase pueda definir this.options
+    this.objParent = options.obj_parent || window;
+    options.obj_parent = null;
+
     this.setOptions(options);
+    
     this.initConf();
 
-    this.id = this.options.id;
-
+    this.id = (this.options.id ? this.options.id : this.options.link);
     this.addEvent ('winDomReady', function () {
-      this.options.box = this.serverOptions.dims;
+
       this.redims ();
 
       // Renderizamos win
@@ -54,7 +62,6 @@ var mooWin = new Class({
   initConf: function(){
     // nodeParentInsert. Nodo donde insertamos la ventana.
     this.nodeParentInsert = ($(this.options.node_insert));
-    this.objParent = $win_now;                                        // <- Variable global
 
     // Cargamos el contenido de la ventana con AJAX ?
     if (this.options.loadWithAjax) {
@@ -235,7 +242,7 @@ var mooWin = new Class({
     this.removeEvents ('winDomReady');            // <- Removemos todos las funcones asociadas al evento winDomReady
 
     $url = $url || false;
-    this.ajaxConex.options.url = $url ? $url : this.options.linkLoadContent;
+    this.ajaxConex.options.url = $url ? $url : this.options.link_content;
 
     this.addEvent ('winDomReady', function () {
       this.dataJsonContentAssign();
@@ -250,7 +257,7 @@ var mooWin = new Class({
 
   createAjaxConex: function () {
     this.ajaxConex = new Request.HTML({
-      url: this.options.linkLoad,
+      url: this.options.link,
       method: 'GET',
       onFailure: function($xhr){
         console.debug ($xhr);
@@ -284,11 +291,20 @@ var mooWin = new Class({
   },
 
   redims: function () {
-    this.nodeWin.setStyles (this.options.box);
+    this.options.dims.width = this.options.dims.width || this.serverOptions.dims.width;
+    this.options.dims.left = this.options.dims.left || this.serverOptions.dims.left;
+    this.options.dims.top = this.options.dims.top || this.serverOptions.dims.top;
+
+    this.nodeWin.setStyles ({
+      width: this.options.dims.width,
+      left: this.options.dims.left,
+      top: this.options.dims.top
+    })
   },
 
   dims2Node: function () {
-    this.options.box = this.nodeWin.getStyles ('width', 'height', 'top', 'left');
+    this.options.dims = this.nodeWin.getCoordinates ();
+    return this.options.dims;
   }
 });
 
@@ -458,9 +474,6 @@ mooWin.sfPropelEdit = new Class({
     }
     else {
 
-      if ($isNewWin) console.debug ('ojo, es nuevo');
-      else console.debug('solo reedit');
-
       // Quitamos eventos asociados a winDomReady
       //this.removeEvents ('winDomReady');
 
@@ -469,8 +482,8 @@ mooWin.sfPropelEdit = new Class({
 
       // Definimos nueva URL del nuevo objeto, ahora ya agregado.
       this.ajaxConex.options.url = this.flashEditResponse.actionToButtons[$iB].link;
-      this.options.linkLoad = this.flashEditResponse.actionToButtons[$iB].link;
-      this.options.linkLoadContent = this.flashEditResponse.actionToButtons[$iB].link_content;
+      this.options.link = this.flashEditResponse.actionToButtons[$iB].link;
+      this.options.link_content = this.flashEditResponse.actionToButtons[$iB].link_content;
 
       this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
         this.serverOptions = $jsonData4Win;
@@ -552,19 +565,14 @@ mooWin.sfPropelNew = new Class({
     // Este metodo elimina el objeto tipo win y genera uno nuevo tipo edit.
     // Viene, por javascript, todos los elementos.
     var $dims = this.dims2Node();
+    this.flashEditResponse.action.obj_parent = this.options.obj_parent;
+    this.flashEditResponse.action.node_insert = this.options.node_insert;
+    this.flashEditResponse.action.dims = $dims;
+
+    renderAjaxEditWin (this.flashEditResponse.action)
     this.hideAndDestroy();
-    
-
-    console.debug ($jsonData4Win);
-    //$jsonData4Win.dims = $dims;
-
-    renderAjaxEditWin ()
-
   }
-})
-
-
-
+});
 
 
 
