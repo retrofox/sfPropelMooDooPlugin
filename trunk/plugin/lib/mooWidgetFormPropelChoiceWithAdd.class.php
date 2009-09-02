@@ -37,20 +37,14 @@ class mooWidgetFormPropelChoiceWithAdd extends  sfWidgetFormPropelChoice {
 
     $conten_tag.= '<div class="win4add2select">';
     $conten_tag.= '<input link_to_add="'.url_for ($this->getOption('action2Add')).'" name="add2select" />';
-    $conten_tag.= '<div class="btn24x24"><div class="icn icn-delete"></div></div>';
-    $conten_tag.= '<div class="btn24x24"><div class="icn icn-submit"></div></div>';
+    $conten_tag.= '<div class="btn-cover"><div class="icn icn-delete"></div></div>';
+    $conten_tag.= '<div class="btn-cover"><div class="icn icn-submit"></div></div>';
     $conten_tag.= '</div>';
-
 
     $conten_tag.= $select_tag;
-    $conten_tag.= '<div class="btn24x24"><div class="icn icn-add btn_add2Select4Win"></div>';
+    $conten_tag.= '<div class="btn-cover"><div class="icn icn-add btn_add2Select4Win"></div>';
     $conten_tag.= '</div>';
     $conten_tag.= '</div>';
-
-    $conten_tag.= '<script>';
-    $conten_tag.= 'if (!window.$propelChoiceWithAdd) {$propelChoiceWithAdd = true;};';
-    $conten_tag.= '</script>';
-
     return $conten_tag;
   }
 	

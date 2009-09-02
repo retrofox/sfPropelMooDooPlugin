@@ -34,7 +34,7 @@ var mooWin = new Class({
         left: 140,
         top: 30
       }
-    }
+    };
 
     // Asignamos el objeto parent y luego lo hacemos null para que la clase pueda definir this.options
     this.objParent = options.obj_parent || window;
@@ -158,7 +158,7 @@ var mooWin = new Class({
           $editAction = this.serverObjectActions[$iB];                                                        // <- viene por Json
 
           if ($defined(this.serverOptions.win)) $editAction.objParent = (this.serverOptions.win.obj_parent == 'this') ? this : this.serverOptions.win.obj_parent;
-          if ($editAction.type == 'delete_object') $editAction.formDelete = this.nodeWinFormDelete                  // <- es para eliminar ?
+          if ($editAction.type == 'delete_object') $editAction.formDelete = this.getWinNodeFormDelete                  // <- es para eliminar ?
           if ($editAction.execute !== undefined) eval ($editAction.execute+'($editAction, e, false)');
         }.bind (this)
       });
@@ -332,11 +332,9 @@ mooWin.sfPropelEdit = new Class({
   },
 
   getWinFormNodes: function () {
-    this.nodeWinActions = this.nodeContent.getElement ('div.win_footer');
-    this.nodeWinFormEdit = this.nodeContent.getElement ('form');
-    this.nodeWinFormDelete = this.nodeWin.getElement ('form.hiddenForm');
-
-    this.widgetSelectsWithAdd = this.nodeContent.getElements ('div.select_with_add');
+    this.getWinNodeActions = this.nodeContent.getElement ('div.win_footer');
+    this.getWinNodeFormEdit = this.nodeContent.getElement ('form');
+    this.getWinNodeFormDelete = this.nodeWin.getElement ('form.hiddenForm');
   },
 
   makeAccordions: function(){
@@ -358,21 +356,19 @@ mooWin.sfPropelEdit = new Class({
     this.parent();
   },
 
-  renderContent: function () {
-    this.parent();
-
-    this.makeAccordions();
-    this.makeWidgets ();
-  },
-
   makeWidgets: function () {
     // $propelChoiceWithAdd <- viene ejecutado en la respuesta por AJAX
-    if (this.widgetSelectsWithAdd.length) this.renderPropelChoiceWithAdd();
+    if (undefined!=window.$propelChoiceWithAdd) this.renderPropelChoiceWithAdd();
   },
 
+
+
   renderPropelChoiceWithAdd: function () {
+    // Identificamos los bloques que tengan un selecto con comportamiento Add
+    $content2Select = this.nodeContent.getElements ('div.select_with_add');
+
     // Recorremos, uno a uno, todos los bloques
-    this.widgetSelectsWithAdd.each (function ($selWAdd, $iS) {
+    $content2Select.each (function ($selWAdd, $iS) {
       var $nodesWidget = $selWAdd.getChildren();
 
       var $popUp = $nodesWidget[0];
@@ -387,6 +383,7 @@ mooWin.sfPropelEdit = new Class({
 
       var $btns = new Array ($btn2PopUp, $btn2Cancel, $btn2Add);
       this.renderButtons ($btns);
+
 
       // Comportamiento de eventos de raton y teclado.
       $btn2PopUp.addEvent ('click', function (e) {
@@ -423,11 +420,18 @@ mooWin.sfPropelEdit = new Class({
     }.bind(this));
   },
 
+  renderContent: function () {
+    this.parent();
+
+    this.makeAccordions();
+    this.makeWidgets ();
+  },
+
   createAjaxConex: function () {
     this.parent ()
 
     this.editAjaxConex = new Request.HTML({
-      url: this.nodeWinFormEdit,
+      url: this.getWinNodeFormEdit,
       method: 'GET',
       onFailure: function($xhr){
         console.debug ($xhr.responseText);
@@ -441,8 +445,8 @@ mooWin.sfPropelEdit = new Class({
   },
 
   save: function ($objAct, $ev) {
-    this.editAjaxConex.options.url = this.nodeWinFormEdit.get('action');
-    this.editAjaxConex.post(this.nodeWinFormEdit);
+    this.editAjaxConex.options.url = this.getWinNodeFormEdit.get('action');
+    this.editAjaxConex.post(this.getWinNodeFormEdit);
   },
 
   serverEditResponse: function () {
@@ -749,8 +753,6 @@ mooWin.sfPropelList = new Class({
   deleteObject: function ($action, $ev) {
     //console.debug ($(this.serverOptions.win.nodeId_formMethod));
     $objAct = $action;
-    console.debug ($action);
-    
     $objAct.formDelete = $(this.serverOptions.win.nodeId_formMethod);
 
     $ev.stop();

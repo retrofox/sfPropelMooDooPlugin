@@ -41,7 +41,7 @@ body {
 }
 
 
-.menu01, .btn110, .btn_admin_actions, .btn_admin_filters, .btn24x24 {
+.menu01, .btn110, .btn_admin_actions, .btn_admin_filters {
   cursor: pointer;
   width: 150px; height: 24px;
   line-height: 24px;
@@ -368,13 +368,20 @@ div.select_with_add {
   height: 30px;
 }
 
-div.select_with_add div.btn24x24, div.select_with_add select {
+div.select_with_add div.btn-cover, div.select_with_add select {
   float: left;
+}
+
+div.select_with_add div.btn-cover {
+  margin: 1px 0 0 3px;
+  border: 1px solid #AAA;
+  padding: 1px;
+  -moz-border-radius: 6px;
 }
 
 div.select_with_add div.icn {
   background-color: #EFD;
-  margin: 2px;
+  cursor: pointer;
 }
 
 div.win4add2select {
