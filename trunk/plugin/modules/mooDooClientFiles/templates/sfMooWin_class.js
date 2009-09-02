@@ -474,9 +474,6 @@ mooWin.sfPropelEdit = new Class({
     }
     else {
 
-      // Quitamos eventos asociados a winDomReady
-      //this.removeEvents ('winDomReady');
-
       // Tomamos las dimensiones a partir del nodo actual.
       this.nodes2Dims();
 
