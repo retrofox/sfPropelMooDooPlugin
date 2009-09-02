@@ -450,65 +450,18 @@ mooWin.sfPropelEdit = new Class({
   },
 
   serverEditResponse: function () {
-
     this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
-
     this.nodeContent.set('html', this.editAjaxConex.response.html);
-
-    console.debug (this.editAjaxConex.response.javascript);
-
-    //this.getWinNodes();
+    this.getWinNodesContent();
     this.renderContent();
-
     this.blockOn();
 
     var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
-    //console.debug (this.flashEditResponse, this.serverOptions, $jsonData4Win);
 
-    // Renderizamos el boton de aviso de la edicion
-    if (this.flashEditResponse.action_state == 'error') {
-      (function () {
-        $win_flashes.dispose();
-        this.blockOff();
-      }).delay (1000, this);
-    }
-    else {
-
-      // Tomamos las dimensiones a partir del nodo actual.
-      this.nodes2Dims();
-
-      // Definimos nueva URL del nuevo objeto, ahora ya agregado.
-      this.ajaxConex.options.url = this.flashEditResponse.actionToButtons[$iB].link;
-      this.options.link = this.flashEditResponse.actionToButtons[$iB].link;
-      this.options.link_content = this.flashEditResponse.actionToButtons[$iB].link_content;
-
-      this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-        this.serverOptions = $jsonData4Win;
-        this.serverObjectActions = $actions;
-
-        // Destruimos el nodo creado para la accion new
-        this.nodeWin.destroy()
-
-        this.nodeWin = $elems[0];
-        this.insertWinNode();
-
-        //this.options.node = $jsonData4Win.node.win;
-
-        this.getWinNodes();
-        this.getWinNodesContent();
-        //this.getFormNodes($html, $js);
-
-        this.makeWin();
-        this.redims();
-        this.makeAccordions();
-        this.renderAction2Buttons();
-        this.makeWidgets ();
-        this.nodeBlock.setOpacity (0.3);
-
-        this.show();
-      });
-      this.ajaxConex.send();
-    }
+    (function () {
+      $win_flashes.dispose();
+      this.blockOff();
+    }).delay (1000, this);
   }
 })
 
@@ -536,7 +489,6 @@ mooWin.sfPropelNew = new Class({
 
   serverEditResponse: function () {
     this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
-    console.debug ('this.flashEditResponse -> ', this.flashEditResponse);
 
     // Vemos si la edicion ha sido correcta
     if (this.flashEditResponse.action_state == 'error') {
