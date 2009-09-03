@@ -6,7 +6,8 @@
   <script type="text/javascript">
   $flashEditResponse = new Array ();
   $flashEditResponse = {
-    action_state: 'ok'
+    action_state: 'ok',
+    auto_action: 'reedit'
   }
   </script>
 

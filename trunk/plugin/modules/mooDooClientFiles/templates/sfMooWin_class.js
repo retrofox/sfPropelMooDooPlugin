@@ -109,7 +109,7 @@ var mooWin = new Class({
   },
 
   renderContent: function () {
-    console.count ('<renderContent>');
+    //console.count ('<renderContent>');
     this.renderButtons(this.nodesObjectActions);
     this.renderAction2Buttons();
   },
@@ -172,13 +172,13 @@ var mooWin = new Class({
   },
 
   dataJsonAssign: function () {
-    console.count ('<dataJsonAssign>');
+    //console.count ('<dataJsonAssign>');
     this.serverOptions = $jsonData4Win;
     this.dataJsonContentAssign();
   },
 
   dataJsonContentAssign: function () {
-    console.count ('<dataJsonContentAssign>');
+    //console.count ('<dataJsonContentAssign>');
     this.serverObjectActions = $actions;
   },
 
@@ -233,13 +233,13 @@ var mooWin = new Class({
   refresh: function () {
     this.removeEvents ('winDomReady');
     this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-      console.debug ('renderiza !!!', $html);
+      //console.debug ('renderiza !!!', $html);
     })
     this.ajaxConex.send();
   },
 
   refreshContent: function ($url) {
-    console.count ('<refreshContent>');
+    //console.count ('<refreshContent>');
 
     this.removeEvents ('winDomReady');            // <- Removemos todos las funcones asociadas al evento winDomReady
 
@@ -261,7 +261,7 @@ var mooWin = new Class({
       url: this.options.link,
       method: 'GET',
       onFailure: function($xhr){
-        console.debug ($xhr);
+        //console.debug ($xhr);
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function(tree, elems, html, js){
@@ -272,7 +272,7 @@ var mooWin = new Class({
 
   // Creamos Ventana
   makeWin: function(){
-    console.count ('<makeWin>');
+    //console.count ('<makeWin>');
     this.nodeWin.setStyle ('position', 'absolute');
     
     this.dragWin = new Drag.Move(this.nodeWin, {
@@ -324,6 +324,7 @@ mooWin.sfPropelEdit = new Class({
   },
 
   initialize: function(options){
+    console.debug ('por aca andamos  !!');
     this.parent(options);
   },
 
@@ -431,7 +432,7 @@ mooWin.sfPropelEdit = new Class({
       url: this.nodeWinFormEdit,
       method: 'GET',
       onFailure: function($xhr){
-        console.debug ($xhr.responseText);
+        //console.debug ($xhr.responseText);
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function($tree, $elems, $html, $js){
@@ -470,9 +471,9 @@ mooWin.sfPropelEdit = new Class({
   }
 })
 
-
 mooWin.sfPropelNew = new Class({
   Extends: mooWin.sfPropelEdit,
+
 
   Implements: [Events, Options],
 
@@ -487,6 +488,8 @@ mooWin.sfPropelNew = new Class({
   serverEditResponse: function () {
     this.renderEditResponse();
     this.blockOn();
+
+    console.debug ('$flashEditResponse -> ', $flashEditResponse);
 
     (function () {
     // Vemos si la edicion ha sido correcta
@@ -508,6 +511,8 @@ mooWin.sfPropelNew = new Class({
     // Este metodo elimina el objeto tipo win y genera uno nuevo tipo edit.
     // Viene, por javascript, todos los elementos.
     var $dims = this.dims2Node();
+
+    //console.debug ('this.flashEditResponse -> ', this.flashEditResponse);
 
     this.flashEditResponse.action.obj_parent = this.options.obj_parent;
     this.flashEditResponse.action.node_insert = this.options.node_insert;
@@ -541,7 +546,7 @@ mooWin.sfPropelList = new Class({
   },
 
   getWinNodesContent: function () {
-    console.count ('<getListContentNodes>');
+    //console.count ('<getListContentNodes>');
     this.parent();
 
     this.getWinListMenuNodes();
@@ -730,7 +735,7 @@ mooWin.sfPropelList = new Class({
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
 
-                  console.debug ($action.execute+'($action, e, false)');
+                  //console.debug ($action.execute+'($action, e, false)');
 
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
@@ -755,7 +760,7 @@ mooWin.sfPropelList = new Class({
 
   },
   deleteObject: function ($action, $ev) {
-    //console.debug ($(this.serverOptions.win.nodeId_formMethod));
+    ////console.debug ($(this.serverOptions.win.nodeId_formMethod));
     $action.formDelete = $(this.serverOptions.win.nodeId_formMethod);
     $ev.stop();
     if (confirm($action.msg)) {
