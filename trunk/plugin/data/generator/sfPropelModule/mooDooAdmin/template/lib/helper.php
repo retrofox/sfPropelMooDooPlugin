@@ -172,7 +172,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
   public function mooJsonDataToNew($params, $cssClass='btn_admin_actions')
   {
     if (isset($params['inWinPopUp'])) {
-      return "{type: 'ajax_link', link: '".url_for($this->getUrlForAction('new'))."', update: '_new', node_insert: 'winsEmbedded_index-<?php echo $this->getModuleName() ?>', execute: 'renderAjaxNewWin'},\n";
+      return "{type: 'ajax_link', link: '".url_for($this->getUrlForAction('new'))."', update: '_new', node_insert: 'embedded_win-<?php echo $this->getModuleName() ?>', execute: 'renderAjaxNewWin'},\n";
     }
     else {
     };

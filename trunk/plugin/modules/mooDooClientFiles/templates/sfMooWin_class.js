@@ -23,7 +23,8 @@ var mooWin = new Class({
     container: 'content',
     node_insert: '',
     fullComplete: true,
-    dims: {}
+    dims: {},
+    enabledHeaderBottons: [1, 1, 1, 1]
   },
 
   initialize: function(options){
@@ -114,34 +115,40 @@ var mooWin = new Class({
   },
 
   renderHeaderBottons: function () {
-    // Botones del Header de la ventana.
     this.nodesHeaderBottons.each(function($btnWin, $iB){
-
       var bgPos = $btnWin.getStyle('background-position').split(' ');
-      $btnWin.addEvents({
-        'mouseenter': function(){
-          $btnWin.setStyle('background-position', bgPos[0] + ' ' + (bgPos[1].toInt() - 20).toString() + 'px');
-        },
-        'mouseleave': function(){
-          $btnWin.setStyle('background-position', bgPos[0] + ' ' + bgPos[1]);
-        },
-        'mousedown': function(e){
-          e.stop();
-          $btnWin.setStyles({
-            'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 40).toString() + 'px',
-            'color': '#FFF'
-          });
-        },
-        'mouseup': function(){
-          $btnWin.setStyles({
-            'background-position': bgPos[0] + ' ' + bgPos[1]
-          })
-        },
-        'click': function(e){
-          if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
-          if ($btnWin.hasClass('btnHW04')) this.refreshContent();
-        }.bind(this)
-      });
+      if (this.options.enabledHeaderBottons[$iB]){
+        $btnWin.addEvents({
+          'mouseenter': function(){
+            $btnWin.setStyle('background-position', bgPos[0] + ' ' + (bgPos[1].toInt() - 20).toString() + 'px');
+          },
+          'mouseleave': function(){
+            $btnWin.setStyle('background-position', bgPos[0] + ' ' + bgPos[1]);
+          },
+          'mousedown': function(e){
+            e.stop();
+            $btnWin.setStyles({
+              'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 40).toString() + 'px',
+              'color': '#FFF'
+            });
+          },
+          'mouseup': function(){
+            $btnWin.setStyles({
+              'background-position': bgPos[0] + ' ' + bgPos[1]
+            })
+          },
+          'click': function(e){
+            if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
+            if ($btnWin.hasClass('btnHW04')) this.refreshContent();
+          }.bind(this)
+        });
+      }
+      else {
+        $btnWin.setStyles({
+          'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 60).toString() + 'px',
+          'cursor': 'default'
+        });
+      }
     }.bind(this));
   },
 
@@ -156,8 +163,7 @@ var mooWin = new Class({
       $btn.addEvents({
         'click': function(e){
           $editAction = this.serverObjectActions[$iB];                                                        // <- viene por Json
-
-          if ($defined(this.serverOptions.win)) $editAction.objParent = (this.serverOptions.win.obj_parent == 'this') ? this : this.serverOptions.win.obj_parent;
+          $editAction.obj_parent = this;
           if ($editAction.type == 'delete_object') $editAction.formDelete = this.nodeWinFormDelete                  // <- es para eliminar ?
           if ($editAction.execute !== undefined) eval ($editAction.execute+'($editAction, e, false)');
         }.bind (this)
@@ -165,7 +171,6 @@ var mooWin = new Class({
     }, this);
   },
 
-  /*** Asignación de los datos JSON que vienen desde el server ***/
   dataJsonAssign: function () {
     console.count ('<dataJsonAssign>');
     this.serverOptions = $jsonData4Win;
@@ -177,9 +182,6 @@ var mooWin = new Class({
     this.serverObjectActions = $actions;
   },
 
-  /**************************
-   * Metodos del objeto Win *
-   **************************/
   show: function(){
     this.nodeWin.setStyle ('display', 'block');
   },
@@ -253,7 +255,6 @@ var mooWin = new Class({
 
     this.ajaxConex.send();
   },
-  /**************************************/
 
   createAjaxConex: function () {
     this.ajaxConex = new Request.HTML({
@@ -446,18 +447,26 @@ mooWin.sfPropelEdit = new Class({
   },
 
   serverEditResponse: function () {
-    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
-    this.nodeContent.set('html', this.editAjaxConex.response.html);
-    this.getWinNodesContent();
-    this.renderContent();
+    this.renderEditResponse();
+    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
+
     this.blockOn();
 
-    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
+    if ($flashEditResponse.action_state == 'ok' && (this.objParent != window)) {
+      this.objParent.refreshContent();
+    }
 
     (function () {
       $win_flashes.dispose();
       this.blockOff();
     }).delay (1000, this);
+  },
+
+  renderEditResponse: function () {
+    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
+    this.nodeContent.set('html', this.editAjaxConex.response.html);
+    this.getWinNodesContent();
+    this.renderContent();
   }
 })
 
@@ -468,6 +477,7 @@ mooWin.sfPropelNew = new Class({
   Implements: [Events, Options],
 
   options: {
+    enabledHeaderBottons: [0, 1, 1, 1]
   },
 
   initialize: function(json, options){
@@ -475,32 +485,30 @@ mooWin.sfPropelNew = new Class({
   },
 
   serverEditResponse: function () {
-    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
+    this.renderEditResponse();
+    this.blockOn();
 
+    (function () {
     // Vemos si la edicion ha sido correcta
-    if (this.flashEditResponse.action_state == 'error') {
-
-      // Renderizamos nuevamente el contenido de la ventana con sus respectivos errores
-      this.nodeContent.set('html', this.editAjaxConex.response.html);
-      this.getWinNodesContent();
-      this.renderContent();
-      this.blockOn();
-
-      (function () {
+      if ($flashEditResponse.action_state == 'error') {
         this.nodeContent.getElement ('div.win_flashes').dispose();
         this.blockOff();
-      }).delay (1000, this);
-    }
-    else {
-      // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
-      this.new2Edit();
-    }
+      }
+      else {
+        // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
+        this.new2Edit();
+      }
+    }).delay (1000, this);
   },
 
   new2Edit: function () {
+    if (this.objParent != window) {
+      this.objParent.refreshContent();
+    }
     // Este metodo elimina el objeto tipo win y genera uno nuevo tipo edit.
     // Viene, por javascript, todos los elementos.
     var $dims = this.dims2Node();
+
     this.flashEditResponse.action.obj_parent = this.options.obj_parent;
     this.flashEditResponse.action.node_insert = this.options.node_insert;
     this.flashEditResponse.action.dims = $dims;
@@ -748,25 +756,15 @@ mooWin.sfPropelList = new Class({
   },
   deleteObject: function ($action, $ev) {
     //console.debug ($(this.serverOptions.win.nodeId_formMethod));
-    $objAct = $action;
-    console.debug ($action);
-    
-    $objAct.formDelete = $(this.serverOptions.win.nodeId_formMethod);
-
+    $action.formDelete = $(this.serverOptions.win.nodeId_formMethod);
     $ev.stop();
     if (confirm($action.msg)) {
-      var $myHTMLRequest = new Request.HTML({
-        evalScripts: false,
-        method: 'GET',
-        url: $objAct.link,
-        onFailure: function($xhr){
-          $('content').set('html', $xhr.responseText);
-        },
+      new Request.HTML({
+        url: $action.link,
         onComplete: function (tree, elems, html, js) {
-          eval (js);                                              // <- $deleteResponse
           eval ($deleteResponse.action_delete+'()');
         }.bind(this)
-      }).post($objAct.formDelete);
+      }).post($action.formDelete);
     }
   },
 
