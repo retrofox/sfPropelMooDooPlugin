@@ -1,6 +1,6 @@
 var $wins = new Array ();
 
-var renderAjaxWin = function ($objAct, $ev) {
+var renderAjaxWin = function ($objAct) {
   if (!$wins.contains ($objAct.link)) {
     new mooWin ($objAct);
     $wins.push($objAct.link);
@@ -14,16 +14,14 @@ var renderAjaxEditWin = function ($objAct) {
   }
 }
 
-var renderAjaxNewWin = function ($objAct, $ev) {
-  $ev.stop();
+var renderAjaxNewWin = function ($objAct) {
   if (!$wins.contains ($objAct.link)) {
     $newWin = new mooWin.sfPropelNew ($objAct);
     $wins.push ($objAct.link);
   }
 }
 
-var renderAjaxListWin = function ($objAct, $ev) {
-  $ev.stop();
+var renderAjaxListWin = function ($objAct) {
   if (!$wins.contains ($objAct.link)) {
     new mooWin.sfPropelList ($objAct);
     $wins.push ($objAct.link);

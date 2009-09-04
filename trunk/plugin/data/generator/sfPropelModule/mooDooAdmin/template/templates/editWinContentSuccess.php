@@ -30,6 +30,7 @@
   $flashEditResponse = {
     action_state: 'ok',
     was_new: true,
+    auto_action: 'reedit',
     action: [?php echo $helper->mooJsonDataToEditObject($<?php echo $this->getModuleName() ?>, array('inWinPopUp' => true, 'class_suffix' => 'edit', 'label' => 'Edit')); ?]
   }
   </script>
