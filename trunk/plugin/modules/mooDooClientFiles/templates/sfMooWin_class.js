@@ -324,7 +324,7 @@ mooWin.sfPropelEdit = new Class({
   },
 
   initialize: function(options){
-    console.debug ('por aca andamos  !!');
+    console.debug ('es edit!');
     this.parent(options);
   },
 
@@ -482,6 +482,7 @@ mooWin.sfPropelNew = new Class({
   },
 
   initialize: function(json, options){
+    console.debug ('es new!');
     this.parent(json, options);
   },
 

@@ -83,7 +83,7 @@ class sfPropelMooDooGenerator extends sfPropelGenerator {
     $url_params = $pk_link ? '?'.$this->getPrimaryKeyUrlParams() : '\'';
     if (isset($params['inWinPopUp']) and $params['inWinPopUp'] == true) {
       // en $execute definimos la accion a ejecutar en el cliente
-      $execute = (isset($params['winType'])) ? 'renderAjax'.ucfirst(strtolower($params['winType'])).'Win' : 'renderAjaxWin';
+      $execute = (isset($params['winType'])) ? 'renderAjax'.ucfirst($params['winType']) : 'renderAjaxWin';
 
       return '{type: \'ajax_link\', link: \'[?php echo url_for(\''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]\', link_content: \'[?php echo url_for(\''.$this->getModuleName().'/'.$actionContent.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]\', update: \'_new\', execute: \''.$execute.'\'},'."\n";
     } else {

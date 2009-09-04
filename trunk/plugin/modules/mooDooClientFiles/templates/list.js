@@ -2,7 +2,7 @@ var $wins = new Array ();
 
 var renderAjaxWin = function ($objAct, $ev) {
   if (!$wins.contains ($objAct.link)) {
-    new mooWin.sfPropelEdit ($objAct);
+    new mooWin ($objAct);
     $wins.push($objAct.link);
   }
 }
