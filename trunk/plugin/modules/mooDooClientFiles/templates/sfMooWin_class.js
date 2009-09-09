@@ -498,7 +498,7 @@ mooWin.sfPropelNew = new Class({
         this.nodeContent.getElement ('div.win_flashes').dispose();
         this.blockOff();
       }
-      else {
+      else if ($flashEditResponse.auto_action == 'reedit') {
         // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
         this.new2Edit();
       }
