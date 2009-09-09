@@ -468,12 +468,17 @@ mooWin.sfPropelEdit = new Class({
     this.nodeContent.set('html', this.editAjaxConex.response.html);
     this.getWinNodesContent();
     this.renderContent();
+  },
+
+  closeAndParentRefresh: function () {
+    if (this.objParent != window) this.objParent.refreshContent();
+    else location.reload();
+    this.hideAndDestroy();
   }
 })
 
 mooWin.sfPropelNew = new Class({
   Extends: mooWin.sfPropelEdit,
-
 
   Implements: [Events, Options],
 
@@ -482,7 +487,6 @@ mooWin.sfPropelNew = new Class({
   },
 
   initialize: function(json, options){
-    console.debug ('es new!');
     this.parent(json, options);
   },
 
@@ -490,17 +494,19 @@ mooWin.sfPropelNew = new Class({
     this.renderEditResponse();
     this.blockOn();
 
-    console.debug ('$flashEditResponse -> ', $flashEditResponse);
-
     (function () {
     // Vemos si la edicion ha sido correcta
-      if ($flashEditResponse.action_state == 'error') {
+      if (this.flashEditResponse.action_state == 'error') {
         this.nodeContent.getElement ('div.win_flashes').dispose();
         this.blockOff();
       }
-      else if ($flashEditResponse.auto_action == 'reedit') {
+      else if (this.flashEditResponse.auto_action == 'reedit') {
         // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
         this.new2Edit();
+      }
+      else if (this.flashEditResponse.auto_action == 'close_and_parent_refresh') {
+        // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
+        this.closeAndParentRefresh();
       }
     }).delay (1000, this);
   },
@@ -772,9 +778,5 @@ mooWin.sfPropelList = new Class({
         }.bind(this)
       }).post($action.formDelete);
     }
-  },
-
-  closeAndRefreshParent: function () {
-    this.hideAndDestroy();
   }
 })

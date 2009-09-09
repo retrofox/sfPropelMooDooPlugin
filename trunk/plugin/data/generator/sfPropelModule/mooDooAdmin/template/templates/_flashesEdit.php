@@ -7,7 +7,7 @@
   $flashEditResponse = new Array ();
   $flashEditResponse = {
     action_state: 'ok',
-    auto_action: 'reedit'
+    auto_action: 'close_and_parent_refresh'
   }
   </script>
 
