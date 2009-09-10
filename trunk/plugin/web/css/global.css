@@ -243,13 +243,24 @@ div.win div.win_content {
 }
 
 div.win div.win_footer {
-  height: 28px;
+  height: 24px;
   padding: 2px 0;
 }
 
 div.win div.win_footer ul {
   padding: 0 10px;
 }
+
+
+div.win div.win_state {
+  height: 12px;
+  line-height: 12px;
+  padding: 2px 5px;
+  color: #777;
+  border-top: 1px solid #CCC;
+  text-align: right;
+}
+
 
 div.win div.win_flashes {
   position: absolute;
@@ -263,14 +274,6 @@ div.win div.flash_deleted {
 div.win div.win_flashes div.btn_admin_actions {
   margin: 5px auto;
   text-align: left;
-}
-
-/* notice y error de una ventana */
-div.win_notice, div.win_error {
-}
-
-div.win_content .textWin-01 {
-  padding: 5px;
 }
 
 div.win_flashes .notice_msg, div.win_flashes .error_msg {

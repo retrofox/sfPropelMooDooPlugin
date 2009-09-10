@@ -28,8 +28,9 @@
     <div id="sf_admin_footer">
       [?php include_partial('<?php echo $this->getModuleName() ?>/list_footer', array('pager' => $pager)) ?]
     </div>
-
   </div>
+  <div class="win_state">listo.</div>
+
 </div>
 
 [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-list', array ('jsonData4Win' => $jsonData4Win, 'pager' => $pager, 'helper' => $helper)) ?]

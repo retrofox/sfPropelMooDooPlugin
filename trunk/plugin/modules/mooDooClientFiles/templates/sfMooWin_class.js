@@ -95,6 +95,7 @@ var mooWin = new Class({
     this.nodeBlock = this.nodeWin.getChildren()[0];
     this.nodeHandle = this.nodeWin.getChildren()[1];
     this.nodeContent = this.nodeWin.getElement('.win_content');
+    this.nodeState = this.nodeWin.getElement('.win_state');
     this.nodesHeaderBottons = this.nodeHandle.getElements('ul li');
   },
 
@@ -256,12 +257,30 @@ var mooWin = new Class({
     this.ajaxConex.send();
   },
 
+/*
+ * arguments[0]: message
+ * arguments[1]: autoback = true
+ *
+ */
+  setState: function () {
+    arguments[1] = arguments[1] || true;
+    console.debug (arguments[1]);
+    
+    this.nodeState.back = this.nodeState.get('text');
+    this.nodeState.set('text', arguments[0]);
+    if (arguments[1]) {
+      (function () {
+        this.nodeState.set('text', this.nodeState.back);
+      }).delay (1500, this);
+    }
+  },
+
+
   createAjaxConex: function () {
     this.ajaxConex = new Request.HTML({
       url: this.options.link,
       method: 'GET',
       onFailure: function($xhr){
-        //console.debug ($xhr);
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function(tree, elems, html, js){
@@ -455,6 +474,7 @@ mooWin.sfPropelEdit = new Class({
 
     if ($flashEditResponse.action_state == 'ok' && (this.objParent != window)) {
       this.objParent.refreshContent();
+      this.objParent.setState ('Registro editado.')
     }
 
     (function () {

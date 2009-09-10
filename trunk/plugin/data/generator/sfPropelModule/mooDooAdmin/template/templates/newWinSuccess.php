@@ -6,5 +6,7 @@
   <div class="sf_admin_form win_content">
     [?php include_partial('<?php echo $this->getModuleName() ?>/formWin', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?]
   </div>
+
+  <div class="win_state">listo.</div>
 </div>
 [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-new', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper)) ?]
