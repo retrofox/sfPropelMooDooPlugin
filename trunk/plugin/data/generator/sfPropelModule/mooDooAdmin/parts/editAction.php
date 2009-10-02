@@ -6,6 +6,13 @@
     // Ajax Request ?
     if ($this->getRequest()->isXmlHttpRequest()) {
       $this->setTemplate('editWin');
+
+      $this->jsonData4Win = array (
+        controller => <?php echo $this->getGeneratedModuleName() ?>Actions::$winEdit_controller,
+        win => <?php echo $this->getGeneratedModuleName() ?>Actions::$winEdit,
+        dims => <?php echo $this->getGeneratedModuleName() ?>Actions::$winEdit_dims
+      );
+
     }
 
     // Viene de edicion ?

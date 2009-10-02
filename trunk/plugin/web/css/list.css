@@ -4,10 +4,6 @@
 }
 
 .sf_admin_list table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 0 auto;
 }
 
   /* Cabecera y Pie del listado */
@@ -82,10 +78,7 @@
 }
 
 .sf_admin_list tbody tr {
-  padding: 1px 0;
   line-height: 20px;
-  border-bottom: 1px solid #DDD;
-  border-top: 1px solid #DDD;
 }
 
 .sf_admin_list tbody tr td {
@@ -94,7 +87,6 @@
 }
 
 .sf_admin_row {
-
 }
 
 .odd {

@@ -33,21 +33,9 @@
     if ($this->getRequest()->isXmlHttpRequest()) {
 
       $this->jsonData4Win = array (
-        'controller' => array (
-          'moduleName' => 'compra',
-          'action' => 'list'
-        ),
-        win => array (
-          'nodeId_formMethod'=> 'sf_admin_list_form_method-<?php echo $this->getModuleName() ?>',
-          'nodeId_container' => 'sf_admin_container-index-<?php echo $this->getModuleName() ?>',
-          'nodeId_winsEmbedded'=> 'embedded_win-<?php echo $this->getModuleName() ?>',
-          'obj_parent' => 'this'
-        ),
-        'dims' => array (
-          'width' => 800,
-          'left' => 100,
-          'top' => 40
-        )
+        controller => <?php echo $this->getGeneratedModuleName() ?>Actions::$controller,
+        win => <?php echo $this->getGeneratedModuleName() ?>Actions::$win,
+        dims => <?php echo $this->getGeneratedModuleName() ?>Actions::$dims
       );
 
       if ($request->getParameter('win_container')) {

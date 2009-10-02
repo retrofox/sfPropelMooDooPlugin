@@ -4,6 +4,33 @@ body {
   margin: 0; padding: 0;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 auto;
+  background-color: #EFD;
+  border: 1px solid #CCC;
+}
+
+table thead {
+  background-color: #DFC;
+  color: #030;
+}
+
+table tfoot {
+  background-color: #DFB;
+  color: #010;
+}
+
+table tr {
+  border-bottom: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+}
+
+table td, table th {
+  padding: 1px 0;
+}
 
 /* Contenedor Principal del generator */
 #content {
@@ -94,17 +121,17 @@ body {
 .icn-group-go			{ background-position: -120px  -60px; }
 .icn-group-credential   { background-position: -140px  -60px; }
 
-.icn-submit				{ background-position:    0px -180px; }
-.icn-add				{ background-position:  -20px -180px; }
-.icn-edit				{ background-position: -380px -180px; }
-.icn-save				{ background-position: -240px -180px; }
-.icn-accept				{ background-position: -240px -180px; }
-.icn-delete				{ background-position: -360px -180px; }
-.icn-new				{ background-position:  -20px -180px; }
-.icn-filter				{ background-position: -140px -180px; }
-.icn-filter-reset		{ background-position: -160px -180px; }
-.icn-close				{ background-position: -360px -180px; }
-.icn-Cancel				{ background-position:  -40px -180px }
+.icn-submit                     { background-position:    0px -180px; }
+.icn-add                        { background-position:  -20px -180px; }
+.icn-edit                       { background-position: -380px -180px; }
+.icn-save                       { background-position: -240px -180px; }
+.icn-accept                     { background-position: -240px -180px; }
+.icn-delete                     { background-position: -360px -180px; }
+.icn-new                        { background-position:  -20px -180px; }
+.icn-filter                     { background-position: -140px -180px; }
+.icn-filter-reset               { background-position: -160px -180px; }
+.icn-close                      { background-position: -360px -180px; }
+.icn-Cancel                     { background-position:  -40px -180px }
 
 .icn-recalc				{ background-position: -220px -220px }
 .icn-comprar			{ background-position:  -20px -600px }
@@ -165,76 +192,86 @@ div.win div.block_win {
 }
 
 
-      .win .win_handle {
-        width: 100%; height: 21px;
-        padding-top: 3px;
-        background: #05A;
-        cursor: move;
-      }
+.win .win_handle {
+  width: 100%; height: 21px;
+  padding-top: 3px;
+  background: #05A;
+  cursor: move;
+}
 
-      .win .win_handle h1 {
-        padding-left: 10px;
-        float: left;
-        font: normal normal bold 1.1em/21px Verdana, Geneva, Arial, Helvetica, sans-serif;
-        color: #FFF;
-      }
+.win .win_handle h1 {
+  padding-left: 10px;
+  float: left;
+  font: normal normal bold 1.1em/21px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: #FFF;
+}
 
-      .win .win_handle ul {
-        list-style: none;
-        float: right;
-        margin-right: 2px;
-      }
+.win .win_handle ul {
+  list-style: none;
+  float: right;
+  margin-right: 2px;
+}
 
-      .win .win_handle ul li {
-        width: 24px; height: 18px;
-        cursor: pointer;
-        float: left;
-        margin: 0 1px;
-        background: transparent url('../images/iconos.png') no-repeat -240px -360px;
-      }
+.win .win_handle ul li {
+  width: 24px; height: 18px;
+  cursor: pointer;
+  float: left;
+  margin: 0 1px;
+  background: transparent url('../images/iconos.png') no-repeat -240px -360px;
+}
 
-      .win .win_handle ul li.btnHW02 {
-        background-position: -320px -360px;
-      }
+.win .win_handle ul li.btnHW02 {
+  background-position: -320px -360px;
+}
 
-      .win .win_handle ul li.btnHW03 {
-        background-position: -360px -360px;
-      }
+.win .win_handle ul li.btnHW03 {
+  background-position: -360px -360px;
+}
 
-      .win .win_handle ul li.btnHW04 {
-        background-position: -200px -360px;
-      }
+.win .win_handle ul li.btnHW04 {
+  background-position: -200px -360px;
+}
 
 div.win div.win_container {
 }
 
-    .bar_menu {
-      height: 24px;
-      padding: 2px;
-      background-color: #E0E5E5;
-    }
+div.win div.win_content .block {
+  padding: 3px;
+}
 
-    .bar_menu a {
-      color: #242;
-      line-height: 24px;
-      
-      text-decoration: none;
-      border: 1px solid #CCC;
-      background-color: #FFF;
-      -moz-border-radius: 4px;
-      padding: 2px 5px;
-      margin: 0px 2px;
-    }
+div.win div.win_content .block h3{
+  color: #026;
+  background-color: #EEE;
+  padding: 1px 3px;
+}
 
-    .bar_menu a.linked {
-      background-color: #CFC;
-    }
+.bar_menu {
+  height: 24px;
+  padding: 2px;
+  background-color: #E0E5E5;
+}
 
-    .bar_menu a:hover {
-      background-color: #0C6;
-      color: #FFF;
-      border-color: #0A4;
-    }
+.bar_menu a {
+  color: #242;
+  line-height: 24px;
+
+  text-decoration: none;
+  border: 1px solid #CCC;
+  background-color: #FFF;
+  -moz-border-radius: 4px;
+  padding: 2px 5px;
+  margin: 0px 2px;
+}
+
+.bar_menu a.linked {
+  background-color: #CFC;
+}
+
+.bar_menu a:hover {
+  background-color: #0C6;
+  color: #FFF;
+  border-color: #0A4;
+}
 
 
 

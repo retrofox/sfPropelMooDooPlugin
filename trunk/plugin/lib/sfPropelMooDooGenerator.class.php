@@ -78,6 +78,10 @@ class sfPropelMooDooGenerator extends sfPropelGenerator {
 
   // Helper para JsonData
   public function mooJsonDataToAction($actionName, $params, $pk_link = false) {
+    //return  (print_r($params));
+
+    $dims = (isset($params[dims]) ? ', dims: \''.$params[dims].'\'' : '');
+
     $action = isset($params['action']) ? $params['action'] : 'List'.sfInflector::camelize($actionName);
     $actionContent = $action.'Content';
     $url_params = $pk_link ? '?'.$this->getPrimaryKeyUrlParams() : '\'';
@@ -85,7 +89,7 @@ class sfPropelMooDooGenerator extends sfPropelGenerator {
       // en $execute definimos la accion a ejecutar en el cliente
       $execute = (isset($params['winType'])) ? 'renderAjax'.ucfirst($params['winType']) : 'renderAjaxWin';
 
-      return '{type: \'ajax_link\', link: \'[?php echo url_for(\''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]\', link_content: \'[?php echo url_for(\''.$this->getModuleName().'/'.$actionContent.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]\', update: \'_new\', execute: \''.$execute.'\'},'."\n";
+      return '{type: \'ajax_link\', link: \'[?php echo url_for(\''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]\', link_content: \'[?php echo url_for(\''.$this->getModuleName().'/'.$actionContent.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]\', update: \'_new\', execute: \''.$execute.'\''.$dims.'},'."\n";
     } else {
       return "{type: 'ajax_link'}";
     }

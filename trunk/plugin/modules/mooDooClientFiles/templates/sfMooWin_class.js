@@ -28,15 +28,6 @@ var mooWin = new Class({
   },
 
   initialize: function(options){
-
-    // Posiciones por defecto
-    if (options.dims == undefined) {
-      options.dims={
-        left: 140,
-        top: 30
-      }
-    }
-
     // Asignamos el objeto parent y luego lo hacemos null para que la clase pueda definir this.options
     this.objParent = options.obj_parent || window;
     options.obj_parent = null;
@@ -110,7 +101,7 @@ var mooWin = new Class({
   },
 
   renderContent: function () {
-    //console.count ('<renderContent>');
+    this.makeAccordions();
     this.renderButtons(this.nodesObjectActions);
     this.renderAction2Buttons();
   },
@@ -173,13 +164,11 @@ var mooWin = new Class({
   },
 
   dataJsonAssign: function () {
-    //console.count ('<dataJsonAssign>');
     this.serverOptions = $jsonData4Win;
     this.dataJsonContentAssign();
   },
 
   dataJsonContentAssign: function () {
-    //console.count ('<dataJsonContentAssign>');
     this.serverObjectActions = $actions;
   },
 
@@ -233,14 +222,10 @@ var mooWin = new Class({
 
   refresh: function () {
     this.removeEvents ('winDomReady');
-    this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-      //console.debug ('renderiza !!!', $html);
-    })
     this.ajaxConex.send();
   },
 
   refreshContent: function ($url) {
-    //console.count ('<refreshContent>');
 
     this.removeEvents ('winDomReady');            // <- Removemos todos las funcones asociadas al evento winDomReady
 
@@ -257,15 +242,14 @@ var mooWin = new Class({
     this.ajaxConex.send();
   },
 
-/*
+  /*
  * arguments[0]: message
  * arguments[1]: autoback = true
  *
  */
   setState: function () {
     arguments[1] = arguments[1] || true;
-    console.debug (arguments[1]);
-    
+
     this.nodeState.back = this.nodeState.get('text');
     this.nodeState.set('text', arguments[0]);
     if (arguments[1]) {
@@ -274,7 +258,6 @@ var mooWin = new Class({
       }).delay (1500, this);
     }
   },
-
 
   createAjaxConex: function () {
     this.ajaxConex = new Request.HTML({
@@ -310,7 +293,39 @@ var mooWin = new Class({
     });
   },
 
+  makeAccordions: function(){
+    if (this.nodeContent.getElements('h2.titleSection').length) {
+      this.winAccordion = new Fx.Accordion(this.nodeContent.getElements('h2.titleSection'), this.nodeContent.getElements('div.fieldSection'), {
+        show: 0,
+        opacity: 0,
+        onActive: function(toggler, element){
+          toggler.addClass ('titleSection-hover')
+        },
+        onBackground: function(toggler, element){
+          toggler.removeClass ('titleSection-hover');
+        }
+      });
+    }
+  },
+
   redims: function () {
+
+    // Analizamos dims viene como opciones del objeto
+    if (this.options.dims) {
+      if ($type(this.options.dims) == 'string') {
+
+        reDims = new Array();
+        reDims = this.options.dims.split('x');
+
+        this.options.dims = new Object();
+
+        this.options.dims.width = reDims[0].toInt();
+        //this.options.dims.height = reDims[1];
+        this.options.dims.left = reDims[2].toInt();
+        this.options.dims.top = reDims[3].toInt();
+      }
+    }
+
     this.options.dims.width = this.options.dims.width || this.serverOptions.dims.width;
     this.options.dims.left = this.options.dims.left || this.serverOptions.dims.left;
     this.options.dims.top = this.options.dims.top || this.serverOptions.dims.top;
@@ -333,7 +348,6 @@ var mooWin = new Class({
 
 
 
-
 mooWin.sfPropelEdit = new Class({
   Extends: mooWin,
 
@@ -343,7 +357,6 @@ mooWin.sfPropelEdit = new Class({
   },
 
   initialize: function(options){
-    console.debug ('es edit!');
     this.parent(options);
   },
 
@@ -360,29 +373,12 @@ mooWin.sfPropelEdit = new Class({
     this.widgetSelectsWithAdd = this.nodeContent.getElements ('div.select_with_add');
   },
 
-  makeAccordions: function(){
-    if (this.nodeContent.getElements('h2.titleSection').length) {
-      this.winAccordion = new Fx.Accordion(this.nodeContent.getElements('h2.titleSection'), this.nodeContent.getElements('div.fieldSection'), {
-        show: 0,
-        opacity: 0,
-        onActive: function(toggler, element){
-          toggler.addClass ('titleSection-hover')
-        },
-        onBackground: function(toggler, element){
-          toggler.removeClass ('titleSection-hover');
-        }
-      });
-    }
-  },
-
   dataJsonContentAssign: function () {
     this.parent();
   },
 
   renderContent: function () {
     this.parent();
-
-    this.makeAccordions();
     this.makeWidgets ();
   },
 
@@ -515,7 +511,7 @@ mooWin.sfPropelNew = new Class({
     this.blockOn();
 
     (function () {
-    // Vemos si la edicion ha sido correcta
+      // Vemos si la edicion ha sido correcta
       if (this.flashEditResponse.action_state == 'error') {
         this.nodeContent.getElement ('div.win_flashes').dispose();
         this.blockOff();
@@ -762,8 +758,6 @@ mooWin.sfPropelList = new Class({
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
 
-                  //console.debug ($action.execute+'($action, e, false)');
-
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })
@@ -787,7 +781,6 @@ mooWin.sfPropelList = new Class({
 
   },
   deleteObject: function ($action, $ev) {
-    ////console.debug ($(this.serverOptions.win.nodeId_formMethod));
     $action.formDelete = $(this.serverOptions.win.nodeId_formMethod);
     $ev.stop();
     if (confirm($action.msg)) {

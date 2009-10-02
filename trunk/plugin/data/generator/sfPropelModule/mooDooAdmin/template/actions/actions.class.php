@@ -13,6 +13,9 @@ require_once(dirname(__FILE__).'/../lib/Base<?php echo ucfirst($this->moduleName
  */
 class <?php echo $this->getGeneratedModuleName() ?>Actions extends sfActions
 {
+
+  <?php include dirname(__FILE__).'/../../parts/staticsVars.php' ?>
+
   public function preExecute()
   {
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();

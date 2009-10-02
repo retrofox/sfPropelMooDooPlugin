@@ -23,19 +23,11 @@ var mooWin = new Class({
     container: 'content',
     node_insert: '',
     fullComplete: true,
-    dims: {}
+    dims: {},
+    enabledHeaderBottons: [1, 1, 1, 1]
   },
 
   initialize: function(options){
-
-    // Posiciones por defecto
-    if (options.dims == undefined) {
-      options.dims={
-        left: 140,
-        top: 30
-      }
-    };
-
     // Asignamos el objeto parent y luego lo hacemos null para que la clase pueda definir this.options
     this.objParent = options.obj_parent || window;
     options.obj_parent = null;
@@ -94,6 +86,7 @@ var mooWin = new Class({
     this.nodeBlock = this.nodeWin.getChildren()[0];
     this.nodeHandle = this.nodeWin.getChildren()[1];
     this.nodeContent = this.nodeWin.getElement('.win_content');
+    this.nodeState = this.nodeWin.getElement('.win_state');
     this.nodesHeaderBottons = this.nodeHandle.getElements('ul li');
   },
 
@@ -108,40 +101,46 @@ var mooWin = new Class({
   },
 
   renderContent: function () {
-    console.count ('<renderContent>');
+    this.makeAccordions();
     this.renderButtons(this.nodesObjectActions);
     this.renderAction2Buttons();
   },
 
   renderHeaderBottons: function () {
-    // Botones del Header de la ventana.
     this.nodesHeaderBottons.each(function($btnWin, $iB){
-
       var bgPos = $btnWin.getStyle('background-position').split(' ');
-      $btnWin.addEvents({
-        'mouseenter': function(){
-          $btnWin.setStyle('background-position', bgPos[0] + ' ' + (bgPos[1].toInt() - 20).toString() + 'px');
-        },
-        'mouseleave': function(){
-          $btnWin.setStyle('background-position', bgPos[0] + ' ' + bgPos[1]);
-        },
-        'mousedown': function(e){
-          e.stop();
-          $btnWin.setStyles({
-            'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 40).toString() + 'px',
-            'color': '#FFF'
-          });
-        },
-        'mouseup': function(){
-          $btnWin.setStyles({
-            'background-position': bgPos[0] + ' ' + bgPos[1]
-          })
-        },
-        'click': function(e){
-          if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
-          if ($btnWin.hasClass('btnHW04')) this.refreshContent();
-        }.bind(this)
-      });
+      if (this.options.enabledHeaderBottons[$iB]){
+        $btnWin.addEvents({
+          'mouseenter': function(){
+            $btnWin.setStyle('background-position', bgPos[0] + ' ' + (bgPos[1].toInt() - 20).toString() + 'px');
+          },
+          'mouseleave': function(){
+            $btnWin.setStyle('background-position', bgPos[0] + ' ' + bgPos[1]);
+          },
+          'mousedown': function(e){
+            e.stop();
+            $btnWin.setStyles({
+              'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 40).toString() + 'px',
+              'color': '#FFF'
+            });
+          },
+          'mouseup': function(){
+            $btnWin.setStyles({
+              'background-position': bgPos[0] + ' ' + bgPos[1]
+            })
+          },
+          'click': function(e){
+            if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
+            if ($btnWin.hasClass('btnHW04')) this.refreshContent();
+          }.bind(this)
+        });
+      }
+      else {
+        $btnWin.setStyles({
+          'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 60).toString() + 'px',
+          'cursor': 'default'
+        });
+      }
     }.bind(this));
   },
 
@@ -156,30 +155,23 @@ var mooWin = new Class({
       $btn.addEvents({
         'click': function(e){
           $editAction = this.serverObjectActions[$iB];                                                        // <- viene por Json
-
-          if ($defined(this.serverOptions.win)) $editAction.objParent = (this.serverOptions.win.obj_parent == 'this') ? this : this.serverOptions.win.obj_parent;
-          if ($editAction.type == 'delete_object') $editAction.formDelete = this.getWinNodeFormDelete                  // <- es para eliminar ?
+          $editAction.obj_parent = this;
+          if ($editAction.type == 'delete_object') $editAction.formDelete = this.nodeWinFormDelete                  // <- es para eliminar ?
           if ($editAction.execute !== undefined) eval ($editAction.execute+'($editAction, e, false)');
         }.bind (this)
       });
     }, this);
   },
 
-  /*** Asignación de los datos JSON que vienen desde el server ***/
   dataJsonAssign: function () {
-    console.count ('<dataJsonAssign>');
     this.serverOptions = $jsonData4Win;
     this.dataJsonContentAssign();
   },
 
   dataJsonContentAssign: function () {
-    console.count ('<dataJsonContentAssign>');
     this.serverObjectActions = $actions;
   },
 
-  /**************************
-   * Metodos del objeto Win *
-   **************************/
   show: function(){
     this.nodeWin.setStyle ('display', 'block');
   },
@@ -230,14 +222,10 @@ var mooWin = new Class({
 
   refresh: function () {
     this.removeEvents ('winDomReady');
-    this.addEvent ('winDomReady', function ($tree, $elems, $html, $js) {
-      console.debug ('renderiza !!!', $html);
-    })
     this.ajaxConex.send();
   },
 
   refreshContent: function ($url) {
-    console.count ('<refreshContent>');
 
     this.removeEvents ('winDomReady');            // <- Removemos todos las funcones asociadas al evento winDomReady
 
@@ -253,14 +241,29 @@ var mooWin = new Class({
 
     this.ajaxConex.send();
   },
-  /**************************************/
+
+  /*
+ * arguments[0]: message
+ * arguments[1]: autoback = true
+ *
+ */
+  setState: function () {
+    arguments[1] = arguments[1] || true;
+
+    this.nodeState.back = this.nodeState.get('text');
+    this.nodeState.set('text', arguments[0]);
+    if (arguments[1]) {
+      (function () {
+        this.nodeState.set('text', this.nodeState.back);
+      }).delay (1500, this);
+    }
+  },
 
   createAjaxConex: function () {
     this.ajaxConex = new Request.HTML({
       url: this.options.link,
       method: 'GET',
       onFailure: function($xhr){
-        console.debug ($xhr);
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function(tree, elems, html, js){
@@ -271,7 +274,7 @@ var mooWin = new Class({
 
   // Creamos Ventana
   makeWin: function(){
-    console.count ('<makeWin>');
+    //console.count ('<makeWin>');
     this.nodeWin.setStyle ('position', 'absolute');
     
     this.dragWin = new Drag.Move(this.nodeWin, {
@@ -290,7 +293,39 @@ var mooWin = new Class({
     });
   },
 
+  makeAccordions: function(){
+    if (this.nodeContent.getElements('h2.titleSection').length) {
+      this.winAccordion = new Fx.Accordion(this.nodeContent.getElements('h2.titleSection'), this.nodeContent.getElements('div.fieldSection'), {
+        show: 0,
+        opacity: 0,
+        onActive: function(toggler, element){
+          toggler.addClass ('titleSection-hover')
+        },
+        onBackground: function(toggler, element){
+          toggler.removeClass ('titleSection-hover');
+        }
+      });
+    }
+  },
+
   redims: function () {
+
+    // Analizamos dims viene como opciones del objeto
+    if (this.options.dims) {
+      if ($type(this.options.dims) == 'string') {
+
+        reDims = new Array();
+        reDims = this.options.dims.split('x');
+
+        this.options.dims = new Object();
+
+        this.options.dims.width = reDims[0].toInt();
+        //this.options.dims.height = reDims[1];
+        this.options.dims.left = reDims[2].toInt();
+        this.options.dims.top = reDims[3].toInt();
+      }
+    }
+
     this.options.dims.width = this.options.dims.width || this.serverOptions.dims.width;
     this.options.dims.left = this.options.dims.left || this.serverOptions.dims.left;
     this.options.dims.top = this.options.dims.top || this.serverOptions.dims.top;
@@ -307,7 +342,6 @@ var mooWin = new Class({
     return this.options.dims;
   }
 });
-
 
 
 
@@ -332,43 +366,30 @@ mooWin.sfPropelEdit = new Class({
   },
 
   getWinFormNodes: function () {
-    this.getWinNodeActions = this.nodeContent.getElement ('div.win_footer');
-    this.getWinNodeFormEdit = this.nodeContent.getElement ('form');
-    this.getWinNodeFormDelete = this.nodeWin.getElement ('form.hiddenForm');
-  },
+    this.nodeWinActions = this.nodeContent.getElement ('div.win_footer');
+    this.nodeWinFormEdit = this.nodeContent.getElement ('form');
+    this.nodeWinFormDelete = this.nodeWin.getElement ('form.hiddenForm');
 
-  makeAccordions: function(){
-    if (this.nodeContent.getElements('h2.titleSection').length) {
-      this.winAccordion = new Fx.Accordion(this.nodeContent.getElements('h2.titleSection'), this.nodeContent.getElements('div.fieldSection'), {
-        show: 0,
-        opacity: 0,
-        onActive: function(toggler, element){
-          toggler.addClass ('titleSection-hover')
-        },
-        onBackground: function(toggler, element){
-          toggler.removeClass ('titleSection-hover');
-        }
-      });
-    }
+    this.widgetSelectsWithAdd = this.nodeContent.getElements ('div.select_with_add');
   },
 
   dataJsonContentAssign: function () {
     this.parent();
   },
 
-  makeWidgets: function () {
-    // $propelChoiceWithAdd <- viene ejecutado en la respuesta por AJAX
-    if (undefined!=window.$propelChoiceWithAdd) this.renderPropelChoiceWithAdd();
+  renderContent: function () {
+    this.parent();
+    this.makeWidgets ();
   },
 
-
+  makeWidgets: function () {
+    // $propelChoiceWithAdd <- viene ejecutado en la respuesta por AJAX
+    if (this.widgetSelectsWithAdd.length) this.renderPropelChoiceWithAdd();
+  },
 
   renderPropelChoiceWithAdd: function () {
-    // Identificamos los bloques que tengan un selecto con comportamiento Add
-    $content2Select = this.nodeContent.getElements ('div.select_with_add');
-
     // Recorremos, uno a uno, todos los bloques
-    $content2Select.each (function ($selWAdd, $iS) {
+    this.widgetSelectsWithAdd.each (function ($selWAdd, $iS) {
       var $nodesWidget = $selWAdd.getChildren();
 
       var $popUp = $nodesWidget[0];
@@ -383,7 +404,6 @@ mooWin.sfPropelEdit = new Class({
 
       var $btns = new Array ($btn2PopUp, $btn2Cancel, $btn2Add);
       this.renderButtons ($btns);
-
 
       // Comportamiento de eventos de raton y teclado.
       $btn2PopUp.addEvent ('click', function (e) {
@@ -420,21 +440,14 @@ mooWin.sfPropelEdit = new Class({
     }.bind(this));
   },
 
-  renderContent: function () {
-    this.parent();
-
-    this.makeAccordions();
-    this.makeWidgets ();
-  },
-
   createAjaxConex: function () {
     this.parent ()
 
     this.editAjaxConex = new Request.HTML({
-      url: this.getWinNodeFormEdit,
+      url: this.nodeWinFormEdit,
       method: 'GET',
       onFailure: function($xhr){
-        console.debug ($xhr.responseText);
+        //console.debug ($xhr.responseText);
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function($tree, $elems, $html, $js){
@@ -445,26 +458,40 @@ mooWin.sfPropelEdit = new Class({
   },
 
   save: function ($objAct, $ev) {
-    this.editAjaxConex.options.url = this.getWinNodeFormEdit.get('action');
-    this.editAjaxConex.post(this.getWinNodeFormEdit);
+    this.editAjaxConex.options.url = this.nodeWinFormEdit.get('action');
+    this.editAjaxConex.post(this.nodeWinFormEdit);
   },
 
   serverEditResponse: function () {
-    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
-    this.nodeContent.set('html', this.editAjaxConex.response.html);
-    this.getWinNodesContent();
-    this.renderContent();
+    this.renderEditResponse();
+    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
+
     this.blockOn();
 
-    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
+    if ($flashEditResponse.action_state == 'ok' && (this.objParent != window)) {
+      this.objParent.refreshContent();
+      this.objParent.setState ('Registro editado.')
+    }
 
     (function () {
       $win_flashes.dispose();
       this.blockOff();
     }).delay (1000, this);
+  },
+
+  renderEditResponse: function () {
+    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
+    this.nodeContent.set('html', this.editAjaxConex.response.html);
+    this.getWinNodesContent();
+    this.renderContent();
+  },
+
+  closeAndParentRefresh: function () {
+    if (this.objParent != window) this.objParent.refreshContent();
+    else location.reload();
+    this.hideAndDestroy();
   }
 })
-
 
 mooWin.sfPropelNew = new Class({
   Extends: mooWin.sfPropelEdit,
@@ -472,6 +499,7 @@ mooWin.sfPropelNew = new Class({
   Implements: [Events, Options],
 
   options: {
+    enabledHeaderBottons: [0, 1, 1, 1]
   },
 
   initialize: function(json, options){
@@ -479,32 +507,36 @@ mooWin.sfPropelNew = new Class({
   },
 
   serverEditResponse: function () {
-    this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
+    this.renderEditResponse();
+    this.blockOn();
 
-    // Vemos si la edicion ha sido correcta
-    if (this.flashEditResponse.action_state == 'error') {
-
-      // Renderizamos nuevamente el contenido de la ventana con sus respectivos errores
-      this.nodeContent.set('html', this.editAjaxConex.response.html);
-      this.getWinNodesContent();
-      this.renderContent();
-      this.blockOn();
-
-      (function () {
+    (function () {
+      // Vemos si la edicion ha sido correcta
+      if (this.flashEditResponse.action_state == 'error') {
         this.nodeContent.getElement ('div.win_flashes').dispose();
         this.blockOff();
-      }).delay (1000, this);
-    }
-    else {
-      // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
-      this.new2Edit();
-    }
+      }
+      else if (this.flashEditResponse.auto_action == 'reedit') {
+        // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
+        this.new2Edit();
+      }
+      else if (this.flashEditResponse.auto_action == 'close_and_parent_refresh') {
+        // La edicion es correcta. Entonces eliminamos el objeto new y creamos uno nuevo tipo edit
+        this.closeAndParentRefresh();
+      }
+    }).delay (1000, this);
   },
 
   new2Edit: function () {
+    if (this.objParent != window) {
+      this.objParent.refreshContent();
+    }
     // Este metodo elimina el objeto tipo win y genera uno nuevo tipo edit.
     // Viene, por javascript, todos los elementos.
     var $dims = this.dims2Node();
+
+    //console.debug ('this.flashEditResponse -> ', this.flashEditResponse);
+
     this.flashEditResponse.action.obj_parent = this.options.obj_parent;
     this.flashEditResponse.action.node_insert = this.options.node_insert;
     this.flashEditResponse.action.dims = $dims;
@@ -537,7 +569,7 @@ mooWin.sfPropelList = new Class({
   },
 
   getWinNodesContent: function () {
-    console.count ('<getListContentNodes>');
+    //console.count ('<getListContentNodes>');
     this.parent();
 
     this.getWinListMenuNodes();
@@ -726,8 +758,6 @@ mooWin.sfPropelList = new Class({
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
 
-                  console.debug ($action.execute+'($action, e, false)');
-
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })
@@ -751,28 +781,15 @@ mooWin.sfPropelList = new Class({
 
   },
   deleteObject: function ($action, $ev) {
-    //console.debug ($(this.serverOptions.win.nodeId_formMethod));
-    $objAct = $action;
-    $objAct.formDelete = $(this.serverOptions.win.nodeId_formMethod);
-
+    $action.formDelete = $(this.serverOptions.win.nodeId_formMethod);
     $ev.stop();
     if (confirm($action.msg)) {
-      var $myHTMLRequest = new Request.HTML({
-        evalScripts: false,
-        method: 'GET',
-        url: $objAct.link,
-        onFailure: function($xhr){
-          $('content').set('html', $xhr.responseText);
-        },
+      new Request.HTML({
+        url: $action.link,
         onComplete: function (tree, elems, html, js) {
-          eval (js);                                              // <- $deleteResponse
           eval ($deleteResponse.action_delete+'()');
         }.bind(this)
-      }).post($objAct.formDelete);
+      }).post($action.formDelete);
     }
-  },
-
-  closeAndRefreshParent: function () {
-    this.hideAndDestroy();
   }
 })
