@@ -32,10 +32,29 @@
     // Ajax Request ?
     if ($this->getRequest()->isXmlHttpRequest()) {
 
+      // Variables Estaticas
+      $this->win = array (
+        'nodeId_formMethod'=> 'sf_admin_list_form_method-<?php echo $this->getModuleName() ?>',
+        'nodeId_container' => 'sf_admin_container-index-<?php echo $this->getModuleName() ?>',
+        'nodeId_winsEmbedded'=> 'embedded_win-<?php echo $this->getModuleName() ?>',
+        'obj_parent' => 'this'
+      );
+
+      $this->controller = array (
+        'moduleName' => '<?php echo $this->getModuleName() ?>',
+        'action' => 'list'
+      );
+
+      $this->dims = array (
+        'width' => 800,
+        'left' => 100,
+        'top' => 100
+      );
+
       $this->jsonData4Win = array (
-        controller => <?php echo $this->getGeneratedModuleName() ?>Actions::$controller,
-        win => <?php echo $this->getGeneratedModuleName() ?>Actions::$win,
-        dims => <?php echo $this->getGeneratedModuleName() ?>Actions::$dims
+        controller => $this->controller,
+        win => $this->win,
+        dims => $this->dims
       );
 
       if ($request->getParameter('win_container')) {

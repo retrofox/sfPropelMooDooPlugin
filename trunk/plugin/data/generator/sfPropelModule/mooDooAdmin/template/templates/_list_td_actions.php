@@ -3,7 +3,7 @@
   <ul class="sf_admin_ul_actions">
 <?php foreach ($this->configuration->getValue('list.object_actions') as $name => $params): ?>
 <?php if ('_delete' == $name): ?>
-    <?php echo $this->addCredentialCondition('[?php echo $helper->mooLinkToDelete($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
+    <?php echo $this->addCredentialCondition('[?php echo $helper->moolinkToDelete($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
 
 <?php elseif ('_edit' == $name): ?>
     <?php echo $this->addCredentialCondition('[?php echo $helper->mooLinkToEdit($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>

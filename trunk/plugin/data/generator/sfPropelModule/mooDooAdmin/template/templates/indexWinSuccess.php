@@ -15,12 +15,17 @@
       <a href="#" title="Filtro" >Filtro</a>
       <?php endif; ?>
 
+
+
       <div class="wins_bar">
         <?php if ($this->configuration->hasFilterForm()): ?>
         [?php include_partial('<?php echo $this->getModuleName() ?>/win_filters', array('form' => $filters, 'configuration' => $configuration)) ?]
         <?php endif; ?>
       </div>
+
+
     </div>
+
     <div id="sf_admin_content-<?php echo $this->getModuleName() ?>" class="list-container">
       [?php include_partial('<?php echo $this->getModuleName() ?>/win_list_content', array('helper' => $helper, 'pager' => $pager, 'sort' => $sort)) ?]
     </div>
@@ -29,6 +34,7 @@
       [?php include_partial('<?php echo $this->getModuleName() ?>/list_footer', array('pager' => $pager)) ?]
     </div>
   </div>
+
   <div class="win_state">listo.</div>
 
 </div>

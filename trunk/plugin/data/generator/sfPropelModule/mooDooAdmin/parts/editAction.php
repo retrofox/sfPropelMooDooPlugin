@@ -1,5 +1,21 @@
   public function executeEdit(sfWebRequest $request)
   {
+
+    $this->winEdit = array (
+      'win' => 'edit_win-<?php echo $this->params['route_prefix'] ?>-[?php echo $<?php echo $this->getSingularName() ?>->getId() ?]'
+    );
+
+    $this->winEdit_controller = array (
+      'moduleName' => '<?php echo $this->getModuleName() ?>',
+      'action' => 'edit'
+    );
+
+    $this->winEdit_dims = array (
+      'width' => 450,
+      'left' => 100,
+      'top' => 40
+    );
+
     $this-><?php echo $this->getSingularName() ?> = $this->getRoute()->getObject();
     $this->form = $this->configuration->getForm($this-><?php echo $this->getSingularName() ?>);
 
@@ -8,11 +24,10 @@
       $this->setTemplate('editWin');
 
       $this->jsonData4Win = array (
-        controller => <?php echo $this->getGeneratedModuleName() ?>Actions::$winEdit_controller,
-        win => <?php echo $this->getGeneratedModuleName() ?>Actions::$winEdit,
-        dims => <?php echo $this->getGeneratedModuleName() ?>Actions::$winEdit_dims
+        controller => $this->winEdit_controller,
+        win => $this->winEdit,
+        dims => $this->winEdit_dims
       );
-
     }
 
     // Viene de edicion ?

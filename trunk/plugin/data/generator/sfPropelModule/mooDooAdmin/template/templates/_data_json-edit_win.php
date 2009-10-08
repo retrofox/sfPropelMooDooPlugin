@@ -1,4 +1,6 @@
-  // JsonData editWin
-// JsonData list
-  var $jsonData4Win = new Array ();
-  $jsonData4Win = [?php echo json_encode($jsonData4Win) ?]
+// JsonData editWin
+  $jsonData4Win = {
+    win: [?php echo json_encode($jsonData4Win->getRaw('win')) ?],
+    controller: [?php echo json_encode($jsonData4Win->getRaw('controller')) ?],
+    dims: [?php echo json_encode($jsonData4Win->getRaw('dims')) ?]
+  }

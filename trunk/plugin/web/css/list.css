@@ -36,6 +36,10 @@
     width: 28px;
   }
 
+  #sf_admin_list_batch_actions input {
+
+  }
+
   .sf_admin_list .sf_admin_list_th_actions, .sf_admin_list sf_admin_list_td_actions {
     width: 20px;
   }
@@ -44,6 +48,7 @@
   /* checkboxs del thead */
   .sf_admin_list thead th input {
     float: left;
+    margin: 0;
   }
 
 /* tFoot  - sf_admin_pagination */

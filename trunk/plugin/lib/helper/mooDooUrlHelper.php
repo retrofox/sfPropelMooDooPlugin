@@ -179,3 +179,15 @@ function moo_json_data_link_to_filters_1($name, $internal_uri, $options = array(
 
   return $href;
 }
+
+function _get_json_data_token()
+{
+  // CSRF protection
+  $form = new sfForm();
+  if ($form->isCSRFProtected())
+  {
+    $token = sprintf("', %s: '%s", $form->getCSRFFieldName(), $form->getCSRFToken());
+    return $token;
+  }
+  return '';
+}

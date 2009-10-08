@@ -7,10 +7,7 @@
 		<tr>
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
           <th id="sf_admin_list_batch_actions">
-            <label for="sf_admin_list_batch_checkboxAll">A</label>
             <input id="sf_admin_list_batch_checkboxAll" type="checkbox"/>
-
-            <label for="sf_admin_list_batch_checkboxAll">I</label>
             <input id="sf_admin_list_batch_checkboxInvert" type="checkbox"/>
           </th>
 <?php endif; ?>

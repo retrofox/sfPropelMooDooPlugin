@@ -781,8 +781,19 @@ mooWin.sfPropelList = new Class({
 
   },
   deleteObject: function ($action, $ev) {
-    $action.formDelete = $(this.serverOptions.win.nodeId_formMethod);
     $ev.stop();
+    $action.formDelete = $(this.serverOptions.win.nodeId_formMethod);
+
+    // Token ?
+    if ($action._csrf_token) {
+      $input_token = new Element ('input', {
+	type: 'hidden',
+	name: '_csrf_token', 
+	value: $action._csrf_token
+      })
+      $input_token.inject ($action.formDelete);
+    }
+
     if (confirm($action.msg)) {
       new Request.HTML({
         url: $action.link,

@@ -1,7 +1,5 @@
 <script type="text/javascript">
 // win Edit
-
-// JSON Data objWin
 [?php include_partial('<?php echo $this->getModuleName() ?>/data_json-edit_win', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'jsonData4Win' => $jsonData4Win, )) ?]
 
 // Actions
