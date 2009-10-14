@@ -6,7 +6,7 @@
 <?php endif; ?>
 <?php foreach ($this->configuration->getValue($action.'.actions') as $name => $params): ?>
 <?php if ('_delete' == $name): ?>
-<?php echo $this->addCredentialCondition('[?php echo $helper->mooJsonDataToDeleteObject($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params); ?>
+<?php echo $this->addCredentialCondition('[?php echo $helper->mooJsonDataToDeleteObject($'.$this->getSingularName().', '.$this->asPhp($params).', \''.$action.'\') ?]', $params); ?>
 <?php elseif ('_list' == $name): ?>
 <?php echo $this->addCredentialCondition('[?php echo $helper->mooJsonDataToWinCancel('.$this->asPhp($params).') ?]', $params) ?>
 <?php elseif ('_save' == $name): ?>

@@ -1,3 +1,6 @@
 <script type="text/javascript">
-$deleteResponse = [?php echo $jsonResponse ?]
+  var $deleteResponse = Array ();
+  $deleteResponse = {
+    'action_delete': 'this.refreshContent'
+  }
 </script>

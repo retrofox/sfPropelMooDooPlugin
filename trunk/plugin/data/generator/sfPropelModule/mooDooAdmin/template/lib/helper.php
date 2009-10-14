@@ -118,13 +118,15 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
 
   // Helpers para acciones de objetos en formato JSON - list
-  public function mooJsonDataToDeleteObject($object, $params, $module = '')
+  public function mooJsonDataToDeleteObject($object, $params, $action, $module = '')
   {
     if ($object->isNew())
     {
       return '';
     }
-    return "{type: 'delete_object', msg: '".__($params['confirm'])."', link: '".url_for($this->getUrlForAction('delete', $module), $object)._get_json_data_token()."', execute: 'this.deleteObject'},"."\n";
+
+    if ($action == 'edit') return "{type: 'delete_object', msg: '".__($params['confirm'])."', link: '".url_for($this->getUrlForAction('delete', $module), $object)."', execute: 'this.deleteObject'},"."\n";
+    else return "{type: 'delete_object', msg: '".__($params['confirm'])."', link: '".url_for($this->getUrlForAction('delete', $module), $object)._get_json_data_token()."', execute: 'this.deleteObject'},"."\n";
   }
 
   public function mooJsonDataToEditObject($object, $params)

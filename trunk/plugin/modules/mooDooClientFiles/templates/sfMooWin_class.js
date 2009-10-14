@@ -758,6 +758,7 @@ mooWin.sfPropelList = new Class({
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
 
+		  console.debug ($action);
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })

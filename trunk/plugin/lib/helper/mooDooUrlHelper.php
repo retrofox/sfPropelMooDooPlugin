@@ -189,5 +189,5 @@ function _get_json_data_token()
     $token = sprintf("', %s: '%s", $form->getCSRFFieldName(), $form->getCSRFToken());
     return $token;
   }
-  return '';
+  else return '';
 }

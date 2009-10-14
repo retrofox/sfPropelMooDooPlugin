@@ -8,9 +8,6 @@ public function executeDelete(sfWebRequest $request)
 
   // Modificamos comportamiento si es AJAX
   if ($this->getRequest()->isXmlHttpRequest()) {
-    $arrResponde['action_delete'] = 'this.refreshContent';
-
-    $this->jsonResponse = json_encode($arrResponde);
     return $this->renderPartial('<?php echo $this->getModuleName() ?>/data_json-delete');
   }
   else $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');

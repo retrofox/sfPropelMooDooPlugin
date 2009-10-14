@@ -15,7 +15,6 @@
     $this->pager = $this->getPager();
     $this->sort = $this->getSort();
 
-
     $this->jsonData4Win = array (
       'controller' => array (
         'moduleName' => 'compras'
