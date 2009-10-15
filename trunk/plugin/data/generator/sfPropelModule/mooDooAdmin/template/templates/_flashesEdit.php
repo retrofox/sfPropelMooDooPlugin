@@ -3,14 +3,15 @@
   [?php echo __($sf_user->getFlash('notice-<?php echo $this->getModuleName() ?>-edit'), array(), 'sf_admin') ?]
 </div>
 
-  <script type="text/javascript">
+<script type="text/javascript">
   $flashEditResponse = new Array ();
   $flashEditResponse = {
     action_state: 'ok',
-    auto_action: 'close_and_parent_refresh'
+    was_new: true,
+    auto_action: 'close_and_parent_refresh',
+    action: [?php echo $helper->mooJsonDataToEditObject($<?php echo $this->getSingularName() ?>, array('inWinPopUp' => true, 'class_suffix' => 'edit', 'label' => 'Edit')); ?]
   }
-  </script>
-
+</script>
 [?php endif; ?]
 
 [?php if ($sf_user->hasFlash('error-<?php echo $this->getModuleName() ?>-edit')): ?]

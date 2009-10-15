@@ -609,7 +609,11 @@ mooWin.sfPropelList = new Class({
         this.serverObjectListActions = $jsonDataObjActionsList;       // <- Actulizamos solo los datos JSON del listado
         this.nodeListContainer.set('html', this.listAjaxRequest.response.html);
         this.getWinListNodesContent ();
+
         this.makeListContent();
+
+	//console.debug (this.listAjaxRequest.response.html);
+	//this.nodesObjectActions
       }.bind(this)
     });
   },
@@ -724,6 +728,11 @@ mooWin.sfPropelList = new Class({
       })
     }, this);
 
+    // Acciones del listado
+    this.nodesObjectActions = this.nodeListContainer.getElements ('ul.sf_admin_actions li.btn_admin_actions');
+    this.renderButtons(this.nodesObjectActions);
+    this.renderAction2Buttons();
+
     // Boton accion de cada objeto
     this.nodeListBtnObjectAction.each (function ($btn, $iB) {
       $btn.addEvents ({
@@ -758,7 +767,6 @@ mooWin.sfPropelList = new Class({
                   $action.obj_parent = this;
                   $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
 
-		  console.debug ($action);
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
               })
