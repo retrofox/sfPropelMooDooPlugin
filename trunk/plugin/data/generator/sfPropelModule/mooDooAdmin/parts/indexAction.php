@@ -29,7 +29,7 @@
     }
 
     // Ajax Request ?
-    if ($this->getRequest()->isXmlHttpRequest()) {
+    if ($this->getRequest()->isXmlHttpRequest() || $this->getRequest()->getAttribute('forceAsAjax')==true) {
 
       // Variables Estaticas
       $this->win = array (
