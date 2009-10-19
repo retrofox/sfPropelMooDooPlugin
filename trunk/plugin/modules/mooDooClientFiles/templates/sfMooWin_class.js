@@ -622,7 +622,7 @@ mooWin.sfPropelList = new Class({
     this.parent();
 
     this.makeBarMenu();
-    this.makeWinFilter();
+    if (this.nodeAdminFilter) this.makeWinFilter();
     this.makeListContent();
   },
 
