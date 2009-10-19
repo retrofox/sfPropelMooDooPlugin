@@ -82,13 +82,14 @@
   border-bottom: 1px solid #AAA;
 }
 
+
 .sf_admin_list tbody tr {
-  line-height: 20px;
+  /*line-height: 20px;*/
 }
 
 .sf_admin_list tbody tr td {
   height: 20px;
-  padding: 0 5px;
+  padding: 0px 5px;
 }
 
 .sf_admin_row {
