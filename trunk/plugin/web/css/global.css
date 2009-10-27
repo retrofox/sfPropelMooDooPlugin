@@ -377,6 +377,7 @@ div.win div.sf_admin_form sf_admin_form win_content div {
   list-style: none;
 }
 
+
 .errors {
   color: #F00;
 }
@@ -448,4 +449,24 @@ div.win4add2select input {
 div.win4add2select div.btn24x24 {
   float: right;
   margin-left: 3px;
+}
+
+.error {
+  color: #F00;
+  font-weight: bold;
+  background-color: #FDD;
+  padding: 0 5px;
+}
+
+.ok {
+  color: #090;
+  font-weight: bold;
+  background-color: #DFD;
+  padding: 0 5px;
+}
+
+.warning {
+  color: #400;
+  background-color: #FF8;
+  padding: 0 5px;
 }

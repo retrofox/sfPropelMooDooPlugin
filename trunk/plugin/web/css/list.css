@@ -101,8 +101,8 @@
 }
 
 .even {
-  background-color: #FFFAF8;
-  color: #44303B;
+  background-color: #EFE;
+  color: #141;
 }
 
 .sf_admin_row-hover {
@@ -250,3 +250,6 @@ ul.sf_admin_actions li.sf_admin_batch_actions_choice {
   margin: 0 5px 0 0; padding: 2px;
   float: left
 }
+
+.col_w20      { width: 20px }
+.col_w40      { width: 40px }

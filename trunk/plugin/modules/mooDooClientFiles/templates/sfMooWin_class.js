@@ -297,7 +297,7 @@ var mooWin = new Class({
     if (this.nodeContent.getElements('h2.titleSection').length) {
       this.winAccordion = new Fx.Accordion(this.nodeContent.getElements('h2.titleSection'), this.nodeContent.getElements('div.fieldSection'), {
         show: 0,
-        opacity: 0,
+        opacity: false,
         onActive: function(toggler, element){
           toggler.addClass ('titleSection-hover')
         },
