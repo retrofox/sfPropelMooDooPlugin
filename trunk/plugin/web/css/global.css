@@ -14,8 +14,8 @@ table {
 }
 
 table thead {
-  background-color: #DFC;
-  color: #030;
+  background-color: #E5EEE5;
+  color: #232;
 }
 
 table tfoot {
@@ -235,11 +235,29 @@ div.win div.block_win {
 div.win div.win_container {
 }
 
-div.win div.win_content .block {
+.block {
   padding: 3px;
+  border: 1px solid #BBB;
+  margin: 2px;
 }
 
-div.win div.win_content .block h3{
+.block table {
+  border-collapse: collapse;
+}
+
+.block table tbody {
+  background-color: #FFD;
+}
+.block table td {
+  text-align: center;
+}
+
+.block table th, .block table td {
+  border: 1px solid #CCC;
+}
+
+
+.block h3{
   color: #026;
   background-color: #EEE;
   padding: 1px 3px;

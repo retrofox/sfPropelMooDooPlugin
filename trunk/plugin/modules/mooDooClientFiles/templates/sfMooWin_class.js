@@ -156,6 +156,7 @@ var mooWin = new Class({
         'click': function(e){
           $editAction = this.serverObjectActions[$iB];                                                        // <- viene por Json
           $editAction.obj_parent = this;
+
           if ($editAction.type == 'delete_object') $editAction.formDelete = this.nodeWinFormDelete                  // <- es para eliminar ?
           if ($editAction.execute !== undefined) eval ($editAction.execute+'($editAction, e, false)');
         }.bind (this)
@@ -731,7 +732,7 @@ mooWin.sfPropelList = new Class({
     // Acciones del listado
     this.nodesObjectActions = this.nodeListContainer.getElements ('ul.sf_admin_actions li.btn_admin_actions');
     this.renderButtons(this.nodesObjectActions);
-    this.renderAction2Buttons();
+    //this.renderAction2Buttons();
 
     // Boton accion de cada objeto
     this.nodeListBtnObjectAction.each (function ($btn, $iB) {
