@@ -8,7 +8,6 @@ var renderAjaxWin = function ($objAct) {
 }
 
 var renderAjaxEditWin = function ($objAct) {
-  console.debug ('editWin -> ', $objAct);
   if (!$wins.contains ($objAct.link)) {
     $editWin = new mooWin.sfPropelEdit ($objAct);
     $wins.push($objAct.link);
@@ -16,8 +15,6 @@ var renderAjaxEditWin = function ($objAct) {
 }
 
 var renderAjaxNewWin = function ($objAct) {
-  console.debug ('es solo una NEW win !', $objAct);
-
   if (!$wins.contains ($objAct.link)) {
     $newWin = new mooWin.sfPropelNew ($objAct);
     $wins.push ($objAct.link);

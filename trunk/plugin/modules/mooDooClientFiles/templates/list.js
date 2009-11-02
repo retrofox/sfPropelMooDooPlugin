@@ -22,6 +22,8 @@ var renderAjaxNewWin = function ($objAct) {
 }
 
 var renderAjaxListWin = function ($objAct) {
+  console.debug ($objAct);
+  
   if (!$wins.contains ($objAct.link)) {
     new mooWin.sfPropelList ($objAct);
     $wins.push ($objAct.link);
@@ -29,7 +31,8 @@ var renderAjaxListWin = function ($objAct) {
 }
 
 var renderAjax = function ($objAct) {
-  var ajaxConex = new Request.HTML({
+  renderAjax.obj_params = $objAct;
+  renderAjax.ajaxConex = new Request.HTML({
     url: $objAct.link,
     method: 'GET',
     onFailure: function($xhr){
@@ -37,16 +40,7 @@ var renderAjax = function ($objAct) {
     },
     onSuccess: function(tree, elems, html, js){
       $($objAct.node_insert).set ('html', html);
-
-      if ($ajaxResponse.action_state == 'ok') {
-	if ($ajaxResponse.auto_action == 'close_and_parent_refresh') {
-	  $objAct.obj_parent.refreshContent();
-	  (function() {
-	  $($objAct.node_insert).destroy();
-	  $objAct.node_insert = null;
-	  }).delay (3000);
-	}
-      }
+      //renderAjax.fireEvent('ajaxIsReady', tree, elems, html, js);
     }
   }).send();
 }

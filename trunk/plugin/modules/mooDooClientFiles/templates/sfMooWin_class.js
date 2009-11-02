@@ -30,6 +30,7 @@ var mooWin = new Class({
   initialize: function(options){
     // Asignamos el objeto parent y luego lo hacemos null para que la clase pueda definir this.options
     this.objParent = options.obj_parent || window;
+
     options.obj_parent = null;
 
     this.setOptions(options);
@@ -130,6 +131,11 @@ var mooWin = new Class({
             })
           },
           'click': function(e){
+	    if ($btnWin.hasClass('btnHW02')) {
+	      console.debug ('this -> ', this.nodeWin);
+	      console.debug ('this.objParent -> ', this.objParent.nodeWin);
+	    };
+
             if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
             if ($btnWin.hasClass('btnHW04')) this.refreshContent();
           }.bind(this)
