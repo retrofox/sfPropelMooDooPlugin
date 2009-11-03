@@ -22,8 +22,6 @@ var renderAjaxNewWin = function ($objAct) {
 }
 
 var renderAjaxListWin = function ($objAct) {
-  console.debug ($objAct);
-  
   if (!$wins.contains ($objAct.link)) {
     new mooWin.sfPropelList ($objAct);
     $wins.push ($objAct.link);
