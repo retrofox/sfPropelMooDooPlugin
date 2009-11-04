@@ -1,8 +1,11 @@
   public function executeEdit(sfWebRequest $request)
   {
 
+    $this-><?php echo $this->getSingularName() ?> = $this->getRoute()->getObject();
+    $this->form = $this->configuration->getForm($this-><?php echo $this->getSingularName() ?>);
+
     $this->winEdit = array (
-      'win' => 'edit_win-<?php echo $this->params['route_prefix'] ?>-[?php echo $<?php echo $this->getSingularName() ?>->getId() ?]'
+      'win' => 'edit_win-<?php echo $this->params['route_prefix'] ?>-'.$this-><?php echo $this->getSingularName() ?>->getId()
     );
 
     $this->winEdit_controller = array (
@@ -16,8 +19,6 @@
       'top' => 40
     );
 
-    $this-><?php echo $this->getSingularName() ?> = $this->getRoute()->getObject();
-    $this->form = $this->configuration->getForm($this-><?php echo $this->getSingularName() ?>);
 
     // Ajax Request ?
     if ($this->getRequest()->isXmlHttpRequest()) {

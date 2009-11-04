@@ -131,11 +131,6 @@ var mooWin = new Class({
             })
           },
           'click': function(e){
-	    if ($btnWin.hasClass('btnHW02')) {
-	      console.debug ('this -> ', this.nodeWin);
-	      console.debug ('this.objParent -> ', this.objParent.nodeWin);
-	    };
-
             if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
             if ($btnWin.hasClass('btnHW04')) this.refreshContent();
           }.bind(this)
@@ -281,7 +276,6 @@ var mooWin = new Class({
 
   // Creamos Ventana
   makeWin: function(){
-    //console.count ('<makeWin>');
     this.nodeWin.setStyle ('position', 'absolute');
     
     this.dragWin = new Drag.Move(this.nodeWin, {
@@ -454,17 +448,26 @@ mooWin.sfPropelEdit = new Class({
       url: this.nodeWinFormEdit,
       method: 'GET',
       onFailure: function($xhr){
-        //console.debug ($xhr.responseText);
         $('content').set ('html', $xhr.responseText);
       },
       onSuccess: function($tree, $elems, $html, $js){
         this.fireEvent ('editResponseIsReady', [$tree, $elems, $html, $js])
-        this.serverEditResponse();
+        //this.serverEditResponse();
       }.bind(this)
     });
   },
 
   save: function ($objAct, $ev) {
+    this.editAjaxConex.addEvent ('success', function () {
+      if (!$objAct.auto_action) {
+	this.serverEditResponse();
+      }
+      else if ($objAct.auto_action == 'close_and_parent_refresh') {
+	this.objParent.refreshContent();
+	this.hideAndDestroy();
+      }
+    }.bind(this));
+
     this.editAjaxConex.options.url = this.nodeWinFormEdit.get('action');
     this.editAjaxConex.post(this.nodeWinFormEdit);
   },
@@ -542,8 +545,6 @@ mooWin.sfPropelNew = new Class({
     // Viene, por javascript, todos los elementos.
     var $dims = this.dims2Node();
 
-    //console.debug ('this.flashEditResponse -> ', this.flashEditResponse);
-
     this.flashEditResponse.action.obj_parent = this.options.obj_parent;
     this.flashEditResponse.action.node_insert = this.options.node_insert;
     this.flashEditResponse.action.dims = $dims;
@@ -576,7 +577,6 @@ mooWin.sfPropelList = new Class({
   },
 
   getWinNodesContent: function () {
-    //console.count ('<getListContentNodes>');
     this.parent();
 
     this.getWinListMenuNodes();
@@ -619,8 +619,6 @@ mooWin.sfPropelList = new Class({
 
         this.makeListContent();
 
-	//console.debug (this.listAjaxRequest.response.html);
-	//this.nodesObjectActions
       }.bind(this)
     });
   },
