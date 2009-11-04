@@ -452,7 +452,6 @@ mooWin.sfPropelEdit = new Class({
       },
       onSuccess: function($tree, $elems, $html, $js){
         this.fireEvent ('editResponseIsReady', [$tree, $elems, $html, $js])
-        //this.serverEditResponse();
       }.bind(this)
     });
   },
