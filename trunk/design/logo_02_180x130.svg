@@ -17,9 +17,9 @@
    sodipodi:docname="logo_02_180x130.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
-   inkscape:export-filename="/var/www/sfPropelMooDooPlugin/trunk/design/logo.png"
-   inkscape:export-xdpi="210.56"
-   inkscape:export-ydpi="210.56">
+   inkscape:export-filename="/var/www/sfPropelMooDooPlugin/trunk/design/logo_180x130.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -44,11 +44,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.0206936"
+     inkscape:zoom="1.4288462"
      inkscape:cx="90"
      inkscape:cy="65"
      inkscape:document-units="px"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1680"
      inkscape:window-height="975"
@@ -103,7 +103,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="fondo-circulo"
-     style="display:none"
+     style="display:inline"
      transform="translate(-135.96804,-133.19098)" />
   <g
      inkscape:groupmode="layer"
@@ -116,99 +116,117 @@
      id="layer1"
      style="display:inline"
      transform="translate(-135.96804,-133.19098)">
-    <g
-       id="g3355"
-       transform="matrix(0.9445235,0,0,0.9445235,45.300933,13.967096)">
-      <text
-         transform="translate(-2,-2)"
-         id="text3287"
-         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Impact;-inkscape-font-specification:Impact Bold"
-         xml:space="preserve"><textPath
-           id="textPath3296"
-           startOffset="50%"
-           xlink:href="#path3273"><tspan
-   id="tspan3289"
-   style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Impact;-inkscape-font-specification:Impact Bold">MooDoo</tspan></textPath></text>
-      <g
-         id="g3343">
-        <path
-           sodipodi:type="arc"
-           style="opacity:1;fill:#7fbf87;fill-opacity:1;stroke:#000000;stroke-width:1.05873489;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
-           id="path3273"
-           sodipodi:cx="212.17838"
-           sodipodi:cy="237.93512"
-           sodipodi:rx="60.456757"
-           sodipodi:ry="60.456757"
-           d="M 272.63513,237.93512 A 60.456757,60.456757 0 1 1 151.72162,237.93512 A 60.456757,60.456757 0 1 1 272.63513,237.93512 z"
-           transform="matrix(0.4774584,0.8786544,-0.8786544,0.4774584,320.57247,-100.31046)" />
-        <g
-           id="g3333"
-           transform="translate(7.2687907,-4.5375815)">
-          <path
-             transform="matrix(0.8684931,0,0,0.8684931,21.11188,-2.66507)"
-             sodipodi:nodetypes="ccsscc"
-             id="path3277"
-             d="M 272.63513,237.93512 C 272.63513,271.30725 245.5505,298.39188 212.17838,298.39188 C 202.647,287.53936 198.60869,283.992 185.37346,287.43683 C 164.72314,292.81163 149.69674,260.76733 149.66748,237.93512 C 149.62487,204.69082 266.4021,220.40813 270.82526,223.20384 C 272.24268,229.85886 272.63513,232.85451 272.63513,237.93512 z"
-             style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.43809628;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" />
-          <path
-             sodipodi:nodetypes="ccsscc"
-             id="path3318"
-             d="M 257.53113,204.00959 C 257.53113,232.99306 234.00831,256.51587 205.02486,256.51587 C 196.74692,247.09053 193.23967,244.00968 181.74497,247.00149 C 163.81031,251.66946 150.75998,223.83921 150.73457,204.00959 C 150.69756,175.13715 254.17735,187.67047 255.95927,191.21558 C 257.19029,196.99542 257.53113,199.59712 257.53113,204.00959 z"
-             style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.11746979;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" />
-          <path
-             style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.11746979;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             d="M 197.99178,157.78334 C 198.27287,149.7846 201.68948,143.38754 206.93815,138.18246 C 211.16113,133.99455 218.41187,131.8365 223.24974,135.74789 C 235.43342,145.59833 231.72551,160.45027 227.88074,169.28544"
-             id="path2457"
-             sodipodi:nodetypes="csss" />
-          <path
-             sodipodi:nodetypes="csssssssssc"
-             id="path2453"
-             d="M 255.90925,191.19241 C 255.14946,190.50168 247.90988,187.92215 241.81272,183.03044 C 232.81733,175.81351 223.96984,165.51275 223.00629,164.71924 C 218.86752,161.31084 194.76532,152.05949 179.67101,162.77158 C 156.15169,179.46271 153.37769,190.28219 151.43004,195.39478 C 149.48238,200.50737 149.70524,202.15075 146.07399,219.01007 C 142.66559,234.83475 134.69903,230.49525 136.82264,242.13845 C 138.917,253.62134 153.66,256.27497 175.04534,251.63326 C 182.55763,250.00271 176.74952,248.22487 197.44334,237.75623 C 218.13715,227.2876 212.14642,226.42641 213.75493,222.41846 C 220.32383,206.05068 222.76283,201.72465 222.76283,201.72465"
-             style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.11746979;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          <path
-             sodipodi:nodetypes="cssc"
-             id="path2455"
-             d="M 196.8682,200.12039 C 187.12993,180.88731 190.6574,167.78512 200.03313,158.4893 C 204.25554,154.30081 211.50685,152.14334 216.34472,156.05473 C 234.65394,170.85764 217.07509,196.95545 217.07509,196.95545"
-             style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.11746979;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          <path
-             inkscape:transform-center-y="2.545433"
-             inkscape:transform-center-x="2.2272679"
-             transform="matrix(1.0029838,-0.4175949,0.4175949,1.0029838,-94.272028,63.316652)"
-             d="M 166.05348,220.19121 A 3.9536541,6.0036969 0 1 1 158.14617,220.19121 A 3.9536541,6.0036969 0 1 1 166.05348,220.19121 z"
-             sodipodi:ry="6.0036969"
-             sodipodi:rx="3.9536541"
-             sodipodi:cy="220.19121"
-             sodipodi:cx="162.09982"
-             id="path2459"
-             style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.30000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.36595746"
-             sodipodi:type="arc" />
-          <path
-             inkscape:transform-center-y="0.27479033"
-             inkscape:transform-center-x="-1.2650122"
-             transform="matrix(0.6072852,-0.1872902,0.1566479,0.7260781,14.853362,88.956478)"
-             d="M 145.84591,244.93816 A 4.3929491,7.0287185 0 1 1 137.06001,244.93816 A 4.3929491,7.0287185 0 1 1 145.84591,244.93816 z"
-             sodipodi:ry="7.0287185"
-             sodipodi:rx="4.3929491"
-             sodipodi:cy="244.93816"
-             sodipodi:cx="141.45296"
-             id="path3231"
-             style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.36878979;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.36595746"
-             sodipodi:type="arc" />
-          <path
-             sodipodi:type="arc"
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.30000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.36595746"
-             id="path3236"
-             sodipodi:cx="162.09982"
-             sodipodi:cy="220.19121"
-             sodipodi:rx="3.9536541"
-             sodipodi:ry="6.0036969"
-             d="M 166.05348,220.19121 A 3.9536541,6.0036969 0 1 1 158.14617,220.19121 A 3.9536541,6.0036969 0 1 1 166.05348,220.19121 z"
-             transform="matrix(0.2845305,-0.118465,0.118465,0.2845305,87.828337,169.37952)"
-             inkscape:transform-center-x="0.63184566"
-             inkscape:transform-center-y="0.7220949" />
-        </g>
-      </g>
-    </g>
+    <path
+       sodipodi:type="arc"
+       style="fill:#7fbf87;fill-opacity:1;stroke:#000000;stroke-width:1.05873489;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       id="path3273"
+       sodipodi:cx="212.17838"
+       sodipodi:cy="237.93512"
+       sodipodi:rx="60.456757"
+       sodipodi:ry="60.456757"
+       d="M 272.63513,237.93512 A 60.456757,60.456757 0 1 1 151.72162,237.93512 A 60.456757,60.456757 0 1 1 272.63513,237.93512 z"
+       transform="matrix(0.5450315,0.7714048,-0.7714048,0.5450315,314.21114,-90.745366)"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Impact;-inkscape-font-specification:Impact Bold"
+       id="text3287"
+       transform="matrix(0.901758,0.2809932,-0.2809932,0.901758,76.198283,-53.316247)"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27"><textPath
+         xlink:href="#path3273"
+         startOffset="50%"
+         id="textPath3296"><tspan
+   style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Impact;-inkscape-font-specification:Impact Bold"
+   id="tspan3289">MooDoo</tspan></textPath></text>
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.99999988;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       d="M 295.75304,202.34508 C 295.75304,229.72064 273.53519,251.93849 246.15964,251.93849 C 238.34093,243.03604 235.02826,240.1261 224.17124,242.95193 C 207.23153,247.36095 194.90519,221.07462 194.88119,202.34508 C 194.84624,175.07438 290.64001,187.96748 294.26838,190.26083 C 295.43111,195.72003 295.75304,198.17739 295.75304,202.34508 z"
+       id="path3277"
+       sodipodi:nodetypes="ccsscc"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline"
+       d="M 295.41068,202.3731 C 295.41068,229.74866 273.19282,251.96651 245.81728,251.96651 C 237.99857,243.06406 234.68589,240.15412 223.82887,242.97996 C 206.88916,247.38896 194.56282,221.10264 194.53882,202.3731 C 194.50386,175.1024 292.24296,186.94041 293.92602,190.28885 C 295.08875,195.74805 295.41068,198.20541 295.41068,202.3731 z"
+       id="path3318"
+       sodipodi:nodetypes="ccsscc"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       sodipodi:nodetypes="csss"
+       id="path2457"
+       d="M 239.17437,158.71132 C 239.43986,151.15632 242.66693,145.11414 247.62442,140.19782 C 251.61313,136.24224 258.46162,134.20392 263.0311,137.89832 C 274.53887,147.20229 271.03667,161.23029 267.40519,169.57532"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 293.87878,190.26697 C 293.16114,189.61456 286.32318,187.17813 280.56427,182.5578 C 272.06792,175.74124 263.71125,166.01193 262.80116,165.26244 C 258.89199,162.04312 236.1269,153.30501 221.86997,163.42283 C 199.65542,179.18799 197.03531,189.40724 195.19571,194.23621 C 193.3561,199.06517 193.56659,200.61738 190.13679,216.5414 C 186.91748,231.48818 179.39288,227.38942 181.39868,238.3867 C 183.37685,249.23256 197.30196,251.73898 217.50091,247.35477 C 224.59645,245.81468 219.11055,244.13547 238.65635,234.24759 C 258.20214,224.35972 252.54376,223.54631 254.06303,219.76071 C 260.26751,204.30095 262.5712,200.21492 262.5712,200.21492"
+       id="path2453"
+       sodipodi:nodetypes="csssssssssc"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 238.11312,198.69965 C 228.91509,180.53356 232.24687,168.15823 241.10247,159.37811 C 245.09063,155.42198 251.93967,153.3842 256.50915,157.0786 C 273.80264,171.0603 257.199,195.71029 257.199,195.71029"
+       id="path2455"
+       sodipodi:nodetypes="cssc"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.30000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.36595746"
+       id="path2459"
+       sodipodi:cx="162.09982"
+       sodipodi:cy="220.19121"
+       sodipodi:rx="3.9536541"
+       sodipodi:ry="6.0036969"
+       d="M 166.05348,220.19121 A 3.9536541,6.0036969 0 1 1 158.14617,220.19121 A 3.9536541,6.0036969 0 1 1 166.05348,220.19121 z"
+       transform="matrix(0.9473418,-0.3944282,0.3944282,0.9473418,-36.875669,69.485309)"
+       inkscape:transform-center-x="2.2272679"
+       inkscape:transform-center-y="2.545433"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.36878979;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.36595746"
+       id="path3231"
+       sodipodi:cx="141.45296"
+       sodipodi:cy="244.93816"
+       sodipodi:rx="4.3929491"
+       sodipodi:ry="7.0287185"
+       d="M 145.84591,244.93816 A 4.3929491,7.0287185 0 1 1 137.06001,244.93816 A 4.3929491,7.0287185 0 1 1 145.84591,244.93816 z"
+       transform="matrix(0.5735951,-0.1769,0.1479576,0.6857978,66.195826,93.702728)"
+       inkscape:transform-center-x="-1.2650122"
+       inkscape:transform-center-y="0.27479033"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       inkscape:transform-center-y="0.7220949"
+       inkscape:transform-center-x="0.63184566"
+       transform="matrix(0.2687457,-0.111893,0.111893,0.2687457,135.12241,169.66418)"
+       d="M 166.05348,220.19121 A 3.9536541,6.0036969 0 1 1 158.14617,220.19121 A 3.9536541,6.0036969 0 1 1 166.05348,220.19121 z"
+       sodipodi:ry="6.0036969"
+       sodipodi:rx="3.9536541"
+       sodipodi:cy="220.19121"
+       sodipodi:cx="162.09982"
+       id="path3236"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.30000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.36595746"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
     <text
        xml:space="preserve"
        style="font-size:13.45815563px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Impact;-inkscape-font-specification:Impact Bold"
@@ -225,5 +243,31 @@
          y="146.76926"
          id="tspan3397"
          style="fill:#ffffff">Plugin</tspan></text>
+    <path
+       style="fill:#dcdcdc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 261.88734,199.62402 C 260.48947,200.48942 256.15134,212.85397 254.69699,215.67559 C 250.76879,223.29678 254.03616,221.75095 252.2289,224.58867 C 250.33178,227.5675 239.86549,232.50898 227.32952,239.91392 C 220.66122,243.85286 222.47787,245.61037 214.58138,246.9903 C 206.68489,248.37023 201.31491,248.68082 195.93074,248.11354 C 195.10469,247.31394 206.25804,246.62734 210.25493,243.77925 C 215.59333,239.97522 220.05774,238.58308 227.473,235.34537 C 244.99869,227.69315 250.09701,218.49492 253.11083,211.30494 C 255.07487,206.61939 255.43554,198.95779 257.38442,198.40096 C 259.3333,197.84414 263.42724,198.6707 261.88734,199.62402 z"
+       id="path3276"
+       sodipodi:nodetypes="cszszcssssz"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="sombras">
+    <path
+       style="fill:#dcdcdc;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="M 93.050306,107.7858 C 98.392364,107.64086 101.50839,109.08754 103.7229,111.12695 C 107.13509,114.26933 106.87947,113.59677 110.16301,117.81619 C 111.56656,117.76978 116.90086,117.85843 125.97493,114.92608 C 125.23527,113.02003 118.77561,111.40693 114.32698,108.4587 C 109.91401,105.5341 107.51905,101.26774 105.00744,100.98554 C 100.81394,103.08228 94.977047,106.08573 93.050306,107.7858 z"
+       id="path3874"
+       sodipodi:nodetypes="csccscc"
+       inkscape:export-filename="/home/damian/moodoo.png"
+       inkscape:export-xdpi="116.27"
+       inkscape:export-ydpi="116.27" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 51.735878,113.32333 C 57.585384,112.90551 55.3906,112.08309 61.253176,109.81135 C 64.635679,108.50063 63.827296,106.06977 63.827296,106.06977"
+       id="path4415"
+       sodipodi:nodetypes="csc" />
   </g>
 </svg>

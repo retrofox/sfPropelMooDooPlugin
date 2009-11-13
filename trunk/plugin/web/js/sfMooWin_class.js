@@ -264,7 +264,9 @@ var mooWin = new Class({
       url: this.options.link,
       method: 'GET',
       onFailure: function($xhr){
+	console.debug ('error !!!');
         $('content').set ('html', $xhr.responseText);
+	
       },
       onSuccess: function(tree, elems, html, js){
         this.fireEvent ('winDomReady', [tree, elems, html, js])
@@ -447,6 +449,7 @@ mooWin.sfPropelEdit = new Class({
       url: this.nodeWinFormEdit,
       method: 'GET',
       onFailure: function($xhr){
+	console.debug ('error !!!');
         //console.debug ($xhr.responseText);
         $('content').set ('html', $xhr.responseText);
       },
