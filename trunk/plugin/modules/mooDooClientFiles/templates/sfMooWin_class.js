@@ -14,6 +14,7 @@
 var mooWin = new Class({
   Implements: [Events, Options],
   options: {
+    injectTo: '',
     id: false,                                     // Identificador de la ventana
     loadWithAjax: true,
     link: '',
@@ -21,15 +22,20 @@ var mooWin = new Class({
     nodeInf: '_parent',
     cssPrefix: 'mooWin',
     container: 'content',
-    node_insert: '',
+    
     fullComplete: true,
     dims: {},
-    enabledHeaderBottons: [1, 1, 1, 1]
+    heardeButtons: {
+      refresh: true,
+      min: true,
+      max: true,
+      close: true
+    }
   },
 
   initialize: function(options){
     // Asignamos el objeto parent y luego lo hacemos null para que la clase pueda definir this.options
-    this.objParent = options.obj_parent || window;
+    this.winParent = options.obj_parent || window;
 
     options.obj_parent = null;
 
@@ -37,7 +43,6 @@ var mooWin = new Class({
     
     this.initConf();
 
-    this.id = (this.options.id ? this.options.id : this.options.link);
     this.addEvent ('winDomReady', function () {
 
       this.redims ();
@@ -47,14 +52,20 @@ var mooWin = new Class({
       this.makeWin();
 
       this.show();
-      this.fireEvent('renderComplete', this.nodeWin);
+      this.fireEvent('renderComplete', this.element);
     });
   },
 
   // Configuracion Inicial
   initConf: function(){
-    // nodeParentInsert. Nodo donde insertamos la ventana.
-    this.nodeParentInsert = ($(this.options.node_insert));
+    this.elems = {};
+
+    // Properties of win
+    this.prps = {
+      id: this.options.id ? this.options.id : this.options.link
+    };
+
+    this.elems.injectTo = ($(this.options.injectTo));
 
     // Cargamos el contenido de la ventana con AJAX ?
     if (this.options.loadWithAjax) {
@@ -67,82 +78,69 @@ var mooWin = new Class({
         this.dataJsonAssign();
 
         // Insertamos el nodo de la ventana dentro del nodo padre
-        this.nodeWin = this.ajaxConex.response.elements[0];
+        this.element = this.ajaxConex.response.elements[0];
         this.insertWinNode ();
 
         // Buscamos las referencias de los nodos asignados
         this.getWinNodes();
         this.getWinNodesContent();
-        this.nodeBlock.setOpacity (0.3);
+        this.elems.block.setOpacity (0.3);
       });
     }
   },
 
   insertWinNode: function () {
-    this.nodeWin.inject(this.nodeParentInsert, 'top');
+    this.element.inject(this.elems.injectTo);
+    this.element.addEvent('mousedown', function () {
+      this.fireEvent('mousedown')
+    }.bind(this));
   },
 
   // Tomamos los nodos principales de una ventana
   getWinNodes: function(){
-    this.nodeBlock = this.nodeWin.getChildren()[0];
-    this.nodeHandle = this.nodeWin.getChildren()[1];
-    this.nodeContent = this.nodeWin.getElement('.win_content');
-    this.nodeState = this.nodeWin.getElement('.win_state');
-    this.nodesHeaderBottons = this.nodeHandle.getElements('ul li');
+    this.elems.block = this.element.getChildren()[0];
+    this.elems.handle = this.element.getChildren()[1];
+    this.elems.content = this.element.getElement('.win_content');
+    this.elems.state = this.element.getElement('.win_state');
+    this.elems.winButtons = this.elems.handle.getElements('ul li');
   },
 
   getWinNodesContent: function(){
-    this.nodesObjectActions = this.nodeContent.getElements ('.btn_admin_actions');
+    this.elems.objActions = this.elems.content.getElements ('.btn_admin_actions');
   },
 
   /***  Metodos de Render  ***/
   render: function () {
-    this.renderHeaderBottons();
+    this.makeButtonsBar();
     this.renderContent();
   },
 
   renderContent: function () {
     this.makeAccordions();
-    this.renderButtons(this.nodesObjectActions);
+    this.renderButtons(this.elems.objActions);
     this.renderAction2Buttons();
   },
 
-  renderHeaderBottons: function () {
-    this.nodesHeaderBottons.each(function($btnWin, $iB){
-      var bgPos = $btnWin.getStyle('background-position').split(' ');
-      if (this.options.enabledHeaderBottons[$iB]){
-        $btnWin.addEvents({
-          'mouseenter': function(){
-            $btnWin.setStyle('background-position', bgPos[0] + ' ' + (bgPos[1].toInt() - 20).toString() + 'px');
-          },
-          'mouseleave': function(){
-            $btnWin.setStyle('background-position', bgPos[0] + ' ' + bgPos[1]);
-          },
-          'mousedown': function(e){
-            e.stop();
-            $btnWin.setStyles({
-              'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 40).toString() + 'px',
-              'color': '#FFF'
-            });
-          },
-          'mouseup': function(){
-            $btnWin.setStyles({
-              'background-position': bgPos[0] + ' ' + bgPos[1]
+  makeButtonsBar: function () {
+    var buttonsBar = new Element ('ul'), confButton;
+
+    for(confButton in this.options.heardeButtons) {
+      if (confButton) {
+        buttonsBar.adopt (
+          new Element ('li', {
+            'class': 'hbtn_'+confButton
             })
-          },
-          'click': function(e){
-            if ($btnWin.hasClass('btnHW03')) this.hideAndDestroy();
-            if ($btnWin.hasClass('btnHW04')) this.refreshContent();
-          }.bind(this)
-        });
+          )
       }
-      else {
-        $btnWin.setStyles({
-          'background-position': bgPos[0] + ' ' + (bgPos[1].toInt() - 60).toString() + 'px',
-          'cursor': 'default'
-        });
-      }
-    }.bind(this));
+    }
+    // inject into win content
+    buttonsBar.inject(this.elems.handle)
+
+    buttonsBar.addEvents({
+      'click:relay(li)': function (ev) {
+        this[ev.target.get('class').substring(5, ev.target.get('class').length)]();
+      }.bind(this)
+    })
   },
 
   // Renderiamos TODOS los botones de un objeto win
@@ -152,7 +150,7 @@ var mooWin = new Class({
 
   // Renderizamos los botones que suelen estar dentro del botton de un objeto win
   renderAction2Buttons: function () {
-    this.nodesObjectActions.each(function($btn, $iB){
+    this.elems.objActions.each(function($btn, $iB){
       $btn.addEvents({
         'click': function(e){
           $editAction = this.serverObjectActions[$iB];                                                        // <- viene por Json
@@ -175,30 +173,30 @@ var mooWin = new Class({
   },
 
   show: function(){
-    this.nodeWin.setStyle ('display', 'block');
+    this.element.setStyle ('display', 'block');
   },
 
   hide: function(){
-    this.nodeWin.setStyle ('display', 'none');
+    this.element.setStyle ('display', 'none');
   },
 
   fadeIn: function(){
-    this.nodeWin.setOpacity (1);
+    this.element.setOpacity (1);
   },
 
   fadeOut: function(){
-    this.nodeWin.setOpacity (0.3)
+    this.element.setOpacity (0.3)
   },
 
   hideContent: function () {
-    this.nodeContent.setStyle ('visibility', 'hidden');
+    this.elems.content.setStyle ('visibility', 'hidden');
   },
 
   showContent: function () {
-    this.nodeContent.setStyle ('visibility', 'visible');
+    this.elems.content.setStyle ('visibility', 'visible');
   },
 
-  hideAndDestroy: function(){
+  close: function(){
     this.fadeOut();
     this.destroy();
   },
@@ -207,36 +205,37 @@ var mooWin = new Class({
   },
 
   destroy: function(){
-    this.nodeWin.destroy();
-    $wins.erase(this.id);           // <- Ojo con esto pepe !!!
-    this.fireEvent ('winDestroy', this.id);
+    this.element.destroy();
+    this.fireEvent ('destroyed', this.id);
   },
 
   blockOn: function () {
-    var $styles = this.nodeWin.getStyles ('width', 'height');
+    var $styles = this.element.getStyles ('width', 'height');
     $styles.display = 'block';
-    this.nodeBlock.setStyles ($styles);
+    this.elems.block.setStyles ($styles);
   },
 
   blockOff: function () {
-    this.nodeBlock.setStyle ('display', 'none');
+    this.elems.block.setStyle ('display', 'none');
   },
-
+  /*
   refresh: function () {
     this.removeEvents ('winDomReady');
     this.ajaxConex.send();
   },
+*/
+  refresh: function ($url) {
 
-  refreshContent: function ($url) {
-
+    
     this.removeEvents ('winDomReady');            // <- Removemos todos las funcones asociadas al evento winDomReady
 
     $url = $url || false;
     this.ajaxConex.options.url = $url ? $url : this.options.link_content;
 
+
     this.addEvent ('winDomReady', function () {
       this.dataJsonContentAssign();
-      this.nodeContent.set ('html', this.ajaxConex.response.html);
+      this.elems.content.set ('html', this.ajaxConex.response.html);
       this.getWinNodesContent();
       this.renderContent();
     });
@@ -252,11 +251,11 @@ var mooWin = new Class({
   setState: function () {
     arguments[1] = arguments[1] || true;
 
-    this.nodeState.back = this.nodeState.get('text');
-    this.nodeState.set('text', arguments[0]);
+    this.elems.state.back = this.elems.state.get('text');
+    this.elems.state.set('text', arguments[0]);
     if (arguments[1]) {
       (function () {
-        this.nodeState.set('text', this.nodeState.back);
+        this.elems.state.set('text', this.elems.state.back);
       }).delay (1500, this);
     }
   },
@@ -276,10 +275,10 @@ var mooWin = new Class({
 
   // Creamos Ventana
   makeWin: function(){
-    this.nodeWin.setStyle ('position', 'absolute');
+    this.element.setStyle ('position', 'absolute');
     
-    this.dragWin = new Drag.Move(this.nodeWin, {
-      handle: this.nodeHandle,
+    this.dragWin = new Drag.Move(this.element, {
+      handle: this.elems.handle,
       container: $(this.options.container),
 
       onStart: function(e){
@@ -295,8 +294,8 @@ var mooWin = new Class({
   },
 
   makeAccordions: function(){
-    if (this.nodeContent.getElements('h2.titleSection').length) {
-      this.winAccordion = new Fx.Accordion(this.nodeContent.getElements('h2.titleSection'), this.nodeContent.getElements('div.fieldSection'), {
+    if (this.elems.content.getElements('h2.titleSection').length) {
+      this.winAccordion = new Fx.Accordion(this.elems.content.getElements('h2.titleSection'), this.elems.content.getElements('div.fieldSection'), {
         show: 0,
         opacity: false,
         onActive: function(toggler, element){
@@ -331,7 +330,7 @@ var mooWin = new Class({
     this.options.dims.left = this.options.dims.left || this.serverOptions.dims.left;
     this.options.dims.top = this.options.dims.top || this.serverOptions.dims.top;
 
-    this.nodeWin.setStyles ({
+    this.element.setStyles ({
       width: this.options.dims.width,
       left: this.options.dims.left,
       top: this.options.dims.top
@@ -339,13 +338,10 @@ var mooWin = new Class({
   },
 
   dims2Node: function () {
-    this.options.dims = this.nodeWin.getCoordinates ();
+    this.options.dims = this.element.getCoordinates ();
     return this.options.dims;
   }
 });
-
-
-
 
 
 
@@ -367,11 +363,11 @@ mooWin.sfPropelEdit = new Class({
   },
 
   getWinFormNodes: function () {
-    this.nodeWinActions = this.nodeContent.getElement ('div.win_footer');
-    this.nodeWinFormEdit = this.nodeContent.getElement ('form');
-    this.nodeWinFormDelete = this.nodeWin.getElement ('form.hiddenForm');
+    this.nodeWinActions = this.elems.content.getElement ('div.win_footer');
+    this.nodeWinFormEdit = this.elems.content.getElement ('form');
+    this.nodeWinFormDelete = this.element.getElement ('form.hiddenForm');
 
-    this.widgetSelectsWithAdd = this.nodeContent.getElements ('div.select_with_add');
+    this.widgetSelectsWithAdd = this.elems.content.getElements ('div.select_with_add');
   },
 
   dataJsonContentAssign: function () {
@@ -389,55 +385,8 @@ mooWin.sfPropelEdit = new Class({
   },
 
   renderPropelChoiceWithAdd: function () {
-    // Recorremos, uno a uno, todos los bloques
     this.widgetSelectsWithAdd.each (function ($selWAdd, $iS) {
-      var $nodesWidget = $selWAdd.getChildren();
-
-      var $popUp = $nodesWidget[0];
-      var $select2Refresh = $nodesWidget[1];
-      var $btn2PopUp = $nodesWidget[2];
-
-      var $nodesPopUpWidget = $popUp.getChildren();
-
-      var $input2Add = $nodesPopUpWidget[0];
-      var $btn2Add = $nodesPopUpWidget[2];
-      var $btn2Cancel = $nodesPopUpWidget[1];
-
-      var $btns = new Array ($btn2PopUp, $btn2Cancel, $btn2Add);
-      this.renderButtons ($btns);
-
-      // Comportamiento de eventos de raton y teclado.
-      $btn2PopUp.addEvent ('click', function (e) {
-        $popUp.setStyle('display', 'block');
-        $input2Add.focus();
-      });
-
-      $btn2Cancel.addEvent ('click', function (e) {
-        e.stop();
-        $popUp.setStyle('display', 'none');
-      });
-
-      // Teclas especiales
-      $input2Add.addEvent ('keypress', function (e){
-        if (e.code == 27) $btn2Cancel.fireEvent('click', e);
-        if (e.code == 13) $btn2Add.fireEvent('click', e);
-      });
-
-      // Conexion de AJAX
-      var addWAjax = new Request.HTML({
-        onSuccess: function(responseTree, responseElements, responseHTML, responseJavaScript){
-          $select2Refresh.set ('html', responseHTML);
-          $popUp.setStyle('display', 'none');
-        }.bind(this)
-      });
-
-      // Boton Agregar
-      $btn2Add.addEvent ('click', function (e) {
-        e.stop();
-        addWAjax.options.url = $input2Add.get('link_to_add')+'?value='+$input2Add.get('value');
-        addWAjax.send();
-      }.bind(this));
-
+      var objChoice = new sfWidgetFromPropelWithAdd ($selWAdd);
     }.bind(this));
   },
 
@@ -459,11 +408,11 @@ mooWin.sfPropelEdit = new Class({
   save: function ($objAct, $ev) {
     this.editAjaxConex.addEvent ('success', function () {
       if (!$objAct.auto_action) {
-	this.serverEditResponse();
+        this.serverEditResponse();
       }
       else if ($objAct.auto_action == 'close_and_parent_refresh') {
-	this.objParent.refreshContent();
-	this.hideAndDestroy();
+        this.winParent.refresh();
+        this.hideAndDestroy();
       }
     }.bind(this));
 
@@ -473,13 +422,13 @@ mooWin.sfPropelEdit = new Class({
 
   serverEditResponse: function () {
     this.renderEditResponse();
-    var $win_flashes = this.nodeContent.getElement ('div.win_flashes');
+    var $win_flashes = this.elems.content.getElement ('div.win_flashes');
 
     this.blockOn();
 
-    if ($flashEditResponse.action_state == 'ok' && (this.objParent != window)) {
-      this.objParent.refreshContent();
-      this.objParent.setState ('Registro editado.')
+    if ($flashEditResponse.action_state == 'ok' && (this.winParent != window)) {
+      this.winParent.refresh();
+      this.winParent.setState ('Registro editado.')
     }
 
     (function () {
@@ -490,13 +439,13 @@ mooWin.sfPropelEdit = new Class({
 
   renderEditResponse: function () {
     this.flashEditResponse = $flashEditResponse;                                        // <- Respuesta programada en _flashEdit
-    this.nodeContent.set('html', this.editAjaxConex.response.html);
+    this.elems.content.set('html', this.editAjaxConex.response.html);
     this.getWinNodesContent();
     this.renderContent();
   },
 
   closeAndParentRefresh: function () {
-    if (this.objParent != window) this.objParent.refreshContent();
+    if (this.winParent != window) this.winParent.refresh();
     else location.reload();
     this.hideAndDestroy();
   }
@@ -508,7 +457,7 @@ mooWin.sfPropelNew = new Class({
   Implements: [Events, Options],
 
   options: {
-    enabledHeaderBottons: [0, 1, 1, 1]
+    
   },
 
   initialize: function(json, options){
@@ -522,7 +471,7 @@ mooWin.sfPropelNew = new Class({
     (function () {
       // Vemos si la edicion ha sido correcta
       if (this.flashEditResponse.action_state == 'error') {
-        this.nodeContent.getElement ('div.win_flashes').dispose();
+        this.elems.content.getElement ('div.win_flashes').dispose();
         this.blockOff();
       }
       else if (this.flashEditResponse.auto_action == 'reedit') {
@@ -537,15 +486,15 @@ mooWin.sfPropelNew = new Class({
   },
 
   new2Edit: function () {
-    if (this.objParent != window) {
-      this.objParent.refreshContent();
+    if (this.winParent != window) {
+      this.winParent.refresh();
     }
     // Este metodo elimina el objeto tipo win y genera uno nuevo tipo edit.
     // Viene, por javascript, todos los elementos.
     var $dims = this.dims2Node();
 
     this.flashEditResponse.action.obj_parent = this.options.obj_parent;
-    this.flashEditResponse.action.node_insert = this.options.node_insert;
+    this.flashEditResponse.action.injectTo = this.options.injectTo;
     this.flashEditResponse.action.dims = $dims;
 
     renderAjaxEditWin (this.flashEditResponse.action)
@@ -584,7 +533,7 @@ mooWin.sfPropelList = new Class({
   },
 
   getWinListNodesContent: function () {
-    this.nodeListContainer = this.nodeContent.getElement ('.list-container');
+    this.nodeListContainer = this.elems.content.getElement ('.list-container');
     this.nodeListContent = this.nodeListContainer.getElement ('.sf_admin_list');
     this.nodeListRows = this.nodeListContent.getElements('.sf_admin_row').flatten();
     this.nodeListBtnObjectAction = this.nodeListContent.getElements ('.btn-action').flatten();
@@ -597,8 +546,8 @@ mooWin.sfPropelList = new Class({
 
   // Metodos de acceso a los nodos
   getWinListMenuNodes: function () {
-    this.nodesMenuBottons = this.nodeContent.getElements ('.win_bar').getChildren('a').flatten();
-    this.nodesMenuWins = this.nodeContent.getElements ('div.win_bar div.wins_bar').getChildren('div').flatten();
+    this.nodesMenuBottons = this.elems.content.getElements ('.win_bar').getChildren('a').flatten();
+    this.nodesMenuWins = this.elems.content.getElements ('div.win_bar div.wins_bar').getChildren('div').flatten();
 
     // Hacemos todas las ventanas dentro de la barra de menu draggeables
     this.nodesMenuWins.each (function ($win, $iW){
@@ -733,8 +682,8 @@ mooWin.sfPropelList = new Class({
     }, this);
 
     // Acciones del listado
-    this.nodesObjectActions = this.nodeListContainer.getElements ('ul.sf_admin_actions li.btn_admin_actions');
-    this.renderButtons(this.nodesObjectActions);
+    this.elems.objActions = this.nodeListContainer.getElements ('ul.sf_admin_actions li.btn_admin_actions');
+    this.renderButtons(this.elems.objActions);
     //this.renderAction2Buttons();
 
     // Boton accion de cada objeto
@@ -769,7 +718,7 @@ mooWin.sfPropelList = new Class({
                   var $action = $objAction.actions[$iA];
 
                   $action.obj_parent = this;
-                  $action.node_insert = this.serverOptions.win.nodeId_winsEmbedded;
+                  $action.injectTo = this.serverOptions.win.nodeId_winsEmbedded;
 
                   if ($action.execute !== undefined) eval ($action.execute+'($action, e, false)');
                 }.bind(this)
@@ -800,9 +749,9 @@ mooWin.sfPropelList = new Class({
     // Token ?
     if ($action._csrf_token) {
       $input_token = new Element ('input', {
-	type: 'hidden',
-	name: '_csrf_token', 
-	value: $action._csrf_token
+        type: 'hidden',
+        name: '_csrf_token',
+        value: $action._csrf_token
       })
       $input_token.inject ($action.formDelete);
     }

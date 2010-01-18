@@ -217,20 +217,19 @@ div.win div.block_win {
   cursor: pointer;
   float: left;
   margin: 0 1px;
-  background: transparent url('../images/iconos.png') no-repeat -240px -360px;
+  background: transparent url('../images/iconos.png') no-repeat -200px -360px;
 }
 
-.win .win_handle ul li.btnHW02 {
-  background-position: -320px -360px;
-}
+.win .win_handle ul li.hbtn_refresh             { background-position: -200px -360px; }
+.win .win_handle ul li.hbtn_min                 { background-position: -240px -360px; }
+.win .win_handle ul li.hbtn_max                 { background-position: -320px -360px; }
+.win .win_handle ul li.hbtn_close               { background-position: -360px -360px; }
 
-.win .win_handle ul li.btnHW03 {
-  background-position: -360px -360px;
-}
+.win .win_handle ul li.hbtn_refresh:click       { background-position: -200px -380px; }
+.win .win_handle ul li.hbtn_min:hover           { background-position: -240px -380px; }
+.win .win_handle ul li.hbtn_max:hover           { background-position: -320px -380px; }
+.win .win_handle ul li.hbtn_close:hover         { background-position: -360px -380px; }
 
-.win .win_handle ul li.btnHW04 {
-  background-position: -200px -360px;
-}
 
 div.win div.win_container {
 }
@@ -421,7 +420,7 @@ div.win div.sf_admin_form sf_admin_form win_content div {
 
 
 
-/* Estilos para el widget mooWigdetFormPropelChoiceWithAdd */
+/* Estilos para el widget mooWigdetFormPropelChoiceWithAdd 
 div.select_with_add {
   position: relative;
   height: 30px;
@@ -468,3 +467,4 @@ div.win4add2select div.btn24x24 {
   float: right;
   margin-left: 3px;
 }
+*/
